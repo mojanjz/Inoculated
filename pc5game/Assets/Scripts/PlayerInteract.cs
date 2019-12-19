@@ -9,6 +9,9 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private string lockTag = "Lock";
     [SerializeField] private Color rayDebugColor = Color.red; // Colour of the debugging ray.
 
+    Vector2 origin;
+    Vector2 castDirection;
+
     /* Class for defining which keys do what action. */
     public static class KeyMap
     {
@@ -20,6 +23,9 @@ public class PlayerInteract : MonoBehaviour
     /* Start is called before the first frame update */
     void Start()
     {
+        /* Initially set raycast to cast "upwards" (forwards from sprite 
+         * perspective) from player origin. */
+        castDirection = transform.up;
     }
 
     /* Update is called once per frame */
@@ -28,7 +34,8 @@ public class PlayerInteract : MonoBehaviour
         /* Get the key that the user presses, if any. */
         KeyCode keyPressed = GetInput();
 
-        /* If any key was pressed, interact with the object with the specified key. */
+        /* If any key was pressed, interact with the object with the specified 
+         * key. */
         if (keyPressed != KeyCode.None)
         {
             Interact(keyPressed);
@@ -39,20 +46,21 @@ public class PlayerInteract : MonoBehaviour
     {
     }
 
-    /* Method for interacting with other objects. */
+    /* Method for interacting with other objects.
+     * PARAM: keyPressed, the keyboard key that was pressed by the user. */
     private void Interact(KeyCode keyPressed)
     {
-        /* Set raycast to start at player origin, and cast "upwards" (forwards). */
-        Vector2 origin = transform.position;
-        Vector2 direction = transform.up;
+        /* Set raycast to start at player origin. */
+        origin = transform.position;
 
         /* Cast a ray forwards from the player. */
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxCastDist, rayLayer);
+        RaycastHit2D hit = Physics2D.Raycast(origin, castDirection, maxCastDist, rayLayer);
 
         /* Visually shows the raycast for debugging purposes. */
-        Debug.DrawRay(origin, direction * maxCastDist, rayDebugColor);
+        Debug.DrawRay(origin, castDirection * maxCastDist, rayDebugColor);
 
-        /* If an object is hit, checking whether the object is interactable using hitInfo. */
+        /* If an object is hit, checking whether the object is interactable 
+         * using hitInfo. */
         if (hit.collider != null)
         {
             Debug.Log("hit something\n");
@@ -92,10 +100,25 @@ public class PlayerInteract : MonoBehaviour
         return KeyCode.None;
     }
 
-    /* Method for opening a "lock" object. */
+    /* Method for opening a "lock" object.
+     * PARAM: obj, The "lock" object that is to be "opened".
+     * PRE: obj is a valid "lock" object. */
     private void OpenLock(GameObject obj)
     {
         Debug.Log("lock opened\n");
-        Destroy(obj);
+        //Destroy(obj);
+        obj.GetComponent<InteractableController>().UpdateState();
     }
+
+
+    /* Method to be called when the player (sprite) turns to face a new 
+     * direction.
+     * PARAM: rotDirection, the direction that the player sprite faces. */
+    public void OnRotate(Vector2 rotDirection)
+    {
+        /* Sets raycast to point in the direction that the player sprite is 
+         * facing. */
+        castDirection = rotDirection;
+    }
+
 }
