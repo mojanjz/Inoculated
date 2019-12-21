@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 direction;
     private Vector2 rotDirection = Vector2.right;
     private Vector2 rotNewDirection;
-    private bool m_FacingRight = true;  // For determining which way the player is currently facing.
-    private float rotAngle = 0; // For storing the angle of player orientation.
+   // private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+   // private float rotAngle = 0; // For storing the angle of player orientation.
 
     [SerializeField]
     private Animator animator;
@@ -41,9 +41,6 @@ public class PlayerController : MonoBehaviour
 
     public void move()
     {
-        /* Rotates y-axis of the player to point in direction of rotDirection. Does not change z-axis direction. */
-        // transform.LookAt(transform.position + Vector3.forward, (Vector3)rotDirection);
-
         /* Set the rotation only if there was input. Otherwise, retain the old orientation.
          * Also set the translation direction vector to match the input rotation. */
         if (rotNewDirection != Vector2.zero)
@@ -59,7 +56,7 @@ public class PlayerController : MonoBehaviour
             direction = rotNewDirection;
         }
 
-        /* Translates player in direction of local y-axis (if a key is pressed). */
+        /* Translates player in direction vector (if a key is pressed). */
         transform.Translate(direction * speed * Time.deltaTime);
 
         /* Tells the animation controller if the player is walking or idling. */
@@ -102,49 +99,37 @@ public class PlayerController : MonoBehaviour
      * PARAM: rotDirection, the direction that the player sprite faces. */
     public void OnRotate(Vector2 rotDirection)
     {
-        /* When rotDirection is (0, 1), the angle is 0 degrees. 
-         * Range is between -180 and 180 degrees. */
-        rotAngle = Vector2.SignedAngle(Vector2.right, rotDirection);
+        ///* When rotDirection is (0, 1), the angle is 0 degrees. 
+        // * Range is between -180 and 180 degrees. */
+        //rotAngle = Vector2.SignedAngle(Vector2.right, rotDirection);
 
-        if (m_FacingRight && ( rotAngle > 95 || rotAngle < -95 ))
-        {
-            flip();
-        }
-
-        else if (!m_FacingRight && ( rotAngle < 85 && rotAngle > -85 ))
-        {
-            flip();
-        }
-
-        /* Code segment below is commented out because decided to implement
-         * both left vs. right conditions within the animator instead of here.
-         * Not deleting this code yet to keep as reference. */
-        ///* Pass the player's angle of orientation to the player animator. */
-        //if ((rotAngle > 95 || rotAngle < -95))
+        //if (m_FacingRight && (rotAngle > 95 || rotAngle < -95))
         //{
-        //    /* If the player sprite is facing the left, the angle passed should
-        //     * be measured from the left vector instead of the right vector. */
-        //    animator.SetFloat("rotation", Vector2.SignedAngle(Vector2.left, rotDirection));
+        //    flip();
         //}
 
-        //else
+        //else if (!m_FacingRight && (rotAngle < 85 && rotAngle > -85))
         //{
-        //    animator.SetFloat("rotation", rotAngle);
+        //    flip();
         //}
 
-        animator.SetFloat("rotation", rotAngle);
+        //animator.SetFloat("rotation", rotAngle);
+
+        animator.SetFloat("rotDirectionX", rotDirection.x);
+        animator.SetFloat("rotDirectionY", rotDirection.y);
 
     }
 
-    /* Method to change the whether the player sprite faces left or right. */
-    void flip()
-    {
-        /* Switch the way the player is labelled as facing. */
-        m_FacingRight = !m_FacingRight;
+    /* NOT USING METHOD BELOW BECAUSE SPRITES ARE NOT SYMMETRIC */
+    ///* Method to change the whether the player sprite faces left or right. */
+    //void flip()
+    //{
+    //    /* Switch the way the player is labelled as facing. */
+    //    m_FacingRight = !m_FacingRight;
 
-        /* Mirror the player object across its local y-axis. */
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
-    }
+    //    /* Mirror the player object across its local y-axis. */
+    //    Vector3 theScale = transform.localScale;
+    //    theScale.x *= -1;
+    //    transform.localScale = theScale;
+    //}
 }
