@@ -77,22 +77,22 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            rotNewDirection += Vector2.up;
+            rotNewDirection = Vector2.up;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            rotNewDirection += Vector2.left;
+            rotNewDirection = Vector2.left;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            rotNewDirection += Vector2.down;
+            rotNewDirection = Vector2.down;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            rotNewDirection += Vector2.right;
+            rotNewDirection = Vector2.right;
         }
 
         rotNewDirection.Normalize();
