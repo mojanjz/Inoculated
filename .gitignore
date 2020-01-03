@@ -5,6 +5,10 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+# Folder for extra unused assets
+**/UnusedAssets(gitignore)/
+**/UnusedAssets(gitignore).meta
+
 # Visual Studio cache directory
 .vs/
 
