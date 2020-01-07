@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inspectable : MonoBehaviour
+public class Examinable : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -16,8 +16,8 @@ public class Inspectable : MonoBehaviour
         
     }
 
-    public void OnInspect()
+    public void OnExamine()
     {
-
+        Debug.Log("Wooo, look at me!");
     }
 }

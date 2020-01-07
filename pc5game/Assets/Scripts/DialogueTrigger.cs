@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attackable : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,16 +14,5 @@ public class Attackable : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void OnAttack()
-    {
-        Die();
-    }
-
-    public void Die()
-    {
-        Debug.Log("SNAPPED OUT OF EXISTENCE.");
-        Destroy(gameObject);
     }
 }

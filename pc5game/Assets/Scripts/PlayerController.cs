@@ -6,30 +6,23 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
-    private Vector2 direction;
-    private Vector2 rotDirection = Vector2.right;
-    private Vector2 rotNewDirection;
+    private bool isMoveEnabled = true;
+    private Vector2 rotPrevDirection = Vector2.right; // Player rotation for previous frame
+    private Vector2 rotCurrDirection; // Player rotation for current frame (is updated each frame)
     // private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     // private float rotAngle = 0; // For storing the angle of player orientation.
 
     [SerializeField] private Animator animator;
-
-    public bool isAttacking = false;
 
     /* Event to update relevant methods when the player's rotation is changed. */
     [System.Serializable]
     public class Vec2Event : UnityEvent<Vector2> { }
     public Vec2Event OnRotateEvent;
 
-    public UnityEvent OnAttackEvent;
-
     private void Awake()
     {
         if (OnRotateEvent == null)
             OnRotateEvent = new Vec2Event();
-
-        if (OnAttackEvent == null)
-            OnAttackEvent = new UnityEvent();
     }
 
     // Start is called before the first frame update
@@ -46,58 +39,54 @@ public class PlayerController : MonoBehaviour
 
     public void Move()
     {
-        /* Set the rotation only if there was input. Otherwise, retain the old orientation.
-         * Also set the translation direction vector to match the input rotation. 
-         * Don't move if currently attacking. */
-        if ((rotNewDirection != Vector2.zero) & !isAttacking)
+        /* Disable movement if flag is unset. */
+        if ( !isMoveEnabled)
         {
-            if (rotDirection != rotNewDirection)
-            {
-                rotDirection = rotNewDirection;
-                Rotate(rotDirection);
-            }
-
-            direction = rotNewDirection;
+            rotCurrDirection = Vector2.zero;
         }
 
-        /* Translates player in direction vector (if a key is pressed). */
-        transform.Translate(direction * speed * Time.deltaTime);
+        /* If the rotation direction has changed, update it. */
+        else if ((rotCurrDirection != Vector2.zero) && (rotCurrDirection != rotPrevDirection))
+        {
+            rotPrevDirection = rotCurrDirection;
+            Rotate(rotPrevDirection);
+        }
+
+        /* Translates player in rotNewDirection vector (if a key is pressed). */
+        transform.Translate(rotCurrDirection * speed * Time.deltaTime);
 
         /* Tells the animation controller if the player is walking or idling. */
-        animator.SetFloat("speed", direction.sqrMagnitude);
+        animator.SetFloat("speed", rotCurrDirection.sqrMagnitude);
     }
 
     private void GetInput()
     {
-        /* Keeps the player stationary when no input is detected. */
-        direction = Vector2.zero;
-
         /* Stores the desired rotational vector (sum rotational vectors if want
          * to go diagonally when the user presses more than one key at the same 
          * time). */
-        rotNewDirection = Vector2.zero;
+        rotCurrDirection = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyMap.MoveUp))
         {
-            rotNewDirection = Vector2.up;
+            rotCurrDirection = Vector2.up;
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyMap.MoveLeft))
         {
-            rotNewDirection = Vector2.left;
+            rotCurrDirection = Vector2.left;
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyMap.MoveDown))
         {
-            rotNewDirection = Vector2.down;
+            rotCurrDirection = Vector2.down;
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyMap.MoveRight))
         {
-            rotNewDirection = Vector2.right;
+            rotCurrDirection = Vector2.right;
         }
 
-        rotNewDirection.Normalize();
+        rotCurrDirection.Normalize();
     }
 
     /* Method to be called when the player (sprite) turns to face a new direction.
@@ -141,19 +130,14 @@ public class PlayerController : MonoBehaviour
     //    transform.localScale = theScale;
     //}
 
-    public IEnumerator Attack()
+    public void EnableMove()
     {
-        isAttacking = true;
-
-        /* Invokes methods in other relevant scripts as CharacterAudioController. */
-        OnAttackEvent.Invoke();
-
-        /* Play player attack animation. */
-        animator.SetBool("attack", true);
-
-        /* Switch isAttacking state after the attack animation has completed. */
-        float myTime = animator.GetCurrentAnimatorStateInfo(2).length;
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(2).length);
-        isAttacking = false;
+        isMoveEnabled = true;
     }
+
+    public void DisableMove()
+    {
+        isMoveEnabled = false;
+    }
+
 }
