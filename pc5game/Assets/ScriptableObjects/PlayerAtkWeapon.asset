@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903cbcb448311ae48ad04048622f17bd, type: 3}
+  m_Name: PlayerAtkWeapon
+  m_EditorClassIdentifier: 
+  Name: Weapon
+  Damage: 5
+  Audio: {fileID: 8300000, guid: 9cca06694e70343d3a39f395667c9651, type: 3}
+  Area: 5
+  Distance: 3
+  animController: {fileID: 22100000, guid: 17fd9dc4e97c7e44abb9de594a518b07, type: 2}

@@ -6,10 +6,8 @@ using UnityEngine;
 public class ObjectRaycaster : MonoBehaviour
 {
     /* Interaction settings */
-    [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for interaction.
     [SerializeField] private Color rayDebugColor = Color.red; // Colour of the debugging ray.
     [SerializeField] private float rayDebugDuration = 0.1f; // How long the debug ray shows on screen
-    [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the interactable objects (touchable by raycast).
     [SerializeField] private Vector2 InitialCastDirection = Vector2.right;
 
     /* Internally used variables */
@@ -28,27 +26,18 @@ public class ObjectRaycaster : MonoBehaviour
         
     }
 
-    public RaycastHit2D ObjectRaycast()
+    public RaycastHit2D ObjectRaycast(float distance, LayerMask layer)
     {
         /* Set raycast to start at object origin. */
         origin = transform.position;
 
         /* Cast a ray forwards from the player. */
-        RaycastHit2D hit = Physics2D.Raycast(origin, castDirection, maxCastDist, rayLayer);
+        RaycastHit2D hit = Physics2D.Raycast(origin, castDirection, distance, layer);
 
-        /* Row the ray visually for debugging purposes. */
-        DebugObjectRaycast();
+        /* Show the ray visually for debugging purposes. */
+        Debug.DrawRay(origin, castDirection * distance, rayDebugColor, rayDebugDuration);
 
         return hit;
-    }
-
-    private void DebugObjectRaycast()
-    {
-        /* Set raycast to start at object origin. */
-        origin = transform.position;
-
-        /* Visually shows the raycast for debugging purposes. */
-        Debug.DrawRay(origin, castDirection * maxCastDist, rayDebugColor, rayDebugDuration);
     }
 
     /* Method to be called when the player (sprite) turns to face a new 
