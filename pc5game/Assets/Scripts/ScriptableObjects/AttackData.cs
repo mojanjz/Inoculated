@@ -11,4 +11,12 @@ public class AttackData : ScriptableObject
     public float Area;
     public float Distance;
     public AnimatorOverrideController animController;
+
+
+    public int getDamage() 
+    {
+        return Damage;
+    }
 }
+
+
