@@ -1,12 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Unlocker : MonoBehaviour
 {
     [SerializeField] private ObjectRaycaster raycaster;
     [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for unlocking
     [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the unlockable objects (touchable by raycast).
+
+    public UnityEvent OnUnlockStartEvent;
+    public UnityEvent OnUnlockEndEvent;
+
+    private void Awake()
+    {
+        if (OnUnlockStartEvent == null)
+            OnUnlockStartEvent = new UnityEvent();
+
+        if (OnUnlockEndEvent == null)
+            OnUnlockEndEvent = new UnityEvent();
+    }
 
     // Start is called before the first frame update
     void Start()

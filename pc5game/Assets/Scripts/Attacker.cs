@@ -41,23 +41,11 @@ public class Attacker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Some temp code for demo purposes...
-        if (Input.GetKeyDown(KeyMap.AttackSwitch))
-        {
-            Debug.Log("Switching weapon...");
-            if (AtkIndex == 0)
-            {
-                SwitchAttack("Weapon");
-            } else
-            {
-                SwitchAttack("Regular");
-            }
-        }
     }
 
     public IEnumerator Attack()
     {
-        /* Cast a ray forwards from the player, and visually show the ray for debugging purposes. */
+        /* Cast a ray forwards from the attacker object, and visually show the ray for debugging purposes. */
         RaycastHit2D hit = raycaster.ObjectRaycast(attackData[AtkIndex].Distance, rayLayer);
 
         IsAttacking = true;
@@ -65,7 +53,7 @@ public class Attacker : MonoBehaviour
         /* Invokes methods in other relevant scripts as CharacterAudioController. */
         OnAttackStartEvent.Invoke();
 
-        /* Play player attack animation. */
+        /* Play attack animation. */
         animator.SetBool("attack", true);
 
         /* Switch isAttacking state after the attack animation has completed. */

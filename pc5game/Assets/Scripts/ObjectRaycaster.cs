@@ -7,7 +7,7 @@ public class ObjectRaycaster : MonoBehaviour
 {
     /* Interaction settings */
     [SerializeField] private Color rayDebugColor = Color.red; // Colour of the debugging ray.
-    [SerializeField] private float rayDebugDuration = 0.1f; // How long the debug ray shows on screen
+    [SerializeField] private float rayDebugDuration = 0.05f; // How long the debug ray shows on screen
     [SerializeField] private Vector2 InitialCastDirection = Vector2.right;
 
     /* Internally used variables */
