@@ -4,11 +4,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 
+
+
 public class Attacker : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private CharacterAudioController audioController;
     [SerializeField] private AttackData[] attackData; // Owned attacks
+    //[SerializeField] private  int attackStrength;
+
+    
 
     /* Casting settings */
     [SerializeField] private ObjectRaycaster raycaster;
@@ -67,10 +72,10 @@ public class Attacker : MonoBehaviour
         if (hit.collider != null)
         {
             var attackable = hit.collider.GetComponent<Attackable>();
-
+            int damage = attackData[AtkIndex].getDamage();
             if (attackable)
             {
-                attackable.OnAttack();
+                attackable.OnAttack(damage);
             }
         }
     }

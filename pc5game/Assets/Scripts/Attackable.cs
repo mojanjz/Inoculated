@@ -5,6 +5,8 @@ using UnityEngine;
 public class Attackable : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] private int health;
+    
     void Start()
     {
         
@@ -14,16 +16,28 @@ public class Attackable : MonoBehaviour
     void Update()
     {
         
+        
     }
 
-    public void OnAttack()
+    public void OnAttack(int damage)
     {
-        Die();
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+        else {
+            Debug.Log(gameObject.name + " has been hit, now has " + health + " health left" );
+        }
+        
     }
+
+
 
     public void Die()
     {
         Debug.Log("SNAPPED OUT OF EXISTENCE.");
         Destroy(gameObject);
     }
+
 }
