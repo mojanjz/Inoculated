@@ -38,7 +38,7 @@ public class Examiner : MonoBehaviour
 
     /* Method to examine an Examineable using ObjectRaycast. 
      * PARAM: onEndCall, optional action to call when the interaction completes */
-    public void Examine(UnityAction onEndCall = null)
+    public void Examine()
     {
         /* If already in process of examining something, don't continue this call. */
         if (IsActive)
@@ -47,13 +47,6 @@ public class Examiner : MonoBehaviour
         }
 
         IsActive = true;
-
-        /* Add the callback to the list of handlers to be called when the
-         * interaction is finished. */
-        if (onEndCall != null)
-        {
-            OnExamineEndEvent.AddListener(onEndCall);
-        }
 
         /* Cast a ray. */
         RaycastHit2D hit = raycaster.ObjectRaycast(maxCastDist, rayLayer);

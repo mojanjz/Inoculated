@@ -47,5 +47,7 @@ public class Unlocker : MonoBehaviour
                 unlockable.OnUnlock();
             }
         }
+
+        OnUnlockEndEvent.Invoke();
     }
 }

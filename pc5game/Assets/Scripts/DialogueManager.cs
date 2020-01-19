@@ -10,6 +10,8 @@ using System;
  * display of the dialogue. */
 public class DialogueManager : Singleton<DialogueManager>
 {
+    [SerializeField] private KeyMap[] keyMap; // TEMP CODE, NEED TO FIX LATER
+
     [SerializeField] private Animator panelAnimator;
     [SerializeField] private int panelAnimLayer = 0;
     [SerializeField] private Text speakerNameUI;
@@ -42,8 +44,8 @@ public class DialogueManager : Singleton<DialogueManager>
     // Update is called once per frame
     void Update()
     {
-        /* */
-        if (Input.GetKeyDown(KeyMap.NextSentence))
+        if (Input.GetKeyDown(keyMap[0].NextSentence) ||
+            Input.GetKeyDown(keyMap[1].NextSentence))
         {
             UpdateSentence();
         }

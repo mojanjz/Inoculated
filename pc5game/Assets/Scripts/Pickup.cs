@@ -6,6 +6,9 @@ public class Pickup : MonoBehaviour
 {
     private Inventory inventory;
     public GameObject itemButton;
+
+    [SerializeField] private Canvas canvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +27,13 @@ public class Pickup : MonoBehaviour
                 if(inventory.isFull[i] == false)
                 { // let's fill it
                     inventory.isFull[i] = true;
-                    Instantiate(itemButton,inventory.slots[i].transform,false); //instantiates it at the inventory slot
+
+                    //Instantiate(itemButton,inventory.slots[i].transform,false); //instantiates it at the inventory slot
+                    Vector3 vec = new Vector3();
+                    vec = inventory.slots[i].transform.position;
+                    var obj = Instantiate(itemButton, canvas.transform);
+                    obj.transform.position = vec;
+
                     Destroy(gameObject);
                     break;
                 }

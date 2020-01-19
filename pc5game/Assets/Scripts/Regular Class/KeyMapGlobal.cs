@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Class for defining which keyboard keys do what action in the game. */
-public static class KeyMap
+public static class KeyMapGlobal
 {
     public static KeyCode Unlock { get; set; } = KeyCode.E;
     public static KeyCode Examine { get; set; } = KeyCode.F;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     /* Relevant interaction behaviour controllers. */
+    [SerializeField] private KeyMap keyMap;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Unlocker unlocker;
     [SerializeField] private Attacker attacker;
@@ -37,36 +38,45 @@ public class PlayerInteract : MonoBehaviour
      * PARAM: keyPressed, the keyboard key that was pressed by the user. */
     private void Interact(KeyCode keyPressed)
     {
-        if (keyPressed == KeyMap.Unlock)
+        if (keyPressed == keyMap.Unlock)
         {
             Debug.Log("Trying to open...");
             unlocker.Unlock();
         }
 
-        if (keyPressed == KeyMap.Examine)
+        if (keyPressed == keyMap.Examine)
         {
             Debug.Log("Looking...");
             examiner.Examine();
         }
 
-        if (keyPressed == KeyMap.Attack)
+        if (keyPressed == keyMap.Attack)
         {
             Debug.Log("BAM BAM");
             StartCoroutine(attacker.Attack());
         }
 
         // TEMP CODE FOR DEMO PURPOSES
-        if (Input.GetKeyDown(KeyMap.AttackSwitch))
+        if (Input.GetKeyDown(keyMap.AttackSwitch))
         {
             Debug.Log("Switching weapon...");
             if (attacker.AtkIndex == 0)
             {
-                attacker.SwitchAttack("Weapon");
+                try
+                {
+                    attacker.SwitchAttack("Weapon");
+                } catch (Attacker.InvalidAttackName ex)
+                {
+                    // Ignore for now
+                    Debug.Log(ex);
+                }
+                
             }
             else
             {
                 attacker.SwitchAttack("Regular");
             }
+            playerController.EnableMove();
         }
     }
 
@@ -74,25 +84,32 @@ public class PlayerInteract : MonoBehaviour
        RETURN: Key that was pressed, or KeyCode.None if no valid keys were pressed.*/
     private KeyCode GetInput()
     {
-        if (Input.GetKeyDown(KeyMap.Examine))
+        if (Input.GetKeyDown(keyMap.Examine))
         {
-            Debug.Log("interacted with " + KeyMap.Examine);
-            return KeyMap.Examine;
+            Debug.Log("interacted with " + keyMap.Examine);
+            return keyMap.Examine;
         }
 
-        if (Input.GetKeyDown(KeyMap.Unlock))
+        if (Input.GetKeyDown(keyMap.Unlock))
         {
-            Debug.Log("interacted with " + KeyMap.Unlock);
-            return KeyMap.Unlock;
+            Debug.Log("interacted with " + keyMap.Unlock);
+            return keyMap.Unlock;
         }
 
-        if (Input.GetKeyDown(KeyMap.Attack))
+        if (Input.GetKeyDown(keyMap.Attack))
         {
-            Debug.Log("interacted with " + KeyMap.Attack);
-            return KeyMap.Attack;
+            Debug.Log("interacted with " + keyMap.Attack);
+            return keyMap.Attack;
         }
 
-        /* Return none if no valid keys pressed. */
-        return KeyCode.None;
+        // TEMP CODE FOR DEMO PURPOSES
+        if (Input.GetKeyDown(keyMap.AttackSwitch))
+        {
+            Debug.Log("interacted with " + keyMap.AttackSwitch);
+            return keyMap.AttackSwitch;
+        }
+
+            /* Return none if no valid keys pressed. */
+            return KeyCode.None;
     }
 }

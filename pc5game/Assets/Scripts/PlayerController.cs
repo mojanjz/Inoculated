@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private KeyMap keyMap;
     [SerializeField] private float speed;
     private bool isMoveEnabled = true;
     private Vector2 rotPrevDirection = Vector2.right; // Player rotation for previous frame
@@ -66,22 +67,22 @@ public class PlayerController : MonoBehaviour
          * time). */
         rotCurrDirection = Vector2.zero;
 
-        if (Input.GetKey(KeyMap.MoveUp))
+        if (Input.GetKey(keyMap.MoveUp))
         {
             rotCurrDirection = Vector2.up;
         }
 
-        if (Input.GetKey(KeyMap.MoveLeft))
+        if (Input.GetKey(keyMap.MoveLeft))
         {
             rotCurrDirection = Vector2.left;
         }
 
-        if (Input.GetKey(KeyMap.MoveDown))
+        if (Input.GetKey(keyMap.MoveDown))
         {
             rotCurrDirection = Vector2.down;
         }
 
-        if (Input.GetKey(KeyMap.MoveRight))
+        if (Input.GetKey(keyMap.MoveRight))
         {
             rotCurrDirection = Vector2.right;
         }
