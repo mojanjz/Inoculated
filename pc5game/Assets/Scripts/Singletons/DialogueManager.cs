@@ -4,32 +4,44 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 /* DialogueManager will iterate over an sentences contained in a Dialogue, 
  * proceeding to the next sentence in the queue when prompted. It controls UI 
  * display of the dialogue. */
 public class DialogueManager : Singleton<DialogueManager>
 {
-    [SerializeField] private KeyMap[] keyMap; // TEMP CODE, NEED TO FIX LATER
 
-    [SerializeField] private Animator panelAnimator;
-    [SerializeField] private int panelAnimLayer = 0;
-    [SerializeField] private Text speakerNameUI;
-    [SerializeField] private Text sentenceUI;
-    [SerializeField] private Text arrowUI;
+    [Serializable]
+    class PanelSet
+    {
+        [SerializeField] internal Animator panelAnimator;
+        [SerializeField] internal Text speakerNameUI;
+        [SerializeField] internal Text sentenceUI;
+        [SerializeField] internal Text arrowUI;
+    }
+
+    [SerializeField] private PanelSet brother;
+    [SerializeField] private PanelSet sister;
     [SerializeField] private float letterDelay = 0.05f;
+    [SerializeField] internal int panelAnimLayer = 0;
 
+    /* Transient data */
+    private PanelSet activePanel;
     private Queue<string> sentenceQ = new Queue<string>();
     private Coroutine typingCoroutine = null;
-    private string currSentence;
+    private string currSentence = null;
+    private KeyCode nextSentence = KeyCode.None;
 
     public UnityEvent OnEndDialogueEvent;
 
     // (Optional) Prevent non-singleton constructor use.
     protected DialogueManager() { }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         enabled = false;
 
         if (OnEndDialogueEvent == null)
@@ -38,14 +50,14 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         /* Set initial text to nothing. */
-        speakerNameUI.text = sentenceUI.text = arrowUI.text = "";
+        brother.speakerNameUI.text = brother.sentenceUI.text = brother.arrowUI.text = "";
+        sister.speakerNameUI.text = sister.sentenceUI.text = sister.arrowUI.text = "";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(keyMap[0].NextSentence) ||
-            Input.GetKeyDown(keyMap[1].NextSentence))
+        if (Input.GetKeyDown(nextSentence))
         {
             UpdateSentence();
         }
@@ -53,8 +65,9 @@ public class DialogueManager : Singleton<DialogueManager>
 
     /* Method for starting a dialogue.
      * PARAM: dialogue, the dialogue to start
+     * PARAM: engager, the player GameObject that engaged the dialogue
      * EXCEPTIONS: If another dialogue is already in process, NoInterruptException will be thrown. */
-    public IEnumerator StartDialogue(Dialogue dialogue)
+    public void StartDialogue(Dialogue dialogue, GameObject engager)
     {
         /* Don't interrupt a dialogue process that is running. */
         if (enabled)
@@ -65,21 +78,44 @@ public class DialogueManager : Singleton<DialogueManager>
         /* Start calling Update() each frame. */
         enabled = true;
 
-        speakerNameUI.text = dialogue.Speaker;
+        /* Get the key mapping and panel that's relevant to the current engager. */
+        nextSentence = engager.GetComponent<KeyMap>().NextSentence;
 
-        panelAnimator.SetBool("IsOpen", true);
+        if (engager.name == "PlayerSis")
+        {
+            activePanel = sister;
+        } else if (engager.name == "PlayerBro")
+        {
+            activePanel = brother;
+        } else
+        {
+            Debug.Log("Uh, player unidentifiable, cannot choose a panel to use...");
+        }
+        
+        activePanel.speakerNameUI.text = dialogue.Speaker;
+
+        activePanel.panelAnimator.SetBool("IsOpen", true);
 
         foreach (string sentence in dialogue.Sentences)
         {
             sentenceQ.Enqueue(sentence);
         }
 
+        StartCoroutine(StartDialogueHelper());
+    }
+
+    /* Coroutine that animates the dialogue panel opening. 
+     * I separated this code from the main StartDialogue() method so it can be 
+     * a regular method. This way, other code calling StartDialogue() can catch 
+     * the exception. (If StartDialogue() was a coroutine, it'd be more complicated.) */
+    public IEnumerator StartDialogueHelper()
+    {
         /* Setting the IsOpen parameter doesn't immediately activate the transition, so we have to wait. */
         float seconds;
-        while( (seconds = panelAnimator.GetAnimatorTransitionInfo(panelAnimLayer).duration) == 0)
+        while ((seconds = activePanel.panelAnimator.GetAnimatorTransitionInfo(panelAnimLayer).duration) == 0)
         {
             yield return null; // Wait a frame, for each frame that the transition isn't active
-        }   
+        }
 
         /* Wait for the dialogue panel to open fully before continuing. */
         yield return new WaitForSeconds(seconds);
@@ -95,14 +131,14 @@ public class DialogueManager : Singleton<DialogueManager>
     public void UpdateSentence()
     {
         /* Disable arrows at the start. */
-        arrowUI.text = "";
+        activePanel.arrowUI.text = "";
 
         /* If typing animation is still playing, stop typing and display the whole sentence. */
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
             typingCoroutine = null;
-            sentenceUI.text = currSentence;
+            activePanel.sentenceUI.text = currSentence;
             UpdateArrow();
             return;
         }
@@ -130,11 +166,11 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public IEnumerator TypeSentence(string sentence)
     {
-        sentenceUI.text = "";
+        activePanel.sentenceUI.text = "";
         
         foreach ( char letter in sentence.ToCharArray())
         {
-            sentenceUI.text += letter;
+            activePanel.sentenceUI.text += letter;
             yield return new WaitForSeconds(letterDelay);
         }
 
@@ -148,12 +184,12 @@ public class DialogueManager : Singleton<DialogueManager>
         if (sentenceQ.Count == 0)
         {
             /* If there are no sentences left in the dialogue, don't display arrows. */
-            arrowUI.text = "";
+            activePanel.arrowUI.text = "";
         }
         else
         {
             /* If there are more sentences left in the dialogue, display arrows. */
-            arrowUI.text = ">>";
+            activePanel.arrowUI.text = ">>";
         }
     }
 
@@ -165,8 +201,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
         Debug.Log("Dialogue ended.");
         enabled = false;
-        speakerNameUI.text = sentenceUI.text = arrowUI.text = "";
-        panelAnimator.SetBool("IsOpen", false);
+        activePanel.speakerNameUI.text = activePanel.sentenceUI.text = activePanel.arrowUI.text = ""; // Set all text to nothing
+        activePanel.panelAnimator.SetBool("IsOpen", false);
         OnEndDialogueEvent.Invoke();
     }
 }

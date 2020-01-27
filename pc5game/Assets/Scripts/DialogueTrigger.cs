@@ -6,9 +6,9 @@ using UnityEngine.Events;
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue[] Dialogue;
-    public bool IsActive { get; private set; } = false;
+
     public class BoolEvent : UnityEvent<bool> { }
-    public BoolEvent OnDialogueEndEvent; // Passes true on success, false otherwise
+    public BoolEvent OnDialogueEndEvent; // Passes true on success, false otherwise.
 
     private void Awake()
     {
@@ -19,14 +19,13 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     /* Method that starts a Dialogue in the dialogue panel.
-     * PARAM: onEndCall, optional action to call when the dialogue completes */
-    public void Trigger(Dialogue dialogue)
+     * PARAM: dialogue, the dialogue to start
+     * PARAM: engager, the player game object that started the dialogue */
+    public void Trigger(Dialogue dialogue, GameObject engager)
     {
-        IsActive = true;
-
         try
         {
-            StartCoroutine(DialogueManager.Instance.StartDialogue(dialogue));
+            DialogueManager.Instance.StartDialogue(dialogue, engager);
 
             /* Continue if no errors */
 
@@ -49,10 +48,9 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     /* Method to be called when the triggered dialogue finishes. 
-     * PARAM: result, true if the dialogue was started and finished, false otherwise */
+     * PARAM: result, true if the dialogue was shown fully, false otherwise */
     public void OnDialogueEnd(bool result)
     {
-        IsActive = false;
         OnDialogueEndEvent.Invoke(result);
     }
 }

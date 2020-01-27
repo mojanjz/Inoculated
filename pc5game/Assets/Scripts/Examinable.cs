@@ -7,19 +7,22 @@ using System;
 public class Examinable : MonoBehaviour
 {
     [SerializeField] private DialogueTrigger dialogueTrigger;
-
-    public UnityEvent OnExamineStartEvent;
-    public UnityEvent OnExamineEndEvent;
-
     private int dialogueIndex = 0;
+
+    [Serializable] public class ExaminerEvent : UnityEvent<Examiner> { }
+
+    public ExaminerEvent OnExamineStartEvent;
+    public ExaminerEvent OnExamineEndEvent;
+
+    private Examiner examiner = null; // Store a reference to the current examiner
 
     private void Awake()
     {
         if (OnExamineStartEvent == null)
-            OnExamineStartEvent = new UnityEvent();
+            OnExamineStartEvent = new ExaminerEvent();
 
         if (OnExamineEndEvent == null)
-            OnExamineEndEvent = new UnityEvent();
+            OnExamineEndEvent = new ExaminerEvent();
     }
 
     // Start is called before the first frame update
@@ -34,10 +37,10 @@ public class Examinable : MonoBehaviour
         
     }
 
-    /* Method that gets called when the GameObject of this component is 
-     * examined (by a GameObject with the Examiner component).
-     * PARAM: onEndCall, optional action to call when the interaction completes */
-    public void OnExamine()
+    /* Method that gets called when the GameObject of this component is examined 
+     * (by a GameObject with the Examiner component).
+     * PARAM: ex, the examiner conducting the examination */
+    public void OnExamine(Examiner ex)
     {
         /* In the inspector, choose some event handler(s) to evoke for OnExamineStartEvent. */
         /* Don't forget to add the related finishing handler to OnExamineEndEvent too. */
@@ -48,7 +51,7 @@ public class Examinable : MonoBehaviour
             throw new NoOnExamineActionEx(gameObject.name);
         }
 
-        OnExamineStartEvent.Invoke();
+        OnExamineStartEvent.Invoke(ex);
     }
 
     public class NoOnExamineActionEx : Exception
@@ -57,17 +60,19 @@ public class Examinable : MonoBehaviour
             base(String.Format(name + " has no OnExamine actions set.")) { }
     }
 
-    //public void OnExamineEnd()
-    //{
-    //    OnExamineEndEvent.Invoke();
-    //}
-
     /* Method to cycle through a collection of dialogues. Each examination
      * process calls one dialogue, then increments the index by 1. */
-    public void CycleDialogue()
+    public void CycleDialogue(Examiner ex)
     {
-        dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex]);
+        /* If this object is already being examined, do nothing. */
+        if (examiner != null) {
+            OnExamineEndEvent.Invoke(ex);
+            return;
+        }
+
+        examiner = ex;
         dialogueTrigger.OnDialogueEndEvent.AddListener(OnCycleDialogueEnd);
+        dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
     }
 
     /* Method that should be called to wrap up the cycle dialogue action. 
@@ -89,6 +94,7 @@ public class Examinable : MonoBehaviour
             }
         }
 
-        OnExamineEndEvent.Invoke();
+        OnExamineEndEvent.Invoke(examiner);
+        examiner = null;
     }
 }

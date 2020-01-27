@@ -36,8 +36,7 @@ public class Examiner : MonoBehaviour
 
     }
 
-    /* Method to examine an Examineable using ObjectRaycast. 
-     * PARAM: onEndCall, optional action to call when the interaction completes */
+    /* Method to examine an Examineable using ObjectRaycast. */
     public void Examine()
     {
         /* If already in process of examining something, don't continue this call. */
@@ -58,8 +57,8 @@ public class Examiner : MonoBehaviour
 
             if (examinable != null)
             {
-                examinable.OnExamine();
                 examinable.OnExamineEndEvent.AddListener(OnExamineEnd);
+                examinable.OnExamine(this);    
 
                 /* Return so we don't call the end method below. */
                 return;
@@ -67,12 +66,18 @@ public class Examiner : MonoBehaviour
         }
 
         /* If nothing examineable was hit, call the end method directly. */
-        OnExamineEnd();
+        OnExamineEnd(this);
     }
 
     /* Method to be called when the interaction ends. */
-    public void OnExamineEnd()
+    public void OnExamineEnd(Examiner examiner)
     {
+        /* If the examiner was not this instance, don't respond to the call. */
+        if (examiner != this)
+        {
+            return;
+        }
+
         if (examinable != null)
         {
             examinable.OnExamineEndEvent.RemoveListener(OnExamineEnd);
