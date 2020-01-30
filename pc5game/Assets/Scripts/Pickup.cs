@@ -12,16 +12,18 @@ public class Pickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-
-        
+        // inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("I collided with the object!");
        if (other.CompareTag("Player"))
-        {   //check to see if inventory is full or not
+        {
+            // Get the inventory of the specific player
+            inventory = other.GetComponent<Inventory>();
+            
+            //check to see if inventory is full or not
             for (int i = 0; i < inventory.slots.Length; i++)
             {
                 if(inventory.isFull[i] == false)
