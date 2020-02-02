@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    private void FixedUpdate()
+    {
         GetInput();
         Move();
     }
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour
         }
 
         /* Translates player in rotNewDirection vector (if a key is pressed). */
-        transform.Translate(rotCurrDirection * speed * Time.deltaTime);
+        transform.Translate(rotCurrDirection * speed * Time.fixedDeltaTime);
 
         /* Tells the animation controller if the player is walking or idling. */
         animator.SetFloat("speed", rotCurrDirection.sqrMagnitude);

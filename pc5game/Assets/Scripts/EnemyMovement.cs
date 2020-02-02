@@ -50,9 +50,6 @@ public class EnemyMovement : MonoBehaviour
             target = nonTarget;
             nonTarget = temp;
         }
-
-
-
     }
 
    
