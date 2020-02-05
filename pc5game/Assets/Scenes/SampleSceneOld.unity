@@ -918,7 +918,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &472295805
@@ -948,6 +948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemButton: {fileID: 1914631207}
+  canvas: {fileID: 0}
 --- !u!58 &472295807
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8219,6 +8220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59ed0c8807b4844897975398a4b282d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyMap: {fileID: 0}
   speed: 5
   animator: {fileID: 1807060014}
   OnRotateEvent:
@@ -8340,6 +8342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dcc69c7781115f41b871f4883fecd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyMap: {fileID: 0}
   playerController: {fileID: 1143040230}
   unlocker: {fileID: 1143040237}
   attacker: {fileID: 1143040231}
@@ -11791,6 +11794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5879ec0ef7fce2c479916804263a5d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyMap: []
   panelAnimator: {fileID: 1022290360}
   panelAnimLayer: 0
   speakerNameUI: {fileID: 836714833}
@@ -12181,7 +12185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2031489985
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12201,7 +12205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -30.6, y: -4}
+  m_AnchoredPosition: {x: -30.599976, y: -4}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2031489986
