@@ -960,7 +960,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &472295805
@@ -15780,6 +15780,7 @@ MonoBehaviour:
   target: {fileID: 1143040232}
   nonTarget: {fileID: 1068731505}
   aquisitionTime: 3
+  minDistanceRadius: 1.3
   count: 0
 --- !u!212 &1166446203
 SpriteRenderer:

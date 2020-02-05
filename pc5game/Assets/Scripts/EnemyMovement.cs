@@ -7,7 +7,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Transform target;
     [SerializeField] private Transform nonTarget;
-    [SerializeField] private float aquisitionTime;
+    [SerializeField] private float aquisitionTime;  //time required to change target
+    [SerializeField] private float minDistanceRadius;
     [SerializeField] float count;
     
 
@@ -15,16 +16,32 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        //nonTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        count = 0;
+        findInitialTargets();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         targetAquisition();
-        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        moveTowardsTarget();
+    }
+
+    public void findInitialTargets()
+    {
+        GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+        float distance0 = Vector2.Distance(transform.position, playerList[0].transform.position);
+        float distance1 = Vector2.Distance(transform.position, playerList[1].transform.position);
+        if (distance0 <= distance1)
+        {
+            target = playerList[0].transform;
+            nonTarget = playerList[1].transform;
+        }
+        else
+        {
+            target = playerList[1].transform;
+            nonTarget = playerList[0].transform;
+        }
     }
 
 
@@ -44,17 +61,24 @@ public class EnemyMovement : MonoBehaviour
             count = 0;
         }
 
+        //Switches target player
         if (count >= aquisitionTime)
         {
             temp = target;
             target = nonTarget;
             nonTarget = temp;
         }
+    }
 
+    private void moveTowardsTarget()
+    {
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
+        if (distanceToTarget > minDistanceRadius)
+        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
     }
 
-   
+
 
 }
