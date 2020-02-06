@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private Transform nonTarget;
     [SerializeField] private float aquisitionTime;  //time required to change target
     [SerializeField] private float minDistanceRadius;
-    [SerializeField] float count;
+    private float count;
     
 
 
@@ -17,7 +17,6 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         findInitialTargets();
-       
     }
 
     // Update is called once per frame
@@ -44,8 +43,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-
-
     private void targetAquisition() 
     {
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
@@ -67,6 +64,7 @@ public class EnemyMovement : MonoBehaviour
             temp = target;
             target = nonTarget;
             nonTarget = temp;
+            count = 0;
         }
     }
 
@@ -79,6 +77,9 @@ public class EnemyMovement : MonoBehaviour
 
     }
 
-
+    public void knockBack()
+    { 
+        
+    }
 
 }
