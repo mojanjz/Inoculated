@@ -64,37 +64,37 @@ public class Examinable : MonoBehaviour
      * process calls one dialogue, then increments the index by 1. */
     public void CycleDialogue(Examiner ex)
     {
-        /* If this object is already being examined, do nothing. */
-        if (examiner != null) {
-            OnExamineEndEvent.Invoke(ex);
-            return;
-        }
+        ///* If this object is already being examined, do nothing. */
+        //if (examiner != null) {
+        //    OnExamineEndEvent.Invoke(ex);
+        //    return;
+        //}
 
-        examiner = ex;
-        dialogueTrigger.OnDialogueEndEvent.AddListener(OnCycleDialogueEnd);
-        dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
+        //examiner = ex;
+        //dialogueTrigger.OnDialogueEndEvent.AddListener(OnCycleDialogueEnd);
+        //dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
     }
 
     /* Method that should be called to wrap up the cycle dialogue action. 
      * PARAM: result, true if the dialogue was displayed successfully, false otherwise */
     public void OnCycleDialogueEnd(bool wasDisplayed)
     {
-        dialogueTrigger.OnDialogueEndEvent.RemoveListener(OnCycleDialogueEnd);
+        //dialogueTrigger.OnDialogueEndEvent.RemoveListener(OnCycleDialogueEnd);
 
-        /* If the dialogue was displayed, move the dialogue index to the next 
-         * dialogue in the sequence. */
-        if (wasDisplayed)
-        {
-            dialogueIndex++;
+        ///* If the dialogue was displayed, move the dialogue index to the next 
+        // * dialogue in the sequence. */
+        //if (wasDisplayed)
+        //{
+        //    dialogueIndex++;
 
-            /* If the end of the dialogue collection was reached, restart. */
-            if (dialogueIndex == dialogueTrigger.Dialogue.Length)
-            {
-                dialogueIndex = 0;
-            }
-        }
+        //    /* If the end of the dialogue collection was reached, restart. */
+        //    if (dialogueIndex == dialogueTrigger.Dialogue.Length)
+        //    {
+        //        dialogueIndex = 0;
+        //    }
+        //}
 
-        OnExamineEndEvent.Invoke(examiner);
-        examiner = null;
+        //OnExamineEndEvent.Invoke(examiner);
+        //examiner = null;
     }
 }

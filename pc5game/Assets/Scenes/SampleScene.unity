@@ -617,16 +617,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dialogue:
-  - Name: Dialogue1
-    Speaker: Bush
-    Sentences:
-    - Howdy I'm a boulder.
-    - NO TOUCH.
-  - Name: Dialogue2
-    Speaker: Bush
-    Sentences:
-    - Hi I'm still just a boulder.
-    - See ya.
+    UseDirect: 1
+    DirectDialogue:
+      Speaker: 
+      Sentences: []
+    TreeAsset: {fileID: 0}
 --- !u!114 &159899027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +652,61 @@ MonoBehaviour:
   OnExamineEndEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &270022111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 270022113}
+  - component: {fileID: 270022112}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &270022112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270022111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6dc3b3bd17e7ac4d9be3bff5ccc474b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dia:
+    Speaker: 
+    Sentences: []
+  DialogueTree: {fileID: 0}
+  DiaRef:
+    UseDirect: 1
+    DirectDialogue:
+      Speaker: wow
+      Sentences:
+      - 
+      - 
+    TreeAsset: {fileID: 0}
+--- !u!4 &270022113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270022111}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &273457183
 GameObject:
   m_ObjectHideFlags: 0
@@ -11509,6 +11559,8 @@ GameObject:
   - component: {fileID: 743871631}
   - component: {fileID: 743871630}
   - component: {fileID: 743871628}
+  - component: {fileID: 743871633}
+  - component: {fileID: 743871632}
   m_Layer: 8
   m_Name: breakable log
   m_TagString: Untagged
@@ -11695,6 +11747,54 @@ MonoBehaviour:
   rayDebugColor: {r: 1, g: 0, b: 0, a: 1}
   rayDebugDuration: 0.1
   InitialCastDirection: {x: 10, y: 0}
+--- !u!114 &743871632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743871624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dialogue:
+    UseDirect: 1
+    DirectDialogue:
+      Speaker: 
+      Sentences: []
+    TreeAsset: {fileID: 0}
+--- !u!114 &743871633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743871624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf0597f58fbc2f4da77424195d08b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueTrigger: {fileID: 743871632}
+  OnExamineStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 743871633}
+        m_MethodName: TestChoice
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnExamineEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &836126008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14317,11 +14417,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dialogue:
-  - Name: Dialogue1
-    Speaker: Boulder
-    Sentences:
-    - Ho hum...
-    - I'm not hiding anything...
+    UseDirect: 1
+    DirectDialogue:
+      Speaker: 
+      Sentences: []
+    TreeAsset: {fileID: 0}
 --- !u!114 &1150214370
 MonoBehaviour:
   m_ObjectHideFlags: 0

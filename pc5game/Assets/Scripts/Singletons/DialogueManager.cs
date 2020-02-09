@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
-using UnityEngine.SceneManagement;
 
 /* DialogueManager will iterate over an sentences contained in a Dialogue, 
  * proceeding to the next sentence in the queue when prompted. It controls UI 
  * display of the dialogue. */
 public class DialogueManager : Singleton<DialogueManager>
 {
-
+    // Class that stores all the UI references to a particular dialogue panel
     [Serializable]
     class PanelSet
     {

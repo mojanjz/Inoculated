@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
+using XNode;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public Dialogue[] Dialogue;
+    public DialogueRef Dialogue;
 
     public class BoolEvent : UnityEvent<bool> { }
     public BoolEvent OnDialogueEndEvent; // Passes true on success, false otherwise.
@@ -23,28 +25,29 @@ public class DialogueTrigger : MonoBehaviour
      * PARAM: engager, the player game object that started the dialogue */
     public void Trigger(Dialogue dialogue, GameObject engager)
     {
-        try
-        {
-            DialogueManager.Instance.StartDialogue(dialogue, engager);
+        //try
+        //{
+        //    DialogueManager.Instance.StartDialogue(dialogue, engager);
 
-            /* Continue if no errors */
+        //    /* Continue if no errors */
 
-            /* Create anonymous delegate that unsubscribes itself from the event afterwards */
-            UnityAction handler = null;
-            handler = () =>
-            {
-                OnDialogueEnd(true);
-                DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
-            };
+        //    /* Create anonymous delegate that unsubscribes itself from the event afterwards */
+        //    UnityAction handler = null;
+        //    handler = () =>
+        //    {
+        //        OnDialogueEnd(true);
+        //        DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
+        //    };
 
-            DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
-        } catch (DialogueManager.NoInterruptException ex)
-        {
-            /* If the dialogue wasn't successfully started, display the exception
-             * and close the process. */
-            Debug.Log(ex);
-            OnDialogueEnd(false);
-        }
+        //    DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
+        //}
+        //catch (DialogueManager.NoInterruptException ex)
+        //{
+        //    /* If the dialogue wasn't successfully started, display the exception
+        //     * and close the process. */
+        //    Debug.Log(ex);
+        //    OnDialogueEnd(false);
+        //}
     }
 
     /* Method to be called when the triggered dialogue finishes. 

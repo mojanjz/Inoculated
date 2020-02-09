@@ -1,0 +1,316 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9216100944285773542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: ChoiceA
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -472, y: -568}
+  ports:
+    keys:
+    - EntryPort
+    - Choices
+    - Choices 0
+    - Choices 1
+    values:
+    - _fieldName: EntryPort
+      _node: {fileID: -9216100944285773542}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Choices 0
+        node: {fileID: -8905047241467275825}
+        reroutePoints: []
+      - fieldName: Choices 0
+        node: {fileID: -9216100944285773542}
+        reroutePoints: []
+      - fieldName: Choices 0
+        node: {fileID: 2626970713574951745}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -9216100944285773542}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 0
+      _node: {fileID: -9216100944285773542}
+      _typeQualifiedName: System.String[], mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: -9216100944285773542}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Choices 1
+      _node: {fileID: -9216100944285773542}
+      _typeQualifiedName: System.String[], mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: 2626970713574951745}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: ChoiceA
+  Dialogue:
+    Speaker: 
+    Sentences:
+    - You chose A. Choose again.
+  EntryPort: {fileID: 0}
+  Choices:
+  - ChoiceText: 
+    EndAfter: 0
+  - ChoiceText: 
+    EndAfter: 0
+--- !u!114 &-8905047241467275825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: Start
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -792, y: -360}
+  ports:
+    keys:
+    - EntryPort
+    - Choices
+    - Choices 1
+    - Choices 0
+    values:
+    - _fieldName: EntryPort
+      _node: {fileID: -8905047241467275825}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -8905047241467275825}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 1
+      _node: {fileID: -8905047241467275825}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: 2626970713574951745}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Choices 0
+      _node: {fileID: -8905047241467275825}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: -9216100944285773542}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: Start
+  Dialogue:
+    Speaker: 
+    Sentences:
+    - 'Choose wisely:'
+    - 'Choose wisely:'
+  EntryPort: {fileID: 0}
+  Choices:
+  - ChoiceText: 
+    EndAfter: 0
+  - ChoiceText: 
+    EndAfter: 0
+--- !u!114 &-1331701202548669258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -8, y: -152}
+  ports:
+    keys:
+    - EntryPort
+    - Choices
+    - Choices 0
+    values:
+    - _fieldName: EntryPort
+      _node: {fileID: -1331701202548669258}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -1331701202548669258}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 0
+      _node: {fileID: -1331701202548669258}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: 
+  Dialogue:
+    Speaker: 
+    Sentences: []
+  EntryPort: {fileID: 0}
+  Choices:
+  - ChoiceText: 
+    EndAfter: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d4815ba35b21544bc97e461c54cfd8, type: 3}
+  m_Name: Boulder
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 2626970713574951745}
+  - {fileID: -8905047241467275825}
+  - {fileID: -9216100944285773542}
+  - {fileID: -1331701202548669258}
+  EntryNode: {fileID: -9216100944285773542}
+--- !u!114 &2626970713574951745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: ChoiceB
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -472, y: -88}
+  ports:
+    keys:
+    - EntryPort
+    - Choices
+    - Choices 0
+    - Choices 1
+    values:
+    - _fieldName: EntryPort
+      _node: {fileID: 2626970713574951745}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Choices 1
+        node: {fileID: -8905047241467275825}
+        reroutePoints: []
+      - fieldName: Choices 1
+        node: {fileID: -9216100944285773542}
+        reroutePoints: []
+      - fieldName: Choices 1
+        node: {fileID: 2626970713574951745}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 2626970713574951745}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 0
+      _node: {fileID: 2626970713574951745}
+      _typeQualifiedName: System.Int32[], mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: -9216100944285773542}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Choices 1
+      _node: {fileID: 2626970713574951745}
+      _typeQualifiedName: System.String[], mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: EntryPort
+        node: {fileID: 2626970713574951745}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: ChoiceB
+  Dialogue:
+    Speaker: 
+    Sentences:
+    - You chose B. Choose Again.
+  EntryPort: {fileID: 0}
+  Choices:
+  - ChoiceText: 
+    EndAfter: 0
+  - ChoiceText: 
+    EndAfter: 0
