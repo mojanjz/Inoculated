@@ -141,4 +141,17 @@ public class PlayerController : MonoBehaviour
         isMoveEnabled = false;
     }
 
+
+    public Vector2 getRotCurrDirection()
+    {
+        return rotCurrDirection;
+    }
+
+    public Vector2 getRotPrevDirection()
+    {
+        return rotPrevDirection;
+    }
+
 }
+
+

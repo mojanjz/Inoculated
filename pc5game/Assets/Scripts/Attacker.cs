@@ -72,11 +72,19 @@ public class Attacker : MonoBehaviour
         if (hit.collider != null)
         {
             var attackable = hit.collider.GetComponent<Attackable>();
+            var knockable = hit.collider.GetComponent<KnockBackable>();
             int damage = attackData[AtkIndex].getDamage();
+            Vector2 attackingDirection = gameObject.GetComponent<PlayerController>().getRotPrevDirection();
+            Debug.Log("this is the direction of knock (from Attacker): " + attackingDirection);
             if (attackable)
             {
                 attackable.OnAttack(damage);
             }
+            if (knockable)
+            {
+                knockable.knockDistance(attackingDirection);
+            }
+
         }
     }
 

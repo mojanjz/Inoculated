@@ -9,10 +9,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private Transform nonTarget;
     [SerializeField] private float aquisitionTime;  //time required to change target
     [SerializeField] private float minDistanceRadius;
+    private string moveState;
     private float count;
     
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -71,15 +70,8 @@ public class EnemyMovement : MonoBehaviour
     private void moveTowardsTarget()
     {
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
-
-        if (distanceToTarget > minDistanceRadius)
         transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-
     }
-
-    public void knockBack()
-    { 
-        
-    }
+   
 
 }

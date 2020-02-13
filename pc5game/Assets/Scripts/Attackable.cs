@@ -41,7 +41,7 @@ public class Attackable : MonoBehaviour
             }
             else
             {
-                Debug.Log(gameObject.name + " has been hit, now has " + maxHealth + " health left");
+                //Debug.Log(gameObject.name + " has been hit, now has " + health + " health left");
             }
         }  
     }
