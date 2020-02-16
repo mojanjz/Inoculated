@@ -39,7 +39,8 @@ public class Pickup : MonoBehaviour
                     obj.transform.SetParent(inventory.slots[i].transform);
                     //var obj = Instantiate(itemButton, inventory.slots[i].transform,false);
                     obj.transform.position = vec;
-                    findSlot(i);
+                    GameObject currentSlot = findSlot(i,other.gameObject);
+                    currentSlot.GetComponent<Slot>().inventoryObject = gameObject;
                     gameObject.SetActive(false);
                     //Destroy(gameObject);
                     break;
@@ -48,11 +49,24 @@ public class Pickup : MonoBehaviour
 
         } 
     }
-
-    void findSlot(int i)
+    /*
+     * Input 1: index of the slot of the inventory
+     * Input 2: player associated with the inventory
+     * Function: finds the appropriate slot number
+     */
+    GameObject findSlot(int i, GameObject player)
     {
-        GameObject currentSlot = GameObject.Find("Slot(1)");
-        Debug.Log("current slot is " + currentSlot);
+        Transform trans = GameObject.Find("brother's inventory").transform;
+        Transform childTrans = trans.Find("Slot (" + (i+1).ToString() + ")");
+        if(childTrans != null)
+        {
+            Debug.Log("current slot is " + childTrans.gameObject);
+        }
+        else
+        {
+            Debug.Log("no children found");
+        }
+        return childTrans.gameObject;
     }
 
 }
