@@ -15113,6 +15113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1265530135}
   - component: {fileID: 1265530136}
+  - component: {fileID: 1265530137}
   m_Layer: 0
   m_Name: sister's inventory
   m_TagString: Untagged
@@ -15187,6 +15188,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1265530137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265530134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c897b39cc9564282b52a6349433669c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryKeyMap: {fileID: 0}
 --- !u!1 &1292837965
 GameObject:
   m_ObjectHideFlags: 0
