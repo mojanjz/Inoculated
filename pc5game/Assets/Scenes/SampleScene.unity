@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 69862238}
   - component: {fileID: 69862240}
   - component: {fileID: 69862241}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1134,6 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77714c64559294edca8ea48440778197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
   itemButton: {fileID: 1914631207}
   canvas: {fileID: 908976587}
 --- !u!58 &472295807
@@ -11182,7 +11183,7 @@ GameObject:
   - component: {fileID: 691037492}
   - component: {fileID: 691037495}
   - component: {fileID: 691037494}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13258,7 +13259,7 @@ GameObject:
   - component: {fileID: 1041612548}
   - component: {fileID: 1041612551}
   - component: {fileID: 1041612550}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18118,7 +18119,7 @@ GameObject:
   - component: {fileID: 1995503898}
   - component: {fileID: 1995503901}
   - component: {fileID: 1995503900}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18775,6 +18776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77714c64559294edca8ea48440778197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
   itemButton: {fileID: 1050798267}
   canvas: {fileID: 908976587}
 --- !u!61 &2131077912
