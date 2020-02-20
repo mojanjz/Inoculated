@@ -4,8 +4,11 @@ using UnityEngine;
 using XNode;
 
 [CreateAssetMenu]
-public class DialogueTreeGraph : NodeGraph 
+public class DialogueTreeGraph : NodeGraph
 {
-	// The node to enter the tree with.
-	public DialogueNode EntryNode = null;
+    [SerializeField] private DialogueNode startNode; // Default starting node for the tree.
+    public DialogueNode StartNode
+    {
+        get { return startNode; }
+    }
 }

@@ -9,6 +9,8 @@ public class Examiner : MonoBehaviour
     [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for examination
     [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the examineable objects (touchable by raycast).
 
+    public string dialoguePanelName;
+
     public UnityEvent OnExamineStartEvent;
     public UnityEvent OnExamineEndEvent;
     public bool IsActive { get; private set; } = false;

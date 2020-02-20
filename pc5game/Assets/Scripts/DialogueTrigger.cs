@@ -7,7 +7,7 @@ using XNode;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public DialogueRef Dialogue;
+    public DialogueRef DialogueRef;
 
     public class BoolEvent : UnityEvent<bool> { }
     public BoolEvent OnDialogueEndEvent; // Passes true on success, false otherwise.
@@ -20,11 +20,37 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    /* Method that starts a Dialogue in the dialogue panel.
-     * PARAM: dialogue, the dialogue to start
-     * PARAM: engager, the player game object that started the dialogue */
-    public void Trigger(Dialogue dialogue, GameObject engager)
+    /* Method that starts a Dialogue in the dialogue panel. */
+    public void Trigger(string panelName, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey)
     {
+
+        UnityAction<DialogueNode> handler = null;
+        handler = (DialogueNode entryNode) =>
+        {
+            OnDialogueEnd(true, entryNode);
+            DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
+        };
+
+        DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
+
+        try
+        {
+            if (DialogueRef.UseDirect)
+            {
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, panelName, selectKey, prevKey, nextKey);
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(DialogueRef.NodeAsset, panelName, selectKey, prevKey, nextKey);
+            }
+        }
+        catch (DialogueManager.NoInterruptEx Ex)
+        {
+            DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
+            OnDialogueEnd(false, null);
+        }
+        
+        
         //try
         //{
         //    DialogueManager.Instance.StartDialogue(dialogue, engager);
@@ -41,7 +67,7 @@ public class DialogueTrigger : MonoBehaviour
 
         //    DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
         //}
-        //catch (DialogueManager.NoInterruptException ex)
+        //catch (DialogueManager.NoInterruptEx ex)
         //{
         //    /* If the dialogue wasn't successfully started, display the exception
         //     * and close the process. */
@@ -50,10 +76,14 @@ public class DialogueTrigger : MonoBehaviour
         //}
     }
 
-    /* Method to be called when the triggered dialogue finishes. 
-     * PARAM: result, true if the dialogue was shown fully, false otherwise */
-    public void OnDialogueEnd(bool result)
+    // Method to be called when the triggered dialogue finishes. 
+    public void OnDialogueEnd(bool wasDisplayed, DialogueNode entryNode)
     {
-        OnDialogueEndEvent.Invoke(result);
+        if (entryNode != null)
+        {
+            DialogueRef.NodeAsset = entryNode;
+        }
+
+        OnDialogueEndEvent.Invoke(wasDisplayed);
     }
 }

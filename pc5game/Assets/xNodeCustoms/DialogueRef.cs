@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
 // Class to make it easier to choose between typing a dialogue directly in the
-// inspector, versus using a DialogueTreeGraph asset.
+// inspector, versus using DialogueTreeGraph asset.
 //
 // Is displayed in the inspector using a custom property drawer 
 // (DialogueRefDrawer).
@@ -16,6 +16,6 @@ public class DialogueRef
     // Just a regular dialogue object. Can be typed in the inspector.
     public Dialogue DirectValue;
 
-    // Saved asset with multiple dialogues and connections
-    public DialogueTreeGraph TreeAsset; 
+    // From a tree asset with potentially multiple dialogue nodes and connections
+    public DialogueNode NodeAsset;
 }

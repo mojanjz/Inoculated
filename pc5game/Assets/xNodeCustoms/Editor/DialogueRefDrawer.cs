@@ -19,9 +19,9 @@ public class DialogueRefDrawer : PropertyDrawer
     //private GUIStyle popupStyle;
 
     private bool useTreeAssetToggle = false;
-    private string treeToggleLabel = "Use dialogue tree?";
+    private string treeToggleLabel = "Use dialogue node?";
     private GUIContent directValueLabel = new GUIContent("Dialogue");
-    private GUIContent treeAssetLabel = new GUIContent("Dialogue Tree");
+    private GUIContent treeAssetLabel = new GUIContent("Dialogue Node");
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -41,7 +41,7 @@ public class DialogueRefDrawer : PropertyDrawer
         // Get properties
         SerializedProperty useDirect = property.FindPropertyRelative("UseDirect");
         SerializedProperty directValue = property.FindPropertyRelative("DirectValue");
-        SerializedProperty treeAsset = property.FindPropertyRelative("TreeAsset");
+        SerializedProperty treeAsset = property.FindPropertyRelative("NodeAsset");
 
         //// Calculate rect for configuration button
         //Rect buttonRect = new Rect(position);
@@ -61,8 +61,8 @@ public class DialogueRefDrawer : PropertyDrawer
         /* Create toggle GUI. */
         Rect toggleRect = new Rect(position);
         toggleRect.height = EditorGUIUtility.singleLineHeight;
-        useTreeAssetToggle = EditorGUI.ToggleLeft(toggleRect, treeToggleLabel, useTreeAssetToggle);
-        useDirect.boolValue = !useTreeAssetToggle;
+        useDirect.boolValue = !EditorGUI.ToggleLeft(toggleRect, treeToggleLabel, !useDirect.boolValue);
+        useTreeAssetToggle = !useDirect.boolValue;
 
         /* Height for dialogueRect appears to not matter when 
          * EditorGUI.PropertyField() is called with includeChildren = true. */
@@ -99,7 +99,7 @@ public class DialogueRefDrawer : PropertyDrawer
              height += EditorGUI.GetPropertyHeight(displayedProperty, label, true);
         } else
         {
-            displayedProperty = property.FindPropertyRelative("TreeAsset");
+            displayedProperty = property.FindPropertyRelative("NodeAsset");
             height += EditorGUI.GetPropertyHeight(displayedProperty, label, true);
         }
 

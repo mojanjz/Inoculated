@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DialogueTree", menuName = "ScriptableObjects/DialogueTree", order = 35)]
-public class DialogueTree : ScriptableObject
+public class DialogueTreeScriptableObj : ScriptableObject
 {
     public string CurrNodeID;
     public DialogueNode[] Nodes;

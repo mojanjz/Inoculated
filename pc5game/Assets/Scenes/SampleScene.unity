@@ -363,6 +363,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &145595055 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2375994505221732938, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 5846085356280164930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &159899018
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,12 +628,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dialogue:
+  DialogueRef:
     UseDirect: 1
-    DirectDialogue:
+    DirectValue:
       Speaker: 
       Sentences: []
-    TreeAsset: {fileID: 0}
+    NodeAsset: {fileID: 0}
 --- !u!114 &159899027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,6 +674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270022113}
   - component: {fileID: 270022112}
+  - component: {fileID: 270022114}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -676,23 +689,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270022111}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6dc3b3bd17e7ac4d9be3bff5ccc474b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dia:
-    Speaker: 
-    Sentences: []
-  DialogueTree: {fileID: 0}
-  DiaRef:
-    UseDirect: 1
-    DirectDialogue:
-      Speaker: wow
-      Sentences:
-      - 
-      - 
-    TreeAsset: {fileID: 0}
+  DialogueTree: {fileID: 11400000, guid: db5b630e00178a6499a5c219c1908782, type: 2}
+  trig: {fileID: 270022114}
 --- !u!4 &270022113
 Transform:
   m_ObjectHideFlags: 0
@@ -707,6 +710,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &270022114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270022111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogueRef:
+    UseDirect: 1
+    DirectValue:
+      Speaker: 
+      Sentences: []
+    NodeAsset: {fileID: -8905047241467275825, guid: db5b630e00178a6499a5c219c1908782,
+      type: 2}
 --- !u!1 &273457183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,6 +1261,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!224 &517360639 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 44886828142680201, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 836126008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -11759,12 +11787,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dialogue:
-    UseDirect: 1
-    DirectDialogue:
+  DialogueRef:
+    UseDirect: 0
+    DirectValue:
       Speaker: 
       Sentences: []
-    TreeAsset: {fileID: 0}
+    NodeAsset: {fileID: -8905047241467275825, guid: db5b630e00178a6499a5c219c1908782,
+      type: 2}
 --- !u!114 &743871633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11782,7 +11811,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 743871633}
-        m_MethodName: TestChoice
+        m_MethodName: CycleDialogue
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11821,6 +11850,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DialoguePanelBro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846085356476161014, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5846085356476161015, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
         type: 3}
@@ -11927,7 +11961,8 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5742808377740891119, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
 --- !u!224 &836126009 stripped
 RectTransform:
@@ -11935,6 +11970,42 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 836126008}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &836126010 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2084367894570930438, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 836126008}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &836126011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5737066187727440133, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 836126008}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &836126012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2375994505221732938, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 836126008}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &836714833 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5846085356527448851, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
@@ -12170,20 +12241,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brother:
+    panelName: BrotherPanel
     panelAnimator: {fileID: 1342890136}
     speakerNameUI: {fileID: 442190498}
     sentenceUI: {fileID: 1691742076}
     arrowUI: {fileID: 1402819448}
+    SelectionBox: {fileID: 517360639}
+    ChoiceText:
+    - {fileID: 836126012}
+    - {fileID: 836126011}
+    - {fileID: 836126010}
   sister:
+    panelName: SisterPanel
     panelAnimator: {fileID: 1022290360}
     speakerNameUI: {fileID: 836714833}
     sentenceUI: {fileID: 1950216044}
     arrowUI: {fileID: 1851230435}
+    SelectionBox: {fileID: 1497744831}
+    ChoiceText:
+    - {fileID: 145595055}
+    - {fileID: 2070294619}
+    - {fileID: 1193518657}
   letterDelay: 0.05
   panelAnimLayer: 0
-  OnEndDialogueEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &915546863
 GameObject:
   m_ObjectHideFlags: 0
@@ -13534,6 +13614,7 @@ MonoBehaviour:
   rayLayer:
     serializedVersion: 2
     m_Bits: 256
+  dialoguePanelName: BrotherPanel
   OnExamineStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -14037,6 +14118,7 @@ MonoBehaviour:
   rayLayer:
     serializedVersion: 2
     m_Bits: 256
+  dialoguePanelName: SisterPanel
   OnExamineStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -14416,12 +14498,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dialogue:
+  DialogueRef:
     UseDirect: 1
-    DirectDialogue:
+    DirectValue:
       Speaker: 
       Sentences: []
-    TreeAsset: {fileID: 0}
+    NodeAsset: {fileID: 0}
 --- !u!114 &1150214370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14589,6 +14671,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1193518657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2084367894570930438, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 5846085356280164930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1225877375
 GameObject:
   m_ObjectHideFlags: 0
@@ -15046,6 +15140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1497744831 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 44886828142680201, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 5846085356280164930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1507651489
 GameObject:
   m_ObjectHideFlags: 0
@@ -18320,6 +18420,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2070294619 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5737066187727440133, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+    type: 3}
+  m_PrefabInstance: {fileID: 5846085356280164930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2079355352
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,50 +6,53 @@ using System;
 
 public class TestDialogueChoice : MonoBehaviour
 {
-    public Dialogue Dia;
     public DialogueTreeGraph DialogueTree;
-
-    public DialogueRef DiaRef;
-   
+    public DialogueTrigger trig;
 
     NodePort port = null;
+    DialogueNode currNode = null;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (DialogueTree.EntryNode == null)
-        {
-            throw new NoEntryNodeEx(DialogueTree);
-        }
-
-        Debug.Log(DialogueTree.EntryNode.Dialogue.Sentences[0]);
-        Debug.Log(DialogueTree.EntryNode.Choices[0]);
-        Debug.Log(DialogueTree.EntryNode.Choices[1]);
+        //trig.Trigger("BrotherPanel", KeyCode.F, KeyCode.A, KeyCode.D);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            port = DialogueTree.EntryNode.GetOutputPort("Choices 0").Connection;
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            port = DialogueTree.EntryNode.GetOutputPort("Choices 1").Connection;
-        }
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+    //    if (DialogueTree.StartNode == null)
+    //    {
+    //        throw new NoStartNodeEx(DialogueTree);
+    //    }
 
-        if (port != null)
-        {
-            DialogueTree.EntryNode = port.node as DialogueNode;
-            Debug.Log(DialogueTree.EntryNode.Dialogue.Sentences[0]);
-            Debug.Log(DialogueTree.EntryNode.Choices[0]);
-            Debug.Log(DialogueTree.EntryNode.Choices[1]);
-            port = null;
-        }
-    }
-    public class NoEntryNodeEx : Exception
+    //    Debug.Log(DialogueTree.StartNode.Dialogue.Sentences[0]);
+    //    Debug.Log(DialogueTree.StartNode.Choices[0]);
+    //    Debug.Log(DialogueTree.StartNode.Choices[1]);
+    //}
+
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.O))
+    //    {
+    //        port = DialogueTree.StartNode.GetOutputPort("Choices 0").Connection;
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.P))
+    //    {
+    //        port = DialogueTree.StartNode.GetOutputPort("Choices 1").Connection;
+    //    }
+
+    //    if (port != null)
+    //    {
+    //        currNode = port.node as DialogueNode;
+    //        Debug.Log(currNode.Dialogue.Sentences[0]);
+    //        Debug.Log(currNode.Choices[0]);
+    //        Debug.Log(currNode.Choices[1]);
+    //        port = null;
+    //    }
+    //}
+    public class NoStartNodeEx : Exception
     {
-        public NoEntryNodeEx(DialogueTreeGraph tree) : base(tree.name + " has no entry node specified.") { }
+        public NoStartNodeEx(DialogueTreeGraph tree) : base(tree.name + " has no entry node specified.") { }
     }
 }
