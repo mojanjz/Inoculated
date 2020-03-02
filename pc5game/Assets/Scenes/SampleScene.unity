@@ -11734,7 +11734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   stunTimer: 0
 --- !u!212 &743871626
 SpriteRenderer:
@@ -12088,8 +12087,8 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 5742808377740891119, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
-        type: 3}]
+    m_RemovedComponents:
+    - {fileID: 5742808377740891119, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
 --- !u!224 &836126009 stripped
 RectTransform:
@@ -13707,6 +13706,7 @@ GameObject:
   - component: {fileID: 1068731495}
   - component: {fileID: 1068731494}
   - component: {fileID: 1068731493}
+  - component: {fileID: 1068731506}
   m_Layer: 0
   m_Name: PlayerBro
   m_TagString: Player
@@ -13778,7 +13778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   stunTimer: 0
 --- !u!114 &1068731497
 MonoBehaviour:
@@ -13942,7 +13941,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyMap: {fileID: 1068731493}
-  speed: 4
   animator: {fileID: 637001849}
   OnRotateEvent:
     m_PersistentCalls:
@@ -14023,6 +14021,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1068731506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068731492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d019376c908e4cd45865d37d3f466b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  currentHealth: 0
+  speed: 2.5
+  baseHit: 0
+  damageMultiplier: 0
 --- !u!1 &1072432847
 GameObject:
   m_ObjectHideFlags: 0
@@ -14118,6 +14133,7 @@ GameObject:
   - component: {fileID: 1143040240}
   - component: {fileID: 1143040241}
   - component: {fileID: 1143040242}
+  - component: {fileID: 1143040243}
   m_Layer: 0
   m_Name: PlayerSis
   m_TagString: Player
@@ -14159,7 +14175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyMap: {fileID: 1143040241}
-  speed: 3.5
   animator: {fileID: 681978926}
   OnRotateEvent:
     m_PersistentCalls:
@@ -14380,7 +14395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   stunTimer: 0
 --- !u!114 &1143040239
 MonoBehaviour:
@@ -14446,8 +14460,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   stunTimer: 0
+--- !u!114 &1143040243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143040228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d019376c908e4cd45865d37d3f466b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  currentHealth: 0
+  speed: 2.5
+  baseHit: 0
+  damageMultiplier: 0
 --- !u!1 &1150214361
 GameObject:
   m_ObjectHideFlags: 0
@@ -14748,13 +14778,14 @@ GameObject:
   - component: {fileID: 1166446206}
   - component: {fileID: 1166446205}
   - component: {fileID: 1166446207}
+  - component: {fileID: 1166446208}
   m_Layer: 8
   m_Name: TestEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1166446202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14767,7 +14798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1cbc80162cd8e4dad44f8e7a051328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   target: {fileID: 0}
   nonTarget: {fileID: 0}
   aquisitionTime: 3
@@ -14884,8 +14914,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 40
   stunTimer: 5
+--- !u!114 &1166446208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166446201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d019376c908e4cd45865d37d3f466b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 0
+  speed: 3
+  baseHit: 0
+  damageMultiplier: 0
 --- !u!114 &1193518657 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2084367894570930438, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
@@ -19043,16 +19089,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 908976584}
     m_Modifications:
-    - target: {fileID: 5846085356476161014, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
-        type: 3}
-      propertyPath: m_Name
-      value: DialoguePanelSis
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846085356476161014, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5846085356476161012, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
         type: 3}
       propertyPath: m_Color.r
@@ -19067,6 +19103,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.5188679
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846085356476161014, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+        type: 3}
+      propertyPath: m_Name
+      value: DialoguePanelSis
+      objectReference: {fileID: 0}
+    - target: {fileID: 5846085356476161014, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5846085356476161015, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
         type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    //[SerializeField] private float speed;
     [SerializeField] private Transform target;
     [SerializeField] private Transform nonTarget;
     [SerializeField] private float aquisitionTime;  //time required to change target
@@ -70,7 +70,7 @@ public class EnemyMovement : MonoBehaviour
     private void moveTowardsTarget()
     {
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
-        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target.position, gameObject.GetComponent<CharacterStats>().getSpeed() * Time.deltaTime);
     }
    
 
