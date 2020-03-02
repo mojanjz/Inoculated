@@ -5,10 +5,13 @@ public class GameHandler : MonoBehaviour
 {
     [SerializeField] private HealthBar healthBar;
 
+    [SerializeField] private Attackable attackable;
+    private int size;
+
     // Start is called before the first frame update
     void Start()
     {
-        healthBar.SetSize(0.6f);
+
     }
 
     // Update is called once per frame
