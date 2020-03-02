@@ -10,8 +10,8 @@ public class Attackable : MonoBehaviour
     [SerializeField] private int health;
     [SerializeField] private int stunTimer;
     private string state;
-    
-    
+    [SerializeField] HealthBar healthBar;
+
     void Start()
     {
         health = maxHealth;
@@ -28,6 +28,9 @@ public class Attackable : MonoBehaviour
         if (state != "stunned") 
         {
             health -= damage;
+            float size = health / 100;
+            healthBar.SetSize(size);
+
             if (health <= 0)
             {
                 if (gameObject.tag == "Enemy")
