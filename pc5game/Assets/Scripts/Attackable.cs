@@ -6,32 +6,38 @@ using UnityEngine;
 public class Attackable : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int health;
+    //[SerializeField] private int maxHealth;
+    //[SerializeField] private int health;
     [SerializeField] private int stunTimer;
     private string state;
     [SerializeField] HealthBar healthBar;
 
     void Start()
     {
-        health = maxHealth;
-        state = "alive";
+       // maxHealth = gameObject.GetComponent<CharacterStats>().getMaxHealth();
+            //gameObject.GetComponent<EnemyMovement>().findInitialTargets();
+       // health = maxHealth;
+       state = "alive";
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
 
     public void OnAttack(int damage)
     {
         if (state != "stunned") 
         {
-            health -= damage;
-            float size = health / 100;
+            gameObject.GetComponent<CharacterStats>().updateHealth(-damage);
+            float size = gameObject.GetComponent<CharacterStats>().getCurrentHealth()/100f;
+            // health -= damage;
+            // float size = health / 100;
+
             healthBar.SetSize(size);
 
-            if (health <= 0)
+            if (gameObject.GetComponent<CharacterStats>().getCurrentHealth() <= 0)
             {
                 if (gameObject.tag == "Enemy")
                 {
@@ -65,13 +71,14 @@ public class Attackable : MonoBehaviour
     {
         (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = false;
         yield return new WaitForSeconds(time);
-        health = maxHealth;
+        //health = maxHealth;
+        gameObject.GetComponent<CharacterStats>().setCurrentHealth(gameObject.GetComponent<CharacterStats>().getMaxHealth());
         state = "alive";
         gameObject.GetComponent<EnemyMovement>().findInitialTargets();
         (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = true;
     }
 
-    public int GetMaxHealth()
+    /*public int GetMaxHealth()
     {
         return maxHealth;
     }
@@ -79,7 +86,7 @@ public class Attackable : MonoBehaviour
     public int GetHealth()
     {
         return health;
-    }
+    }*/
 
     public int GetStunTimer()
     {

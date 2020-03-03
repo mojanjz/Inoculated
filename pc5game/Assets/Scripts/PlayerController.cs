@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private KeyMap keyMap;
-    [SerializeField] private float speed;
+    //[SerializeField] private float speed;
     private bool isMoveEnabled = true;
     private Vector2 rotPrevDirection = Vector2.right; // Player rotation for previous frame
     private Vector2 rotCurrDirection; // Player rotation for current frame (is updated each frame)
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
         }
 
         /* Translates player in rotNewDirection vector (if a key is pressed). */
-        transform.Translate(rotCurrDirection * speed * Time.fixedDeltaTime);
+        transform.Translate(rotCurrDirection * gameObject.GetComponent<CharacterStats>().getSpeed() * Time.fixedDeltaTime);
 
         /* Tells the animation controller if the player is walking or idling. */
         animator.SetFloat("speed", rotCurrDirection.sqrMagnitude);
