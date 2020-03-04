@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 
 public class Slot : MonoBehaviour
 {
-    //public GameObject inventory_object;
     public GameObject inventoryObject;
     public void DropItem()
     {

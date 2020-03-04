@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class sisterInventory : MonoBehaviour
 {
-    [SerializeField] private InventoryKeyMap inventoryKeyMap;
+    GameObject highlighter;
+    int inventoryIndex = 0;
+    int maxIndex = 4;
+    Vector3 initialPosition;
     // Start is called before the first frame update
     void Start()
     {
-        
+        highlighter = GameObject.FindGameObjectWithTag("InventoryHighLighter");
+        initialPosition = highlighter.transform.position;
     }
 
     // Update is called once per frame
@@ -19,19 +23,36 @@ public class sisterInventory : MonoBehaviour
 
     private void getInput()
     {
-
-        if (Input.GetKey(inventoryKeyMap.RightCell))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-
+            Vector3 temp = new Vector3(0, 100.0f * Time.deltaTime, 0);
+            highlighter.GetComponent<SpriteRenderer>().enabled = true;
+            if (inventoryIndex < maxIndex + 1 && inventoryIndex > 0)
+            {
+                highlighter.transform.position += temp;
+            }
+            else
+            {
+                inventoryIndex = 1;
+                highlighter.transform.position = initialPosition;
+            }
+            Debug.Log("index is " + inventoryIndex);
+            inventoryIndex += 1;
         }
-        if (Input.GetKey(inventoryKeyMap.LeftCell))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-
+            GameObject slot = findSlot(inventoryIndex-1);
+            slot.transform.GetComponent<Slot>().DropItem();
+            Debug.Log("slot is " + slot);
+            highlighter.GetComponent<SpriteRenderer>().enabled =false;
+            inventoryIndex = 0;
         }
-        if (Input.GetKey(inventoryKeyMap.UseObject))
-        {
-            Debug.Log("use the object");
-        }
 
+    }
+    private GameObject findSlot(int i)
+    {
+        Transform trans = GameObject.Find("sister's inventory").transform;
+        Transform childTrans = trans.Find("Slot (" + (i).ToString() + ")");
+        return childTrans.gameObject;
     }
 }
