@@ -1288,7 +1288,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &472295805
@@ -12057,6 +12057,7 @@ GameObject:
   - component: {fileID: 743871628}
   - component: {fileID: 743871633}
   - component: {fileID: 743871632}
+  - component: {fileID: 743871634}
   m_Layer: 8
   m_Name: breakable log
   m_TagString: Untagged
@@ -12076,7 +12077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunTimer: 0
+  killable: 0
+  stunTime: 0
   healthBar: {fileID: 0}
 --- !u!212 &743871626
 SpriteRenderer:
@@ -12293,6 +12295,23 @@ MonoBehaviour:
   OnExamineEndEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &743871634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743871624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d019376c908e4cd45865d37d3f466b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  currentHealth: 0
+  speed: 0
+  baseHit: 0
+  damageMultiplier: 0
 --- !u!1001 &836126008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14182,7 +14201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunTimer: 0
+  killable: 0
+  stunTime: 0
   healthBar: {fileID: 0}
 --- !u!114 &1068731497
 MonoBehaviour:
@@ -14882,7 +14902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunTimer: 0
+  killable: 0
+  stunTime: 0
   healthBar: {fileID: 0}
 --- !u!114 &1143040239
 MonoBehaviour:
@@ -14948,7 +14969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunTimer: 0
+  killable: 0
+  stunTime: 0
   healthBar: {fileID: 0}
 --- !u!114 &1143040243
 MonoBehaviour:
@@ -15299,6 +15321,7 @@ GameObject:
   - component: {fileID: 1166446207}
   - component: {fileID: 1166446208}
   - component: {fileID: 1166446209}
+  - component: {fileID: 1166446210}
   m_Layer: 8
   m_Name: TestEnemy
   m_TagString: Enemy
@@ -15318,10 +15341,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1cbc80162cd8e4dad44f8e7a051328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  nonTarget: {fileID: 0}
   aquisitionTime: 3
-  minDistanceRadius: 1.3
+  animationSpeedMulitplier: 0
+  direction: {x: 0, y: 0}
 --- !u!212 &1166446203
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -15435,7 +15457,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunTimer: 5
+  killable: 0
+  stunTime: 5
   healthBar: {fileID: 0}
 --- !u!114 &1166446208
 MonoBehaviour:
@@ -15473,6 +15496,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1166446210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166446201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adafe891a01884468f8a3642f189e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockAmount: 10
 --- !u!114 &1193518657 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2084367894570930438, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,

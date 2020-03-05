@@ -55,7 +55,7 @@ public class CharacterStats : MonoBehaviour
         return speed;
     }
 
-    public void setSpeed(int newSpeed)
+    public void setSpeed(float newSpeed)
     {
         speed = newSpeed;
     }

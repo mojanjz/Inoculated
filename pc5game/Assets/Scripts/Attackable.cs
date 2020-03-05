@@ -5,25 +5,23 @@ using UnityEngine;
 
 public class Attackable : MonoBehaviour
 {
-    // Start is called before the first frame update
-    //[SerializeField] private int maxHealth;
-    //[SerializeField] private int health;
-    [SerializeField] private int stunTimer;
-    private string state;
+    [SerializeField] private bool killable;
+    [SerializeField] private int stunTime;
     [SerializeField] HealthBar healthBar;
 
+    string state;
+    float speed_reserve;
+    int maxHP;
     void Start()
     {
-       // maxHealth = gameObject.GetComponent<CharacterStats>().getMaxHealth();
-            //gameObject.GetComponent<EnemyMovement>().findInitialTargets();
-       // health = maxHealth;
        state = "alive";
+       maxHP = gameObject.GetComponent<CharacterStats>().getMaxHealth();
+       speed_reserve = gameObject.GetComponent<CharacterStats>().getSpeed();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void OnAttack(int damage)
@@ -35,61 +33,45 @@ public class Attackable : MonoBehaviour
             // health -= damage;
             // float size = health / 100;
 
+            if(healthBar)
             healthBar.SetSize(size);
 
             if (gameObject.GetComponent<CharacterStats>().getCurrentHealth() <= 0)
             {
-                if (gameObject.tag == "Enemy")
+                if (!killable)
                 {
-                    Stun(stunTimer);
+                    Stun(stunTime);
+                    
                 }
                 else
                 {
                     Die();
                 }
             }
-            else
-            {
-                //Debug.Log(gameObject.name + " has been hit, now has " + health + " health left");
-            }
         }  
     }
 
     private void Stun(int time) 
     {
-        state = "stunned";
-        StartCoroutine(DisableMovementandReEnable(time));
+        StartCoroutine(DisableMovement());
+    }
+
+    IEnumerator DisableMovement()
+    {
+        gameObject.GetComponent<CharacterStats>().setSpeed(0);
+        yield return new WaitForSeconds(stunTime);
+        gameObject.GetComponent<CharacterStats>().setSpeed(speed_reserve);
+        gameObject.GetComponent<CharacterStats>().setCurrentHealth(maxHP);
+        state = "alive";
     }
 
     public void Die()
     {
-        Debug.Log("SNAPPED OUT OF EXISTENCE.");
         Destroy(gameObject);
     }
 
-    private IEnumerator DisableMovementandReEnable(int time)
+    public int GetStunTime()
     {
-        (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = false;
-        yield return new WaitForSeconds(time);
-        //health = maxHealth;
-        gameObject.GetComponent<CharacterStats>().setCurrentHealth(gameObject.GetComponent<CharacterStats>().getMaxHealth());
-        state = "alive";
-        gameObject.GetComponent<EnemyMovement>().findInitialTargets();
-        (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = true;
-    }
-
-    /*public int GetMaxHealth()
-    {
-        return maxHealth;
-    }
-
-    public int GetHealth()
-    {
-        return health;
-    }*/
-
-    public int GetStunTimer()
-    {
-        return stunTimer;
+        return stunTime;
     }
 }

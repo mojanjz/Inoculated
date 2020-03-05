@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemySpiderMovement : MonoBehaviour
 {
     //[SerializeField] private float speed;
     private Transform target;
     private Transform nonTarget;
     [SerializeField] private float aquisitionTime;  //time required to change target
-    public int animationSpeedMulitplier;
     [SerializeField] private Vector2 direction;
+    [SerializeField] private float speedMultiplier;
+    [SerializeField] private float runTime;
+    [SerializeField] private float pauseTime;
     private float count;
-    
+    public int animationSpeedMulitplier;
+
+    float runningCount;
+    float pauseCount;
+
     // Start is called before the first frame update
     void Start()
     {
+        runningCount = 0;
+        pauseCount = 0;
         findInitialTargets();
     }
 
@@ -22,7 +30,8 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         targetAquisition();
-        moveTowardsTarget();
+        checkForMovement();
+        //moveTowardsTarget();
     }
 
     public void findInitialTargets()
@@ -42,7 +51,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void targetAquisition() 
+    private void targetAquisition()
     {
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
         float distanceToNonTarget = Vector2.Distance(transform.position, nonTarget.position);
@@ -50,7 +59,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (distanceToNonTarget < distanceToTarget)
         {
-            count = count + 1*Time.deltaTime;
+            count = count + 1 * Time.deltaTime;
         }
         else
         {
@@ -69,42 +78,60 @@ public class EnemyMovement : MonoBehaviour
 
     private void moveTowardsTarget()
     {
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        //float distanceToTarget = Vector2.Distance(transform.position, target.position);
         float x_position_diff = target.position.x - transform.position.x;
         float y_position_diff = target.position.y - transform.position.y;
-
-        // UNI-DIRECTIONAL Vector, 
-        //
-        //if (Mathf.Abs(x_position_diff) > Mathf.Abs(y_position_diff))
-        //{
-        //    if (x_position_diff < 0){
-        //        direction = Vector2.left;
-        //    }
-        //    else
-        //    {
-        //        direction = Vector2.right;
-        //    }
-        //} else {
-        //    if (y_position_diff < 0) {
-        //        direction = Vector2.down;
-        //    }
-        //    else {
-        //        direction = Vector2.up;
-        //    }
-        //}
-
-
-        //Multiple direction Vector
-        direction = (target.position - transform.position).normalized;
-
-        //move in direction
-        //transform.Translate(direction * gameObject.GetComponent<CharacterStats>().getSpeed() * Time.fixedDeltaTime);
         
-        //move-towards regardless of direction input
-        transform.position = Vector2.MoveTowards(transform.position, target.position, gameObject.GetComponent<CharacterStats>().getSpeed() * Time.deltaTime);
+
+        if (Mathf.Abs(x_position_diff) > Mathf.Abs(y_position_diff))
+        {
+            if (x_position_diff < 0)
+            {
+                direction = Vector2.left;
+            }
+            else
+            {
+                direction = Vector2.right;
+            }
+        }
+        else
+        {
+            if (y_position_diff < 0)
+            {
+                direction = Vector2.down;
+            }
+            else
+            {
+                direction = Vector2.up;
+            }
+        }
+
+        transform.Translate(direction * gameObject.GetComponent<CharacterStats>().getSpeed() * speedMultiplier *Time.fixedDeltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, target.position, gameObject.GetComponent<CharacterStats>().getSpeed()* speedMultiplier * Time.deltaTime);
     }
 
-    public float getAnimationSpeed() {
+    private void checkForMovement()
+    {
+        if (runningCount < runTime)
+        {
+            runningCount = runningCount + 1 * Time.deltaTime;
+            moveTowardsTarget();
+        }
+
+        else if (pauseCount < pauseTime)
+        {
+            pauseCount = pauseCount + 1 * Time.deltaTime;
+            direction = -direction;
+        }
+        else
+        {
+            pauseCount = 0;
+            runningCount = 0;
+        }
+    }
+
+    public float getAnimationSpeed()
+    {
         return animationSpeedMulitplier * gameObject.GetComponent<CharacterStats>().getSpeed();
     }
 }
