@@ -38,7 +38,6 @@ public class Pickup : MonoBehaviour
                     GameObject currentSlot = findSlot(i,other.gameObject);
                     currentSlot.GetComponent<Slot>().inventoryObject = gameObject;
                     gameObject.SetActive(false);
-                    //Destroy(gameObject);
                     break;
                 }
             }

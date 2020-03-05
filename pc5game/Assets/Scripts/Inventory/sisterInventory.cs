@@ -36,14 +36,12 @@ public class sisterInventory : MonoBehaviour
                 inventoryIndex = 1;
                 highlighter.transform.position = initialPosition;
             }
-            Debug.Log("index is " + inventoryIndex);
             inventoryIndex += 1;
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             GameObject slot = findSlot(inventoryIndex-1);
             slot.transform.GetComponent<Slot>().DropItem();
-            Debug.Log("slot is " + slot);
             highlighter.GetComponent<SpriteRenderer>().enabled =false;
             inventoryIndex = 0;
         }
