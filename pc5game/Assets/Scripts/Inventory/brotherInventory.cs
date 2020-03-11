@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class sisterInventory : MonoBehaviour
+public class brotherInventory : MonoBehaviour
 {
     GameObject highlighter;
     int inventoryIndex = 0;
     int maxIndex = 4;
     Vector3 initialPosition;
+    GameObject playerInventory;
     // Start is called before the first frame update
     void Start()
-    {
-        highlighter = GameObject.FindGameObjectWithTag("SisInventoryHighLighter");
+    {   
+        highlighter = GameObject.FindGameObjectWithTag("InventoryHighLighter");
         initialPosition = highlighter.transform.position;
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
         getInput();
@@ -23,7 +24,7 @@ public class sisterInventory : MonoBehaviour
 
     private void getInput()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             Vector3 temp = new Vector3(0, 100.0f * Time.deltaTime, 0);
             highlighter.GetComponent<SpriteRenderer>().enabled = true;
@@ -38,18 +39,18 @@ public class sisterInventory : MonoBehaviour
             }
             inventoryIndex += 1;
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            GameObject slot = findSlot(inventoryIndex-1);
+            GameObject slot = findSlot(inventoryIndex - 1);
             slot.transform.GetComponent<Slot>().DropItem();
-            highlighter.GetComponent<SpriteRenderer>().enabled =false;
+            highlighter.GetComponent<SpriteRenderer>().enabled = false;
             inventoryIndex = 0;
         }
 
     }
     private GameObject findSlot(int i)
     {
-        Transform trans = GameObject.Find("sister's inventory").transform;
+        Transform trans = GameObject.Find("brother's inventory").transform;
         Transform childTrans = trans.Find("Slot (" + (i).ToString() + ")");
         return childTrans.gameObject;
     }

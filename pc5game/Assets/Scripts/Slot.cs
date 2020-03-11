@@ -10,10 +10,13 @@ public class Slot : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Debug.Log("destoying the child object " + child.gameObject.name);
             resetSlot(transform.gameObject.name); //resets slot so it's reusable
             inventoryObject.SetActive(true);
-            Destroy(child.gameObject);
+            if(child != null)
+            {
+                Destroy(child.gameObject);
+            }
+
 
 
         }
