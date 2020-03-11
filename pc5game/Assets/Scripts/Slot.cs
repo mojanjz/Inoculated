@@ -21,6 +21,10 @@ public class Slot : MonoBehaviour
 
         }
     }
+    public void useItem()
+    {
+        GameObject interactableItem = transform.GetChild(0).gameObject;
+    }
     public void resetSlot(string slotName)
     {
         int indexValue = int.Parse(Regex.Match(slotName, @"\d+").Value);
