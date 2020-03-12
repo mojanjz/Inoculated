@@ -46,7 +46,11 @@ public class brotherInventory : MonoBehaviour
             highlighter.GetComponent<SpriteRenderer>().enabled = false;
             inventoryIndex = 0;
         }
-
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            GameObject slot = findSlot(inventoryIndex - 1);
+            slot.transform.GetComponent<Slot>().useItem();
+        }
     }
     private GameObject findSlot(int i)
     {

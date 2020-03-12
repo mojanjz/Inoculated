@@ -23,7 +23,8 @@ public class Slot : MonoBehaviour
     }
     public void useItem()
     {
-        GameObject interactableItem = transform.GetChild(0).gameObject;
+        Debug.Log("inventory object is " + inventoryObject);
+        inventoryObject.GetComponent<Item>().useItem();
     }
     public void resetSlot(string slotName)
     {
