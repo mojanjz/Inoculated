@@ -11,6 +11,8 @@ public class EnemyMovement : MonoBehaviour
     public int animationSpeedMulitplier;
     [SerializeField] private Vector2 direction;
     private float count;
+
+    [SerializeField] Animator animator;
     
     // Start is called before the first frame update
     void Start()
@@ -74,32 +76,41 @@ public class EnemyMovement : MonoBehaviour
         float y_position_diff = target.position.y - transform.position.y;
 
         // UNI-DIRECTIONAL Vector, 
-        //
-        //if (Mathf.Abs(x_position_diff) > Mathf.Abs(y_position_diff))
-        //{
-        //    if (x_position_diff < 0){
-        //        direction = Vector2.left;
-        //    }
-        //    else
-        //    {
-        //        direction = Vector2.right;
-        //    }
-        //} else {
-        //    if (y_position_diff < 0) {
-        //        direction = Vector2.down;
-        //    }
-        //    else {
-        //        direction = Vector2.up;
-        //    }
-        //}
+
+        if (Mathf.Abs(x_position_diff) > Mathf.Abs(y_position_diff))
+        {
+            if (x_position_diff < 0)
+            {
+                direction = Vector2.left;
+            }
+            else
+            {
+                direction = Vector2.right;
+            }
+        }
+        else
+        {
+            if (y_position_diff < 0)
+            {
+                direction = Vector2.down;
+            }
+            else
+            {
+                direction = Vector2.up;
+            }
+        }
 
 
         //Multiple direction Vector
-        direction = (target.position - transform.position).normalized;
+        //direction = (target.position - transform.position).normalized;
+
+        // Control animation
+        animator.SetFloat("rotDirectionX", direction.x);
+        animator.SetFloat("rotDirectionY", direction.y);
 
         //move in direction
         //transform.Translate(direction * gameObject.GetComponent<CharacterStats>().getSpeed() * Time.fixedDeltaTime);
-        
+
         //move-towards regardless of direction input
         transform.position = Vector2.MoveTowards(transform.position, target.position, gameObject.GetComponent<CharacterStats>().getSpeed() * Time.deltaTime);
     }
