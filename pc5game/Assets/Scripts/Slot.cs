@@ -5,19 +5,33 @@ using System.Text.RegularExpressions;
 
 public class Slot : MonoBehaviour
 {
-    //public GameObject inventory_object;
     public GameObject inventoryObject;
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
-            Debug.Log("destoying the child object " + child.gameObject.name);
             resetSlot(transform.gameObject.name); //resets slot so it's reusable
             inventoryObject.SetActive(true);
-            Destroy(child.gameObject);
+            if(child != null)
+            {
+                Destroy(child.gameObject);
+            }
+
 
 
         }
+    }
+    public void useItem()
+    {
+        Debug.Log("inventory object is " + inventoryObject.name);
+        if(inventoryObject.name.Equals("health potion"))
+        {
+            Debug.Log("add to health");
+        } else if(inventoryObject.name.Equals("Stick pick-up"))
+        {
+            Debug.Log("do something with the log");
+        }
+        //inventoryObject.GetComponent<Item>().useItem();
     }
     public void resetSlot(string slotName)
     {

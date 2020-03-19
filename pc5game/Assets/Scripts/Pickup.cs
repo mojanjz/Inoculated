@@ -38,7 +38,6 @@ public class Pickup : MonoBehaviour
                     GameObject currentSlot = findSlot(i,other.gameObject);
                     currentSlot.GetComponent<Slot>().inventoryObject = gameObject;
                     gameObject.SetActive(false);
-                    //Destroy(gameObject);
                     break;
                 }
             }
@@ -52,16 +51,16 @@ public class Pickup : MonoBehaviour
      */
     GameObject findSlot(int i, GameObject player)
     {
-        Transform trans = GameObject.Find("brother's inventory").transform;
+        string inventoryName;
+        if (string.Equals(player.name, "PlayerBro"))
+        {
+           inventoryName = "brother's inventory";
+        } else
+        {
+            inventoryName = "sister's inventory";
+        }
+        Transform trans = GameObject.Find(inventoryName).transform;
         Transform childTrans = trans.Find("Slot (" + (i+1).ToString() + ")");
-        //if(childTrans != null)
-        //{
-        //    Debug.Log("current slot is " + childTrans.gameObject);
-        //}
-        //else
-        //{
-        //    Debug.Log("no children found");
-        //}
         return childTrans.gameObject;
     }
 
