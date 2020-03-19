@@ -21,7 +21,7 @@ public class KnockBackable : MonoBehaviour
     public void knockDistance(Vector2 direction)
     {
         (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = false;
-        transform.Translate(direction * knockAmount*Time.deltaTime);
+        transform.Translate(direction * knockAmount);
        // rb.AddForce(transform.position * knockSpeed);
         (gameObject.GetComponent("EnemyMovement") as MonoBehaviour).enabled = true;
        

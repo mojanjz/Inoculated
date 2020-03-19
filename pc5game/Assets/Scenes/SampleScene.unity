@@ -13089,8 +13089,8 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 5742808377740891119, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
-        type: 3}]
+    m_RemovedComponents:
+    - {fileID: 5742808377740891119, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01, type: 3}
 --- !u!224 &836126009 stripped
 RectTransform:
@@ -14819,7 +14819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1061795424}
-  attackable: {fileID: 0}
+  attackable: {fileID: 1143040238}
 --- !u!114 &1061795424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14942,9 +14942,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killable: 0
+  killable: 1
   stunTime: 0
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1297701289}
 --- !u!114 &1068731497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15381,6 +15381,7 @@ GameObject:
   - component: {fileID: 1143040241}
   - component: {fileID: 1143040242}
   - component: {fileID: 1143040243}
+  - component: {fileID: 1143040244}
   m_Layer: 0
   m_Name: PlayerSis
   m_TagString: Player
@@ -15645,7 +15646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killable: 0
   stunTime: 0
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1061795424}
 --- !u!114 &1143040239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15710,9 +15711,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0cc98460cc14f44a1d712100514401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killable: 0
+  killable: 1
   stunTime: 0
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1061795424}
 --- !u!114 &1143040243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15730,6 +15731,19 @@ MonoBehaviour:
   speed: 2.5
   baseHit: 0
   damageMultiplier: 0
+--- !u!114 &1143040244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143040228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adafe891a01884468f8a3642f189e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockAmount: 15
 --- !u!1 &1148120126
 GameObject:
   m_ObjectHideFlags: 0
@@ -16063,6 +16077,7 @@ GameObject:
   - component: {fileID: 1166446208}
   - component: {fileID: 1166446209}
   - component: {fileID: 1166446210}
+  - component: {fileID: 1166446211}
   m_Layer: 8
   m_Name: TestEnemy
   m_TagString: Enemy
@@ -16083,8 +16098,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aquisitionTime: 3
-  animationSpeedMulitplier: 0
+  animationSpeedMulitplier: 1
   direction: {x: 0, y: 0}
+  stoppingDistance: 1
   animator: {fileID: 1166446209}
 --- !u!212 &1166446203
 SpriteRenderer:
@@ -16216,7 +16232,7 @@ MonoBehaviour:
   maxHealth: 20
   currentHealth: 0
   speed: 0.3
-  baseHit: 0
+  baseHit: 10
   damageMultiplier: 0
 --- !u!95 &1166446209
 Animator:
@@ -16249,7 +16265,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adafe891a01884468f8a3642f189e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockAmount: 10
+  knockAmount: 1
+--- !u!114 &1166446211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166446201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115435a3d4ed77e4cbeb8e9b79267a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 1.1
+  attackCoolDown: 1
+  time: 0
 --- !u!114 &1193518657 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2084367894570930438, guid: 9b03cd6a73a0e5e42bd8175e7f9bad01,
@@ -16648,7 +16679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1297701289}
-  attackable: {fileID: 0}
+  attackable: {fileID: 1068731496}
 --- !u!114 &1297701289
 MonoBehaviour:
   m_ObjectHideFlags: 0

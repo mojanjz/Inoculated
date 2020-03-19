@@ -22,44 +22,36 @@ public class Attackable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameObject.GetComponent<CharacterStats>().getCurrentHealth() <= 0)
+        {
+            if (!killable)
+            {
+                Stun(stunTime);
+            }
+            else
+            {
+                Die();
+            }
+        }
+        float size = (float)gameObject.GetComponent<CharacterStats>().getCurrentHealth() / (float)maxHP;
+        if (healthBar)
+            healthBar.SetSize(size);
     }
 
     public void OnAttack(int damage)
     {
-        if (state != "stunned") 
-        {
-            gameObject.GetComponent<CharacterStats>().updateHealth(-damage);
-            float size = gameObject.GetComponent<CharacterStats>().getCurrentHealth()/100f;
-            // health -= damage;
-            // float size = health / 100;
-
-            if(healthBar)
-            healthBar.SetSize(size);
-
-            if (gameObject.GetComponent<CharacterStats>().getCurrentHealth() <= 0)
-            {
-                if (!killable)
-                {
-                    Stun(stunTime);
-                    
-                }
-                else
-                {
-                    Die();
-                }
-            }
-        }  
+        gameObject.GetComponent<CharacterStats>().updateHealth(-damage);
     }
 
     private void Stun(int time) 
     {
-        StartCoroutine(DisableMovement());
+        StartCoroutine(DisableMovement(time));
     }
 
-    IEnumerator DisableMovement()
+    IEnumerator DisableMovement(int time)
     {
         gameObject.GetComponent<CharacterStats>().setSpeed(0);
-        yield return new WaitForSeconds(stunTime);
+        yield return new WaitForSeconds(time);
         gameObject.GetComponent<CharacterStats>().setSpeed(speed_reserve);
         gameObject.GetComponent<CharacterStats>().setCurrentHealth(maxHP);
         state = "alive";
@@ -67,7 +59,11 @@ public class Attackable : MonoBehaviour
 
     public void Die()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        //moves really far away
+        state = "dead";
+        transform.position = new Vector2(999, 999);
+        Destroy(healthBar);
     }
 
     public int GetStunTime()
