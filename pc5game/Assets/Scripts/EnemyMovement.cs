@@ -9,7 +9,8 @@ public class EnemyMovement : MonoBehaviour
     private Transform nonTarget;
     [SerializeField] private float aquisitionTime;  //time required to change target
     public int animationSpeedMulitplier;
-    [SerializeField] private Vector2 direction;
+    [SerializeField] public Vector2 direction;
+    [SerializeField] public float stoppingDistance;
     private float count;
     
     // Start is called before the first frame update
@@ -22,7 +23,11 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         targetAquisition();
-        moveTowardsTarget();
+        if (Vector2.Distance(transform.position, target.position) > stoppingDistance) 
+        {
+            moveTowardsTarget();
+        }
+ 
     }
 
     public void findInitialTargets()
@@ -69,7 +74,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void moveTowardsTarget()
     {
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        float distanceToTarget = getTargetDistance();
         float x_position_diff = target.position.x - transform.position.x;
         float y_position_diff = target.position.y - transform.position.y;
 
@@ -106,5 +111,14 @@ public class EnemyMovement : MonoBehaviour
 
     public float getAnimationSpeed() {
         return animationSpeedMulitplier * gameObject.GetComponent<CharacterStats>().getSpeed();
+    }
+
+    public Transform getTarget() {
+        return target;
+    }
+
+    public float getTargetDistance() 
+    {
+        return Vector2.Distance(transform.position, target.position); 
     }
 }
