@@ -2,49 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
+using UnityEngine.Events;
 
-public class DialogueNode : Node {
+public class EventNode : Node {
 
 	public string NodeName;
- 	public Dialogue Dialogue;
-	[Input(ShowBackingValue.Never)] public DialogueNode Input;
-	[Output(dynamicPortList = true)] public ChoiceSet[] Choices;
+	[Input(ShowBackingValue.Never)] public Anything Input;
+	public UnityEvent myEvent;
 
-	[System.Serializable]
-	public class ChoiceSet
-	{
-		[TextArea(1, 3)] public string ChoiceText;
-		public bool EndAfter; // Whether or not the dialogue ends when this choice is chosen
-	}
-
-	//// Use this for initialization
-	//protected override void Init() {
-	//	base.Init();
-	//}
+	/// <summary> This class is defined for the sole purpose of being serializable </summary>
+	[System.Serializable] public class Anything { }
 
 	// Return the correct value of a port when requested
 	public override object GetValue(NodePort port) {
 
 		// Compare only the variable name portion of the fieldName (ignore the index)
-		if (port.fieldName.Substring(0, 7) == "Choices")
+		if (port.fieldName == "Input")
 		{
-			// Different choice ports may be connected to different nodes,
-			// but all choice ports output this node value.
-			return this;
-		}
-
-		else if (port.fieldName == "Input") 
-		{
-			return GetInputValue<DialogueNode>("Input");
-		}
-
+			return GetInputValue<object>("Input");
+		} 
+		
 		return null;
 	}
 
 	/* Called when a value in the node inspector changes. */
 	public void OnValidate()
 	{
-		/* Change the node name to be the same as the NodeName field. */
+		/* Change the node name to be the same as the NodeID field. */
 		Object target = this;
 		target.name = NodeName; // Renames the node GUI window, and the node asset.
 

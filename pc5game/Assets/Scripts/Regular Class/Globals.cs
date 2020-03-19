@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /* Class for defining which keyboard keys do what action in the game. */
 public static class KeyMapGlobal
@@ -17,3 +18,7 @@ public static class KeyMapGlobal
     public static KeyCode MoveRight { get; set; } = KeyCode.D;
 }
 
+public class MissingComponentEx : Exception
+{
+    public MissingComponentEx(MonoBehaviour component) : base(String.Format("Missing {0} component.", component)) { }
+}

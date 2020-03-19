@@ -5,11 +5,10 @@ using UnityEngine.Events;
 
 public class Examiner : MonoBehaviour
 {
+    public CharacterStats stats;
     [SerializeField] private ObjectRaycaster raycaster;
     [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for examination
     [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the examineable objects (touchable by raycast).
-
-    public string dialoguePanelName;
 
     public UnityEvent OnExamineStartEvent;
     public UnityEvent OnExamineEndEvent;
@@ -29,7 +28,11 @@ public class Examiner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        stats = GetComponent<CharacterStats>();
+        if (stats == null)
+        {
+            throw new MissingComponentEx(stats);
+        }
     }
 
     // Update is called once per frame

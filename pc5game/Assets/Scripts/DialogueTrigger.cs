@@ -7,6 +7,7 @@ using XNode;
 
 public class DialogueTrigger : MonoBehaviour
 {
+    public CharacterStats ThisObj; // Necessary if the dialogue uses this object's speaker name
     public DialogueRef DialogueRef;
 
     public class BoolEvent : UnityEvent<bool> { }
@@ -20,8 +21,13 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ThisObj = GetComponent<CharacterStats>();
+    }
+
     /* Method that starts a Dialogue in the dialogue panel. */
-    public void Trigger(string panelName, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey)
+    public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats player = null)
     {
 
         UnityAction<DialogueNode> handler = null;
@@ -37,11 +43,11 @@ public class DialogueTrigger : MonoBehaviour
         {
             if (DialogueRef.UseDirect)
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, panelName, selectKey, prevKey, nextKey);
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
             }
             else
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.NodeAsset, panelName, selectKey, prevKey, nextKey);
+                DialogueManager.Instance.StartDialogue(DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
             }
         }
         catch (DialogueManager.NoInterruptEx Ex)
@@ -49,31 +55,6 @@ public class DialogueTrigger : MonoBehaviour
             DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
             OnDialogueEnd(false, null);
         }
-        
-        
-        //try
-        //{
-        //    DialogueManager.Instance.StartDialogue(dialogue, engager);
-
-        //    /* Continue if no errors */
-
-        //    /* Create anonymous delegate that unsubscribes itself from the event afterwards */
-        //    UnityAction handler = null;
-        //    handler = () =>
-        //    {
-        //        OnDialogueEnd(true);
-        //        DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
-        //    };
-
-        //    DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
-        //}
-        //catch (DialogueManager.NoInterruptEx ex)
-        //{
-        //    /* If the dialogue wasn't successfully started, display the exception
-        //     * and close the process. */
-        //    Debug.Log(ex);
-        //    OnDialogueEnd(false);
-        //}
     }
 
     // Method to be called when the triggered dialogue finishes. 

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public string SpeakerName;
+    public Dialogue.PanelID PanelID = Dialogue.PanelID.Null;
 
     public int maxHealth;
     public int currentHealth;

@@ -1,4 +1,3 @@
-
 #if UNITY_EDITOR
 
 using UnityEngine;
@@ -6,7 +5,8 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-	
+
+// SCRIPT FROM: https://github.com/s-m-k/Unity-Animation-Hierarchy-Editor
 public class AnimationHierarchyEditor : EditorWindow {
 	private static int columnWidth = 300;
 	

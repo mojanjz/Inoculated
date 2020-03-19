@@ -78,7 +78,7 @@ public class Examinable : MonoBehaviour
         //dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
 
         KeyMap keyMap = ex.gameObject.GetComponent<KeyMap>();
-        dialogueTrigger.Trigger(ex.dialoguePanelName, keyMap.Examine, keyMap.MoveUp, keyMap.MoveDown);
+        dialogueTrigger.Trigger(keyMap.Examine, keyMap.MoveUp, keyMap.MoveDown, ex.stats);
     }
 
     // Method that should be called to wrap up the cycle dialogue action.

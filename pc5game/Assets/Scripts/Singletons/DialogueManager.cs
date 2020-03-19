@@ -14,7 +14,6 @@ public class DialogueManager : Singleton<DialogueManager>
     // Class that stores all the UI references to a particular dialogue panel
     [Serializable] class PanelSet
     {
-        [SerializeField] internal string panelName;
         [SerializeField] internal Animator panelAnimator;
         [SerializeField] internal Text speakerNameUI;
         [SerializeField] internal Text sentenceUI;
@@ -26,10 +25,14 @@ public class DialogueManager : Singleton<DialogueManager>
 
     [SerializeField] private PanelSet brother;
     [SerializeField] private PanelSet sister;
+    [SerializeField] private CharacterStats brotherStats; // Need to retrieve speaker name
+    [SerializeField] private CharacterStats sisterStats; // Need to retrieve speaker name
     [SerializeField] private float letterDelay = 0.05f;
     [SerializeField] private int panelAnimLayer = 0;
 
     /* Transient data */
+    private CharacterStats playerStats = null;
+    private CharacterStats interactableStats = null;
     private PanelSet activePanel = null; // Only one panel should be active at a time
     private KeyCode selectChoiceKey = KeyCode.None;
     private KeyCode prevChoiceKey = KeyCode.None;
@@ -121,15 +124,14 @@ public class DialogueManager : Singleton<DialogueManager>
 
     /* Method for starting a dialogue.
      * PARAM: dialogue, the dialogue to start
-     * PARAM: panelName, the name of the dialogue panel to use
      * PARAM: selectKey, the key to use to update the dialogue (ie. show next sentence)
      * EXCEPTION: If another dialogue is already in process, NoInterruptEx will be thrown.
-     * EXCEPTION: If the panelName is not valid, UnknownPanelNameEx will be thrown.*/
-    public void StartDialogue(Dialogue dialogue, string panelName, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey)
+     * EXCEPTION: If the panel is not valid, UnknownPanelEx will be thrown.*/
+    public void StartDialogue(Dialogue dialogue, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey,
+        CharacterStats player = null, CharacterStats interactable = null)
     {
-        InitializeActivePanel(panelName, selectKey, prevKey, nextKey);
-
-        activePanel.speakerNameUI.text = dialogue.Speaker;
+        InitializeActivePanel(dialogue, selectKey, prevKey, nextKey, player: player, interactable: interactable);
+        activePanel.speakerNameUI.text = GetSpeakerName(dialogue);
 
         foreach (string sentence in dialogue.Sentences)
         {
@@ -140,26 +142,26 @@ public class DialogueManager : Singleton<DialogueManager>
     }
 
     /* Overload that uses a DialogueNode instead of a Dialogue. */
-    public void StartDialogue(DialogueNode dialogueNode, string panelName, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, bool newInteraction = true)
+    public void StartDialogue(DialogueNode dialogueNode, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, 
+         CharacterStats player = null, CharacterStats interactable = null, bool newInteraction = true)
     {
+        currDialogueNode = dialogueNode; // Store the node so we can access the connections later
+        Dialogue dialogue = dialogueNode.Dialogue;
+
         /* If this is not a continuation of a dialogue tree that is still in
          * progress, it's a new dialogue interaction so we need to initialize
          * again. */
         if (newInteraction)
         {
-            InitializeActivePanel(panelName, selectKey, prevKey, nextKey);
+            InitializeActivePanel(dialogue, selectKey, prevKey, nextKey, player: player, interactable: interactable);
         }
 
-        activePanel.speakerNameUI.text = dialogueNode.Dialogue.Speaker;
+        activePanel.speakerNameUI.text = GetSpeakerName(dialogue);
 
-        foreach (string sentence in dialogueNode.Dialogue.Sentences)
+        foreach (string sentence in dialogue.Sentences)
         {
             sentenceQ.Enqueue(sentence);
         }
-
-        // Store the node so we can access the connections later
-        currDialogueNode = dialogueNode;
-
 
         if (newInteraction)
         {
@@ -171,7 +173,9 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    private void InitializeActivePanel(string panelName, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey)
+    private void InitializeActivePanel(Dialogue dialogue, 
+        KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, 
+        CharacterStats player = null, CharacterStats interactable = null)
     {
         /* Don't interrupt a dialogue process that is running. */
         if (enabled)
@@ -180,18 +184,9 @@ public class DialogueManager : Singleton<DialogueManager>
                 "Dialogue panel is already in active process.");
         }
 
-        if (panelName == sister.panelName)
-        {
-            activePanel = sister;
-        }
-        else if (panelName == brother.panelName)
-        {
-            activePanel = brother;
-        }
-        else
-        {
-            throw new UnknownPanelNameEx(panelName);
-        }
+        this.playerStats = player;
+        this.interactableStats = interactable;
+        activePanel = GetPanelSet(dialogue.Panel);
 
         selectChoiceKey = selectKey;
         prevChoiceKey = prevKey;
@@ -201,9 +196,78 @@ public class DialogueManager : Singleton<DialogueManager>
         enabled = true;
     }
 
-    public class UnknownPanelNameEx : Exception
+    private PanelSet GetPanelSet(Dialogue.PanelID panelID)
     {
-        public UnknownPanelNameEx(string panelName) : base(panelName + " does not exist.") { }
+        PanelSet panel;
+
+        if ( panelID == Dialogue.PanelID.Player)
+        {
+            panelID = playerStats.PanelID;
+        }
+
+        switch (panelID)
+        {
+            case Dialogue.PanelID.Sister:
+                panel = sister;
+                break;
+            case Dialogue.PanelID.Brother:
+                panel = brother;
+                break;
+            default:
+                StartCoroutine(EndDialogue());
+                throw new UnknownPanelEx(panelID);
+        }
+
+        return panel;
+    }
+
+    public class UnknownPanelEx : Exception
+    {
+        public UnknownPanelEx(Dialogue.PanelID panelID) : base(panelID.ToString() + " does not exist.") { }
+    }
+
+    // Returns the string name associated with the selected Speaker.
+    public string GetSpeakerName (Dialogue dialogue)
+    {
+        string name = null;
+
+        switch (dialogue.Speaker.SpeakerChoice)
+        {
+            case SpeakerRef.Speaker.Custom:
+                name = dialogue.Speaker.Custom;
+                break;
+
+            case SpeakerRef.Speaker.ThisObject:
+                if (interactableStats == null)
+                {
+                    throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.ThisObject);
+                }
+                name = interactableStats.SpeakerName;
+                break;
+
+            case SpeakerRef.Speaker.Player:
+                if (playerStats == null)
+                {
+                    throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.Player);
+                }
+                name = playerStats.SpeakerName;
+                break;
+
+            case SpeakerRef.Speaker.Brother:
+                name = brotherStats.SpeakerName;
+                break;
+
+            case SpeakerRef.Speaker.Sister:
+                name = sisterStats.SpeakerName;
+                break;
+        }
+
+        return name;
+    }
+
+    public class UnknownSpeakerNameEx: Exception
+    {
+        public UnknownSpeakerNameEx(SpeakerRef.Speaker speaker) : base(string.Format("Unknown name associated with {0} speaker.", speaker)) { }
     }
 
 
@@ -269,7 +333,7 @@ public class DialogueManager : Singleton<DialogueManager>
         else
         {
             currSentence = "";
-            DisplayChoices();
+            DisplayChoiceUI();
         }
     }
 
@@ -303,7 +367,7 @@ public class DialogueManager : Singleton<DialogueManager>
     }
 
     // Display dialogue choices
-    public void DisplayChoices()
+    public void DisplayChoiceUI()
     {
         // If there are no choices, show nothing and end the dialogue
         if (currDialogueNode == null || currDialogueNode.Choices.Length == 0)
@@ -311,6 +375,8 @@ public class DialogueManager : Singleton<DialogueManager>
             StartCoroutine(EndDialogue());
             return;
         }
+
+        ClearSpeechText();
 
         activePanel.speakerNameUI.gameObject.SetActive(false);
         activePanel.sentenceUI.gameObject.SetActive(false);
@@ -330,6 +396,13 @@ public class DialogueManager : Singleton<DialogueManager>
             numChoices++;
             i++;
         }
+    }
+
+     public void DisplaySpeechUI(bool state)
+    {
+        activePanel.speakerNameUI.gameObject.SetActive(state);
+        activePanel.sentenceUI.gameObject.SetActive(state);
+        activePanel.arrowUI.gameObject.SetActive(state);
     }
 
     public void PrevChoice()
@@ -369,17 +442,8 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         // Reset the choice text boxes for next time.
-        int i;
-        for (i = 0; i < numChoices; i++)
-        {
-            activePanel.ChoiceText[i].text = "";
-            activePanel.ChoiceText[i].gameObject.SetActive(false);
-        }
-        numChoices = 0;
-        activePanel.SelectionBox.gameObject.SetActive(false);
-        activePanel.speakerNameUI.gameObject.SetActive(true);
-        activePanel.sentenceUI.gameObject.SetActive(true);
-        activePanel.arrowUI.gameObject.SetActive(true);
+        ResetChoiceUI();
+        DisplaySpeechUI(true);
 
         /* End dialogue if there was no connected node, or if the choice 
          * specifies that the dialogue should end. */
@@ -389,8 +453,8 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         else
         {
-            StartDialogue(currDialogueNode, activePanel.panelName,
-                selectChoiceKey, prevChoiceKey, nextChoiceKey, false);
+            StartDialogue(currDialogueNode,
+                selectChoiceKey, prevChoiceKey, nextChoiceKey, newInteraction: false);
         }
     }
 
@@ -400,12 +464,44 @@ public class DialogueManager : Singleton<DialogueManager>
          * setting dialogue panel free... to prevent reading double input lol. */
         yield return new WaitForEndOfFrame();
 
-        Debug.Log("Dialogue ended.");
         enabled = false;
-        activePanel.speakerNameUI.text = activePanel.sentenceUI.text = activePanel.arrowUI.text = ""; // Set all text to nothing
+        ClearSpeechText();
+        ResetChoiceUI();
         activePanel.panelAnimator.SetBool("IsOpen", false);
-
         OnEndDialogueEvent.Invoke(currDialogueNode);
+        ClearDialogueInfo();
+    }
+
+    public void ResetChoiceUI()
+    {
+        int i;
+        for (i = 0; i < numChoices; i++)
+        {
+            activePanel.ChoiceText[i].text = "";
+            activePanel.ChoiceText[i].gameObject.SetActive(false);
+        }
+
+        activePanel.SelectionBox.gameObject.SetActive(false);
+
+        numChoices = 0;
+        choiceIndex = 0;
+    }
+
+    public void ClearSpeechText()
+    {
+        activePanel.speakerNameUI.text = activePanel.sentenceUI.text = activePanel.arrowUI.text = ""; // Set all text to nothing
+    }
+    public void ClearDialogueInfo()
+    {
         currDialogueNode = null;
+        playerStats = null;
+        interactableStats = null;
+        activePanel = null;
+        selectChoiceKey = KeyCode.None;
+        prevChoiceKey = KeyCode.None;
+        nextChoiceKey = KeyCode.None;
+        sentenceQ.Clear();
+        typingCoroutine = null;
+        currSentence = null;
     }
 }
