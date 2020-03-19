@@ -23,8 +23,15 @@ public class Slot : MonoBehaviour
     }
     public void useItem()
     {
-        Debug.Log("inventory object is " + inventoryObject);
-        inventoryObject.GetComponent<Item>().useItem();
+        Debug.Log("inventory object is " + inventoryObject.name);
+        if(inventoryObject.name.Equals("health potion"))
+        {
+            Debug.Log("add to health");
+        } else if(inventoryObject.name.Equals("Stick pick-up"))
+        {
+            Debug.Log("do something with the log");
+        }
+        //inventoryObject.GetComponent<Item>().useItem();
     }
     public void resetSlot(string slotName)
     {
