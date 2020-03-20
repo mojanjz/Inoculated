@@ -72,7 +72,7 @@ public class DialogueManager : Singleton<DialogueManager>
             panel.arrowUI.gameObject.SetActive(true);
             panel.SelectionBox.gameObject.SetActive(false);
 
-            // Set initial text to nothing.
+            // Set initial text to nothing.Sca
             panel.speakerNameUI.text = panel.sentenceUI.text = panel.arrowUI.text = "";
       
             i = 0;
