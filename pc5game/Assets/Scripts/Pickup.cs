@@ -8,6 +8,7 @@ public class Pickup : MonoBehaviour
     public Inventory inventory;
     public GameObject itemButton;
     [SerializeField] private Canvas canvas;
+    public bool WasDropped = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,12 @@ public class Pickup : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (WasDropped)
+        {
+            WasDropped = false;
+            return;
+        }
+
         //Debug.Log("I collided with the object!");
        if (other.CompareTag("Player"))
         {
@@ -36,7 +43,7 @@ public class Pickup : MonoBehaviour
                     obj.transform.SetParent(inventory.slots[i].transform);
                     obj.transform.position = vec;
                     GameObject currentSlot = findSlot(i,other.gameObject);
-                    currentSlot.GetComponent<Slot>().inventoryObject = gameObject;
+                    currentSlot.GetComponent<Slot>().groundObject = gameObject;
                     gameObject.SetActive(false);
                     break;
                 }
@@ -60,7 +67,7 @@ public class Pickup : MonoBehaviour
             inventoryName = "sister's inventory";
         }
         Transform trans = GameObject.Find(inventoryName).transform;
-        Transform childTrans = trans.Find("Slot (" + (i+1).ToString() + ")");
+        Transform childTrans = trans.Find("Slot (" + (i).ToString() + ")");
         return childTrans.gameObject;
     }
 

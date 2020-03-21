@@ -5,29 +5,34 @@ using System.Text.RegularExpressions;
 
 public class Slot : MonoBehaviour
 {
-    public GameObject inventoryObject;
+    public GameObject groundObject;
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
             resetSlot(transform.gameObject.name); //resets slot so it's reusable
-            inventoryObject.SetActive(true);
+            groundObject.SetActive(true);
             if(child != null)
             {
                 Destroy(child.gameObject);
             }
 
-
+            groundObject = null;
 
         }
     }
     public void useItem()
     {
-        Debug.Log("inventory object is " + inventoryObject.name);
-        if(inventoryObject.name.Equals("health potion"))
+        if(groundObject == null)
+        {
+            return;
+        }
+
+        Debug.Log("inventory object is " + groundObject.name);
+        if(groundObject.name.Equals("health potion"))
         {
             Debug.Log("add to health");
-        } else if(inventoryObject.name.Equals("Stick pick-up"))
+        } else if(groundObject.name.Equals("Stick pick-up"))
         {
             Debug.Log("do something with the log");
         }
@@ -36,7 +41,10 @@ public class Slot : MonoBehaviour
     public void resetSlot(string slotName)
     {
         int indexValue = int.Parse(Regex.Match(slotName, @"\d+").Value);
-        inventoryObject.transform.GetComponent<Pickup>().inventory.isFull[indexValue-1] = false;
+        Pickup pickup = groundObject.GetComponent<Pickup>();
+        pickup.inventory.isFull[indexValue] = false;
+        groundObject.transform.position = pickup.inventory.transform.position; // Set object on ground where the player is standing
+        pickup.WasDropped = true;
     }
 
 }

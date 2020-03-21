@@ -15,4 +15,8 @@ public class KeyMap : MonoBehaviour
     public KeyCode MoveLeft = KeyCode.A;
     public KeyCode MoveDown = KeyCode.S;
     public KeyCode MoveRight = KeyCode.D;
+
+    public KeyCode Cycle = KeyCode.X;
+    public KeyCode Drop = KeyCode.C;
+    public KeyCode Use = KeyCode.Z;
 }
