@@ -16802,6 +16802,7 @@ MonoBehaviour:
   aquisitionTime: 3
   animationSpeedMulitplier: 1
   direction: {x: 0, y: 0}
+  attackDirection: {x: 0, y: 0}
   stoppingDistance: 1
   animator: {fileID: 1166446209}
 --- !u!212 &1166446203
@@ -16985,6 +16986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 1.1
   attackCoolDown: 1
+  animator: {fileID: 1166446209}
   time: 0
 --- !u!114 &1193518657 stripped
 MonoBehaviour:
