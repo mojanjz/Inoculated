@@ -60,9 +60,7 @@ public class Examinable : MonoBehaviour
             base(String.Format(name + " has no OnExamine actions set.")) { }
     }
 
-    /* Method to cycle through a collection of dialogues. Each examination
-     * process calls one dialogue, then increments the index by 1. */
-    public void CycleDialogue(Examiner ex)
+    public void RunDialogue(Examiner ex)
     {
         /* If this object is already being examined, do nothing. */
         if (examiner != null)
@@ -73,33 +71,59 @@ public class Examinable : MonoBehaviour
 
         examiner = ex;
 
-        dialogueTrigger.OnDialogueEndEvent.AddListener(OnCycleDialogueEnd);
-
-        //dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
-
+        dialogueTrigger.OnDialogueEndEvent.AddListener(RunDialogueEnd);
         KeyMap keyMap = ex.gameObject.GetComponent<KeyMap>();
-        dialogueTrigger.Trigger(keyMap.Examine, keyMap.MoveUp, keyMap.MoveDown, ex.stats);
+        dialogueTrigger.Trigger(keyMap.SelectKey, keyMap.PrevKey, keyMap.NextKey, ex.stats);
     }
 
     // Method that should be called to wrap up the cycle dialogue action.
-    public void OnCycleDialogueEnd(bool wasDisplayed)
+    public void RunDialogueEnd(bool wasDisplayed)
     {
-        dialogueTrigger.OnDialogueEndEvent.RemoveListener(OnCycleDialogueEnd);
-
-        ///* If the dialogue was displayed, move the dialogue index to the next 
-        // * dialogue in the sequence. */
-        //if (wasDisplayed)
-        //{
-        //    dialogueIndex++;
-
-        //    /* If the end of the dialogue collection was reached, restart. */
-        //    if (dialogueIndex == dialogueTrigger.Dialogue.Length)
-        //    {
-        //        dialogueIndex = 0;
-        //    }
-        //}
-
+        dialogueTrigger.OnDialogueEndEvent.RemoveListener(RunDialogueEnd);
         OnExamineEndEvent.Invoke(examiner);
         examiner = null;
     }
+
+    ///* Method to cycle through a collection of dialogues. Each examination
+    // * process calls one dialogue, then increments the index by 1. */
+    //public void CycleDialogue(Examiner ex)
+    //{
+    //    /* If this object is already being examined, do nothing. */
+    //    if (examiner != null)
+    //    {
+    //        OnExamineEndEvent.Invoke(ex);
+    //        return;
+    //    }
+
+    //    examiner = ex;
+
+    //    dialogueTrigger.OnDialogueEndEvent.AddListener(OnCycleDialogueEnd);
+
+    //    //dialogueTrigger.Trigger(dialogueTrigger.Dialogue[dialogueIndex], ex.gameObject);
+
+    //    KeyMap keyMap = ex.gameObject.GetComponent<KeyMap>();
+    //    dialogueTrigger.Trigger(keyMap.Examine, keyMap.MoveUp, keyMap.MoveDown, ex.stats);
+    //}
+
+    //// Method that should be called to wrap up the cycle dialogue action.
+    //public void OnCycleDialogueEnd(bool wasDisplayed)
+    //{
+    //    dialogueTrigger.OnDialogueEndEvent.RemoveListener(OnCycleDialogueEnd);
+
+    //    ///* If the dialogue was displayed, move the dialogue index to the next 
+    //    // * dialogue in the sequence. */
+    //    //if (wasDisplayed)
+    //    //{
+    //    //    dialogueIndex++;
+
+    //    //    /* If the end of the dialogue collection was reached, restart. */
+    //    //    if (dialogueIndex == dialogueTrigger.Dialogue.Length)
+    //    //    {
+    //    //        dialogueIndex = 0;
+    //    //    }
+    //    //}
+
+    //    OnExamineEndEvent.Invoke(examiner);
+    //    examiner = null;
+    //}
 }

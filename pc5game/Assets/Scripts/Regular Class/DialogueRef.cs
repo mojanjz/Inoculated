@@ -7,6 +7,7 @@
 // ----------------------------------------------------------------------------
 
 using System;
+using XNode;
 
 [Serializable]
 public class DialogueRef
@@ -16,6 +17,6 @@ public class DialogueRef
     // Just a regular dialogue object. Can be typed in the inspector.
     public Dialogue DirectValue;
 
-    // From a tree asset with potentially multiple dialogue nodes and connections
-    public DialogueNode NodeAsset;
+    // From a tree asset with potentially various kinds of nodes and connections
+    public Node NodeAsset;
 }

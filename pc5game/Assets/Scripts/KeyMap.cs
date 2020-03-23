@@ -7,9 +7,12 @@ public class KeyMap : MonoBehaviour
 {
     public KeyCode Unlock = KeyCode.E;
     public KeyCode Examine = KeyCode.F;
-    public KeyCode NextSentence = KeyCode.F;
     public KeyCode Attack = KeyCode.Space;
     public KeyCode AttackSwitch = KeyCode.LeftShift;
+
+    public KeyCode SelectKey = KeyCode.F;
+    public KeyCode PrevKey = KeyCode.W;
+    public KeyCode NextKey = KeyCode.S;
 
     public KeyCode MoveUp = KeyCode.W;
     public KeyCode MoveLeft = KeyCode.A;

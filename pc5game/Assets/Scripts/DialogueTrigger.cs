@@ -30,8 +30,8 @@ public class DialogueTrigger : MonoBehaviour
     public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats player = null)
     {
 
-        UnityAction<DialogueNode> handler = null;
-        handler = (DialogueNode entryNode) =>
+        UnityAction<Node> handler = null;
+        handler = (Node entryNode) =>
         {
             OnDialogueEnd(true, entryNode);
             DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
@@ -43,11 +43,21 @@ public class DialogueTrigger : MonoBehaviour
         {
             if (DialogueRef.UseDirect)
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player:player, interactable:ThisObj);
             }
             else
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
+                //DialogueManager.Instance.StartDialogue((DialogueNode)DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player:player, interactable:ThisObj);
+                DialogueManager.Args args = new DialogueManager.Args
+                {
+                    SelectKey = selectKey,
+                    PrevKey = prevKey,
+                    NextKey = nextKey,
+                    Player = player,
+                    Interactable = ThisObj
+                };
+
+                DialogueManager.Instance.RunNode(DialogueRef.NodeAsset, args);
             }
         }
         catch (DialogueManager.NoInterruptEx Ex)
@@ -58,7 +68,7 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     // Method to be called when the triggered dialogue finishes. 
-    public void OnDialogueEnd(bool wasDisplayed, DialogueNode entryNode)
+    public void OnDialogueEnd(bool wasDisplayed, Node entryNode)
     {
         if (entryNode != null)
         {

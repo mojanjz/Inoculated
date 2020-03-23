@@ -14,8 +14,9 @@ public class Dialogue
     public enum PanelID
     {
         Null = 0, // For use in SpeakerData, if the character has no associated panel
-        Player = 1, // Use either brother or sister panel depending on situation
-        Brother = 2,
-        Sister = 3
+        ThisPlayer = 1, // Use either brother or sister panel depending on situation
+        OtherPlayer = 2,
+        Brother = 3,
+        Sister = 4
     }
 }

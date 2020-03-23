@@ -12,7 +12,7 @@ public class Examiner : MonoBehaviour
 
     public UnityEvent OnExamineStartEvent;
     public UnityEvent OnExamineEndEvent;
-    public bool IsActive { get; private set; } = false;
+    //public bool IsActive { get; private set; } = false;
 
     private Examinable examinable = null;
 
@@ -44,13 +44,13 @@ public class Examiner : MonoBehaviour
     /* Method to examine an Examineable using ObjectRaycast. */
     public void Examine()
     {
-        /* If already in process of examining something, don't continue this call. */
-        if (IsActive)
-        {
-            return;
-        }
+        ///* If already in process of examining something, don't continue this call. */
+        //if (IsActive)
+        //{
+        //    return;
+        //}
 
-        IsActive = true;
+        //IsActive = true;
 
         /* Cast a ray. */
         RaycastHit2D hit = raycaster.ObjectRaycast(maxCastDist, rayLayer);
@@ -89,7 +89,7 @@ public class Examiner : MonoBehaviour
             examinable = null;
         }
 
-        IsActive = false;
+        //IsActive = false;
         OnExamineEndEvent.Invoke();
     }
 }

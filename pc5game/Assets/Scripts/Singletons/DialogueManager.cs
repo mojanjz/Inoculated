@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
 using XNode;
+using UnityEngine.SceneManagement;
 
 /* DialogueManager will iterate over sentences contained in a Dialogue, 
  * proceeding to the next sentence in the queue when prompted. It controls UI 
@@ -30,22 +31,43 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] private float letterDelay = 0.05f;
     [SerializeField] private int panelAnimLayer = 0;
 
-    /* Transient data */
-    private CharacterStats playerStats = null;
-    private CharacterStats interactableStats = null;
+    // Input args
+    public class Args
+    {
+        public Args() { }
+
+        public KeyCode SelectKey = KeyCode.None;
+        public KeyCode PrevKey = KeyCode.None;
+        public KeyCode NextKey = KeyCode.None;
+        public CharacterStats Player = null;
+        public CharacterStats Interactable = null;
+        public bool NewInteraction = true;
+    }
+
+    // Transient data
+    private Args savedArgs = new Args();
+    //private KeyCode savedArgs.SelectKey = KeyCode.None;
+    //private KeyCode savedArgs.PrevKey = KeyCode.None;
+    //private KeyCode savedArgs.NextKey = KeyCode.None;
+    //private CharacterStats savedArgs.Player = null;
+    //private CharacterStats savedArgs.Interactable = null;
+
+    // Dialogue
     private PanelSet activePanel = null; // Only one panel should be active at a time
-    private KeyCode selectChoiceKey = KeyCode.None;
-    private KeyCode prevChoiceKey = KeyCode.None;
-    private KeyCode nextChoiceKey = KeyCode.None;
     private int choiceIndex = 0;
     private int numChoices = 0;
-    private DialogueNode currDialogueNode = null;
+    private Node currDialogueNode = null;
     private Queue<string> sentenceQ = new Queue<string>();
     private Coroutine typingCoroutine = null;
     private string currSentence = null;
 
-    public class DialogueNodeEvent : UnityEvent<DialogueNode> { }
-    public DialogueNodeEvent OnEndDialogueEvent;
+    // SwitchScene
+    public bool agreeToLeave = false;
+    public string nextScene = "";
+    [SerializeField] private DialogueNode askToLeave;
+
+    public class NodeEvent : UnityEvent<Node> { }
+    public NodeEvent OnEndDialogueEvent;
 
     // (Optional) Prevent non-singleton constructor use.
     protected DialogueManager() { }
@@ -58,7 +80,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (OnEndDialogueEvent == null)
         {
-            OnEndDialogueEvent = new DialogueNodeEvent();
+            OnEndDialogueEvent = new NodeEvent();
         }
 
         RectTransform tempRectTrans;
@@ -72,7 +94,7 @@ public class DialogueManager : Singleton<DialogueManager>
             panel.arrowUI.gameObject.SetActive(true);
             panel.SelectionBox.gameObject.SetActive(false);
 
-            // Set initial text to nothing.Sca
+            // Set initial text to nothing.
             panel.speakerNameUI.text = panel.sentenceUI.text = panel.arrowUI.text = "";
       
             i = 0;
@@ -105,21 +127,107 @@ public class DialogueManager : Singleton<DialogueManager>
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(selectChoiceKey))
+        if (Input.GetKeyDown(savedArgs.SelectKey))
         {
             // UpdateSentence();
             SelectChoice();
         }
 
-        else if (Input.GetKeyDown(prevChoiceKey) && (numChoices != 0))
+        else if (Input.GetKeyDown(savedArgs.PrevKey) && (numChoices != 0))
         {
             PrevChoice();
         }
 
-        else if (Input.GetKeyDown(nextChoiceKey) && (numChoices != 0))
+        else if (Input.GetKeyDown(savedArgs.NextKey) && (numChoices != 0))
         {
             NextChoice();
         }
+    }
+
+    public void RunNode(Node node, Args args)
+    {
+        switch (node)
+        {
+            case DialogueNode cast:
+                StartDialogue(cast, args.SelectKey, args.PrevKey, args.NextKey,
+                args.Player, args.Interactable, args.NewInteraction);
+                break;
+            case SwitchScene cast:
+                StartCoroutine(AskToLeave(cast));
+                break;
+        }
+    }
+
+    // NEED TO ORGANIZE BETTER LATER!
+    private IEnumerator AskToLeave(SwitchScene currNode)
+    {
+        //if (currNode.SceneName != "" && currNode.SceneName != null)
+        //{
+        //    nextScene = currNode.SceneName;
+        //}
+
+        NextSceneName component = savedArgs.Interactable?.GetComponent<NextSceneName>();
+
+        if (component != null)
+        {
+            nextScene = component.SceneName;
+        }
+
+        // If other player already agreed, go to next scene.
+        if (agreeToLeave && currNode.AgreeToLeave)
+        {
+            Debug.Log("switching scene...");
+            agreeToLeave = false;
+            askToLeave = ((DialogueTreeGraph)askToLeave.graph).StartNode;
+            SceneManager.LoadScene(nextScene);
+            yield break;
+        }
+
+        agreeToLeave = currNode.AgreeToLeave;
+
+        // Didn't agree
+        if (!currNode.AgreeToLeave)
+        {
+            askToLeave = ((DialogueTreeGraph)askToLeave.graph).StartNode;
+            StartCoroutine(EndDialogue());
+            yield break;
+        }
+
+        // Ask other player
+
+        // Reset for first player
+        currDialogueNode = ((DialogueTreeGraph)currNode.graph).StartNode;
+        yield return StartCoroutine(EndDialogue());
+
+        PlayerInteract otherPlayer;
+        KeyMap otherKey;
+
+        // Check with other player
+        if (savedArgs.Player == brotherStats)
+        {
+            // Check with sister
+            otherPlayer = sisterStats.gameObject.GetComponent<PlayerInteract>();
+            otherKey = sisterStats.gameObject.GetComponent<KeyMap>();
+        }
+        else
+        {
+            // Check with brother
+            otherPlayer = brotherStats.gameObject.GetComponent<PlayerInteract>();
+            otherKey = brotherStats.gameObject.GetComponent<KeyMap>();
+        }
+
+        otherPlayer.OnInteractStart();
+
+        UnityAction<Node> handler = null;
+        handler = (Node entryNode) =>
+        {
+            otherPlayer.OnInteractEnd();
+            DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
+        };
+
+        DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
+        StartDialogue(askToLeave, otherKey.SelectKey, otherKey.PrevKey, otherKey.NextKey,
+                sisterStats);
     }
 
     /* Method for starting a dialogue.
@@ -184,13 +292,13 @@ public class DialogueManager : Singleton<DialogueManager>
                 "Dialogue panel is already in active process.");
         }
 
-        this.playerStats = player;
-        this.interactableStats = interactable;
+        savedArgs.Player = player;
+        savedArgs.Interactable = interactable;
         activePanel = GetPanelSet(dialogue.Panel);
 
-        selectChoiceKey = selectKey;
-        prevChoiceKey = prevKey;
-        nextChoiceKey = nextKey;
+        savedArgs.SelectKey = selectKey;
+        savedArgs.PrevKey = prevKey;
+        savedArgs.NextKey = nextKey;
 
         /* Start calling Update() each frame. */
         enabled = true;
@@ -198,27 +306,49 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private PanelSet GetPanelSet(Dialogue.PanelID panelID)
     {
-        PanelSet panel;
+        PanelSet panelSet;
+        bool getOther = false;
 
-        if ( panelID == Dialogue.PanelID.Player)
+        //if (panelID == Dialogue.PanelID.ThisPlayer)
+        //{
+        //    panelID = savedArgs.Player.PanelID;
+        //}
+
+        switch (panelID)
         {
-            panelID = playerStats.PanelID;
+            case Dialogue.PanelID.ThisPlayer:
+                panelID = savedArgs.Player.PanelID;
+                break;
+            case Dialogue.PanelID.OtherPlayer:
+                panelID = savedArgs.Player.PanelID;
+                getOther = true;
+                break;
         }
 
         switch (panelID)
         {
             case Dialogue.PanelID.Sister:
-                panel = sister;
+                panelSet = sister;
+
+                if (getOther)
+                {
+                    panelSet = brother;
+                }
                 break;
             case Dialogue.PanelID.Brother:
-                panel = brother;
+                panelSet = brother;
+
+                if (getOther)
+                {
+                    panelSet = sister;
+                }
                 break;
             default:
                 StartCoroutine(EndDialogue());
                 throw new UnknownPanelEx(panelID);
         }
 
-        return panel;
+        return panelSet;
     }
 
     public class UnknownPanelEx : Exception
@@ -238,21 +368,34 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
 
             case SpeakerRef.Speaker.ThisObject:
-                if (interactableStats == null)
+                if (savedArgs.Interactable == null)
                 {
                     throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.ThisObject);
                 }
-                name = interactableStats.SpeakerName;
+                name = savedArgs.Interactable.SpeakerName;
                 break;
 
-            case SpeakerRef.Speaker.Player:
-                if (playerStats == null)
+            case SpeakerRef.Speaker.ThisPlayer:
+                if (savedArgs.Player == null)
                 {
-                    throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.Player);
+                    throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.ThisPlayer);
                 }
-                name = playerStats.SpeakerName;
+                name = savedArgs.Player.SpeakerName;
                 break;
+            case SpeakerRef.Speaker.OtherPlayer:
+                if (savedArgs.Player == null)
+                {
+                    throw new UnknownSpeakerNameEx(SpeakerRef.Speaker.ThisPlayer);
+                }
 
+                if (savedArgs.Player == sisterStats)
+                {
+                    name = brotherStats.SpeakerName;
+                } else
+                {
+                    name = sisterStats.SpeakerName;
+                }
+                break;
             case SpeakerRef.Speaker.Brother:
                 name = brotherStats.SpeakerName;
                 break;
@@ -356,7 +499,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void UpdateArrows()
     {
         // If there are more sentences, or choices available, display arrows
-        if (sentenceQ.Count != 0 || (currDialogueNode != null && currDialogueNode.Choices.Length > 0))
+        if (sentenceQ.Count != 0 || (currDialogueNode != null && ((DialogueNode)currDialogueNode).Choices.Length > 0))
         {
             activePanel.arrowUI.text = ">>";
         }
@@ -370,7 +513,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void DisplayChoiceUI()
     {
         // If there are no choices, show nothing and end the dialogue
-        if (currDialogueNode == null || currDialogueNode.Choices.Length == 0)
+        if (currDialogueNode == null || ((DialogueNode)currDialogueNode).Choices.Length == 0)
         {
             StartCoroutine(EndDialogue());
             return;
@@ -388,7 +531,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         int i = 0;
         numChoices = 0;
-        foreach (DialogueNode.ChoiceSet choice in currDialogueNode.Choices)
+        foreach (DialogueNode.ChoiceSet choice in ((DialogueNode)currDialogueNode).Choices)
         {
             activePanel.ChoiceText[i].text = choice.ChoiceText;
             activePanel.ChoiceText[i].gameObject.SetActive(true);
@@ -426,14 +569,15 @@ public class DialogueManager : Singleton<DialogueManager>
             return;
         }
 
-        bool endAfter = currDialogueNode.Choices[choiceIndex].EndAfter;
+        bool endAfter = ((DialogueNode)currDialogueNode).Choices[choiceIndex].EndAfter;
 
         // Get the node port connected to the selected choice
         NodePort port = currDialogueNode.GetOutputPort("Choices " + choiceIndex).Connection;
         if (port != null)
         {
             // Set the connected node as the new active node
-            currDialogueNode = port.node as DialogueNode;
+            //currDialogueNode = port.node as DialogueNode;
+            currDialogueNode = port.node;
         }
         else
         {
@@ -453,8 +597,18 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         else
         {
-            StartDialogue(currDialogueNode,
-                selectChoiceKey, prevChoiceKey, nextChoiceKey, newInteraction: false);
+            //StartDialogue(((DialogueNode)currDialogueNode),
+            //    savedArgs.SelectKey, savedArgs.PrevKey, savedArgs.NextKey, newInteraction: false);
+
+            Args args = new Args
+            {
+                SelectKey = savedArgs.SelectKey,
+                PrevKey = savedArgs.PrevKey,
+                NextKey = savedArgs.NextKey,
+                NewInteraction = false
+            };
+
+            RunNode(currDialogueNode, args);
         }
     }
 
@@ -494,12 +648,12 @@ public class DialogueManager : Singleton<DialogueManager>
     public void ClearDialogueInfo()
     {
         currDialogueNode = null;
-        playerStats = null;
-        interactableStats = null;
+        savedArgs.Player = null;
+        savedArgs.Interactable = null;
         activePanel = null;
-        selectChoiceKey = KeyCode.None;
-        prevChoiceKey = KeyCode.None;
-        nextChoiceKey = KeyCode.None;
+        savedArgs.SelectKey = KeyCode.None;
+        savedArgs.PrevKey = KeyCode.None;
+        savedArgs.NextKey = KeyCode.None;
         sentenceQ.Clear();
         typingCoroutine = null;
         currSentence = null;

@@ -29,7 +29,6 @@ public class PlayerInteract : MonoBehaviour
          * specified key. */
         if (keyPressed != KeyCode.None)
         {
-            playerController.DisableMove();
             Interact(keyPressed);
         }
     }
@@ -38,6 +37,8 @@ public class PlayerInteract : MonoBehaviour
      * PARAM: keyPressed, the keyboard key that was pressed by the user. */
     private void Interact(KeyCode keyPressed)
     {
+        OnInteractStart();
+
         if (keyPressed == keyMap.Unlock)
         {
             Debug.Log("Trying to open...");
@@ -111,5 +112,18 @@ public class PlayerInteract : MonoBehaviour
 
             /* Return none if no valid keys pressed. */
             return KeyCode.None;
+    }
+
+    public void OnInteractStart()
+    {
+        enabled = false;
+        playerController.DisableMove();
+    }
+
+    // Added to Examiner, Attacker in the inspector
+    public void OnInteractEnd()
+    {
+        enabled = true;
+        playerController.EnableMove();
     }
 }

@@ -8,7 +8,7 @@ public class DialogueNode : Node {
 	public string NodeName;
  	public Dialogue Dialogue;
 	[Input(ShowBackingValue.Never)] public DialogueNode Input;
-	[Output(dynamicPortList = true)] public ChoiceSet[] Choices;
+	[Output(connectionType: ConnectionType.Override, dynamicPortList: true)] public ChoiceSet[] Choices; // Note sure why connection doesn't override
 
 	[System.Serializable]
 	public class ChoiceSet
