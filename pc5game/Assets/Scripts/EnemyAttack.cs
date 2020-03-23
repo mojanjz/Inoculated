@@ -41,13 +41,13 @@ public class EnemyAttack : MonoBehaviour
 
     private void Strike()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, GetComponent<EnemyMovement>().direction, attackRange);
-        Debug.DrawRay(transform.position, GetComponent<EnemyMovement>().direction, Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, GetComponent<EnemyMovement>().attackDirection, attackRange);
+        //Debug.DrawRay(transform.position, GetComponent<EnemyMovement>().attackDirection, Color.green);
         if (hit.collider != null)
         {
             var attackable = hit.collider.GetComponent<Attackable>();
             int damage = gameObject.GetComponent<CharacterStats>().getBaseHit();
-            Vector2 attackingDirection = gameObject.GetComponent<EnemyMovement>().direction;
+            //Vector2 attackingDirection = gameObject.GetComponent<EnemyMovement>().attackDirection;
             if (attackable)
             {
                 attackable.OnAttack(damage);

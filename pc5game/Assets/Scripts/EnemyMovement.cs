@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float aquisitionTime;  //time required to change target
     public int animationSpeedMulitplier;
     [SerializeField] public Vector2 direction;
+    public Vector2 attackDirection;
     [SerializeField] public float stoppingDistance;
     private float count;
 
@@ -107,7 +108,7 @@ public class EnemyMovement : MonoBehaviour
 
 
         //Multiple direction Vector
-        //direction = (target.position - transform.position).normalized;
+        attackDirection = (target.position - transform.position).normalized;
 
         // Control animation
         animator.SetFloat("rotDirectionX", direction.x);
