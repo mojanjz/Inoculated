@@ -11,6 +11,9 @@ public class Slot : MonoBehaviour
         foreach (Transform child in transform)
         {
             resetSlot(transform.gameObject.name); //resets slot so it's reusable
+            Pickup pickup = groundObject.GetComponent<Pickup>();
+            groundObject.transform.position = pickup.inventory.transform.position; // Set object on ground where the player is standing
+            pickup.WasDropped = true;
             groundObject.SetActive(true);
             if(child != null)
             {
@@ -27,24 +30,38 @@ public class Slot : MonoBehaviour
         {
             return;
         }
+        Pickup pickup = groundObject.GetComponent<Pickup>();
+        GameObject player = pickup.inventory.gameObject;
+        Debug.Log(pickup.inventory.gameObject);
+        CharacterStats charStat = player.GetComponent<CharacterStats>();
 
-        Debug.Log("inventory object is " + groundObject.name);
-        if(groundObject.name.Equals("health potion"))
-        {
-            Debug.Log("add to health");
-        } else if(groundObject.name.Equals("Stick pick-up"))
-        {
-            Debug.Log("do something with the log");
+        string itemType = groundObject.tag;
+        switch (itemType){
+            case "healthPotion":
+                Debug.Log("health potion case statement");
+                charStat.updateHealth(1);
+                break;
         }
-        //inventoryObject.GetComponent<Item>().useItem();
+        Debug.Log("resetting the slot");
+        foreach (Transform child in transform)
+        {
+            resetSlot(transform.gameObject.name); //resets slot so it's reusable
+            pickup.WasDropped = true;
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
+
+            groundObject = null;
+
+        }
+
     }
     public void resetSlot(string slotName)
     {
         int indexValue = int.Parse(Regex.Match(slotName, @"\d+").Value);
         Pickup pickup = groundObject.GetComponent<Pickup>();
         pickup.inventory.isFull[indexValue] = false;
-        groundObject.transform.position = pickup.inventory.transform.position; // Set object on ground where the player is standing
-        pickup.WasDropped = true;
     }
 
 }
