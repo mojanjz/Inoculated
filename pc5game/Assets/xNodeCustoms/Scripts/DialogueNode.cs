@@ -10,6 +10,8 @@ public class DialogueNode : Node {
 	[Input(ShowBackingValue.Never)] public DialogueNode Input;
 	[Output(connectionType: ConnectionType.Override, dynamicPortList: true)] public ChoiceSet[] Choices; // Note sure why connection doesn't override
 
+	public string NoChoiceText = "null";
+
 	[System.Serializable]
 	public class ChoiceSet
 	{

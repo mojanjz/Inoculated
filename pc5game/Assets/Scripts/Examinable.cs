@@ -73,7 +73,7 @@ public class Examinable : MonoBehaviour
 
         dialogueTrigger.OnDialogueEndEvent.AddListener(RunDialogueEnd);
         KeyMap keyMap = ex.gameObject.GetComponent<KeyMap>();
-        dialogueTrigger.Trigger(keyMap.SelectKey, keyMap.PrevKey, keyMap.NextKey, ex.stats);
+        dialogueTrigger.Trigger(keyMap.SelectKey, keyMap.PrevKey, keyMap.NextKey, ex.Stats, ex.Attackable);
     }
 
     // Method that should be called to wrap up the cycle dialogue action.

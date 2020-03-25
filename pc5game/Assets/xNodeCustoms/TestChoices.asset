@@ -74,6 +74,7 @@ MonoBehaviour:
     EndAfter: 1
   - ChoiceText: no connections choice, no end after
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-8905047241467275825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +156,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: ChoiceB
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-1331701202548669258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +225,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: I guess
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +309,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: This choice will restart the loop
     EndAfter: 1
+  NoChoiceText: null
 --- !u!114 &2626970713574951745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,3 +390,4 @@ MonoBehaviour:
     EndAfter: 1
   - ChoiceText: NoEndAFter with connection
     EndAfter: 0
+  NoChoiceText: null

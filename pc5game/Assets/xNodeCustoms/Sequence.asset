@@ -94,6 +94,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-8126620279200367690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +156,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 4803280579408247563}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -167,7 +168,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 4803280579408247563}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -179,7 +180,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 4803280579408247563}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -200,6 +201,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-6838536722133718920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +296,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-5305692779268830717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +346,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 3678215295998890796}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -355,7 +358,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 4803280579408247563}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -367,7 +370,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: 0}
+        node: {fileID: 4803280579408247563}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -388,62 +391,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
---- !u!114 &-3725364878911610992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831fd495d03bd794badf29109a1b16b5, type: 3}
-  m_Name: CORRECT
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 200, y: 56}
-  ports:
-    keys:
-    - Input
-    - False
-    - True
-    values:
-    - _fieldName: Input
-      _node: {fileID: -3725364878911610992}
-      _typeQualifiedName: BoolEventNode+Anything, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: Choices 1
-        node: {fileID: -5305692779268830717}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: False
-      _node: {fileID: -3725364878911610992}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: True
-      _node: {fileID: -3725364878911610992}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  NodeName: CORRECT
-  True: 0
-  False: 0
-  MyEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  NoChoiceText: null
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,10 +412,12 @@ MonoBehaviour:
   - {fileID: -6838536722133718920}
   - {fileID: -8126620279200367690}
   - {fileID: -5305692779268830717}
-  - {fileID: -3725364878911610992}
-  - {fileID: 2808604765786985744}
+  - {fileID: 3678215295998890796}
+  - {fileID: 4241661492824087203}
+  - {fileID: 6889619311362718078}
+  - {fileID: 4803280579408247563}
   startNode: {fileID: -8905047241467275825}
---- !u!114 &2808604765786985744
+--- !u!114 &3678215295998890796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -476,65 +426,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831fd495d03bd794badf29109a1b16b5, type: 3}
-  m_Name: WRONG
+  m_Script: {fileID: 11500000, guid: 1e7ee5fa75a754b4abd46c139a23b9b9, type: 3}
+  m_Name: Unlock
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 232, y: -376}
+  position: {x: 200, y: 104}
   ports:
     keys:
     - Input
-    - False
-    - True
+    - Output
     values:
     - _fieldName: Input
-      _node: {fileID: 2808604765786985744}
-      _typeQualifiedName: BoolEventNode+Anything, Assembly-CSharp, Version=0.0.0.0,
+      _node: {fileID: 3678215295998890796}
+      _typeQualifiedName: UnlockNode+Anything, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: Choices 2
-        node: {fileID: -5305692779268830717}
-        reroutePoints: []
-      - fieldName: Choices 0
-        node: {fileID: -5305692779268830717}
-        reroutePoints: []
-      - fieldName: Choices 0
-        node: {fileID: -8126620279200367690}
-        reroutePoints: []
       - fieldName: Choices 1
-        node: {fileID: -8126620279200367690}
-        reroutePoints: []
-      - fieldName: Choices 2
-        node: {fileID: -8126620279200367690}
+        node: {fileID: -5305692779268830717}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: False
-      _node: {fileID: 2808604765786985744}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
+    - _fieldName: Output
+      _node: {fileID: 3678215295998890796}
+      _typeQualifiedName: UnlockNode+Anything, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: True
-      _node: {fileID: 2808604765786985744}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  NodeName: WRONG
-  True: 0
-  False: 0
-  MyEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3742662179590568494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,7 +470,7 @@ MonoBehaviour:
   m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1288, y: -424}
+  position: {x: -1320, y: -360}
   ports:
     keys:
     - Input
@@ -582,7 +504,7 @@ MonoBehaviour:
         node: {fileID: 6052598737697030292}
         reroutePoints: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 1
   NodeName: Start
@@ -596,8 +518,153 @@ MonoBehaviour:
     - There's something engraved in it!
   Input: {fileID: 0}
   Choices:
-  - ChoiceText: 
+  - ChoiceText: null
     EndAfter: 1
+  NoChoiceText: null
+--- !u!114 &4241661492824087203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: Attacked
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 568, y: -456}
+  ports:
+    keys:
+    - Input
+    - Choices
+    - Choices 0
+    values:
+    - _fieldName: Input
+      _node: {fileID: 4241661492824087203}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 6889619311362718078}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 4241661492824087203}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 0
+      _node: {fileID: 4241661492824087203}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 6052598737697030292}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: Attacked
+  Dialogue:
+    Panel: 1
+    Speaker:
+      SpeakerChoice: 2
+      Custom: 
+    Sentences:
+    - OUCH!
+  Input: {fileID: 0}
+  Choices:
+  - ChoiceText: null
+    EndAfter: 1
+  NoChoiceText: null
+--- !u!114 &4803280579408247563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ad40cd4d95c14d916eb5a6ff1a370, type: 3}
+  m_Name: Attacked
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -440}
+  ports:
+    keys:
+    - Input
+    - Choices
+    - Choices 0
+    values:
+    - _fieldName: Input
+      _node: {fileID: 4803280579408247563}
+      _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Choices 0
+        node: {fileID: -8126620279200367690}
+        reroutePoints: []
+      - fieldName: Choices 1
+        node: {fileID: -8126620279200367690}
+        reroutePoints: []
+      - fieldName: Choices 2
+        node: {fileID: -8126620279200367690}
+        reroutePoints: []
+      - fieldName: Choices 0
+        node: {fileID: -5305692779268830717}
+        reroutePoints: []
+      - fieldName: Choices 2
+        node: {fileID: -5305692779268830717}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 4803280579408247563}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices 0
+      _node: {fileID: 4803280579408247563}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 6889619311362718078}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+  NodeName: Attacked
+  Dialogue:
+    Panel: 1
+    Speaker:
+      SpeakerChoice: 1
+      Custom: 
+    Sentences:
+    - BZZZT
+  Input: {fileID: 0}
+  Choices:
+  - ChoiceText: null
+    EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &5293501501597025169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,6 +762,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &6052598737697030292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,6 +792,12 @@ MonoBehaviour:
       - fieldName: Choices 0
         node: {fileID: 3742662179590568494}
         reroutePoints: []
+      - fieldName: Choices 1
+        node: {fileID: 6052598737697030292}
+        reroutePoints: []
+      - fieldName: Choices 0
+        node: {fileID: 4241661492824087203}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -741,7 +815,10 @@ MonoBehaviour:
       _node: {fileID: 6052598737697030292}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: Input
+        node: {fileID: 6052598737697030292}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -772,3 +849,48 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: RETURN
     EndAfter: 1
+  NoChoiceText: null
+--- !u!114 &6889619311362718078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0932513c188b00849a96205d00ae095a, type: 3}
+  m_Name: Attacked
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 344, y: -312}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 6889619311362718078}
+      _typeQualifiedName: Attacked+Anything, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Choices 0
+        node: {fileID: 4803280579408247563}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 6889619311362718078}
+      _typeQualifiedName: Attacked+Anything, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 4241661492824087203}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Damage: 20

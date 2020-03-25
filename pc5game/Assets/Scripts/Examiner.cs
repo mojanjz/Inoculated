@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 public class Examiner : MonoBehaviour
 {
-    public CharacterStats stats;
+    public CharacterStats Stats;
+    public Attackable Attackable;
     [SerializeField] private ObjectRaycaster raycaster;
     [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for examination
     [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the examineable objects (touchable by raycast).
@@ -28,10 +29,10 @@ public class Examiner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stats = GetComponent<CharacterStats>();
-        if (stats == null)
+        Stats = GetComponent<CharacterStats>();
+        if (Stats == null)
         {
-            throw new MissingComponentEx(stats);
+            throw new MissingComponentEx(Stats);
         }
     }
 

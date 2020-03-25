@@ -30,18 +30,27 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] private CharacterStats sisterStats; // Need to retrieve speaker name
     [SerializeField] private float letterDelay = 0.05f;
     [SerializeField] private int panelAnimLayer = 0;
+    [SerializeField] private int highlightAnimLayer = 2;
 
     // Input args
+    // NEED TO RETHINK THIS
     public class Args
     {
         public Args() { }
 
+        // Dialogue node
         public KeyCode SelectKey = KeyCode.None;
         public KeyCode PrevKey = KeyCode.None;
         public KeyCode NextKey = KeyCode.None;
         public CharacterStats Player = null;
         public CharacterStats Interactable = null;
         public bool NewInteraction = true;
+
+        // Unlock node
+        public Unlockable Unlockable = null;
+
+        // Attacked node
+        public Attackable PlayerAttackable = null;
     }
 
     // Transient data
@@ -130,7 +139,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (Input.GetKeyDown(savedArgs.SelectKey))
         {
             // UpdateSentence();
-            SelectChoice();
+            StartCoroutine(SelectChoice());
         }
 
         else if (Input.GetKeyDown(savedArgs.PrevKey) && (numChoices != 0))
@@ -146,6 +155,15 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void RunNode(Node node, Args args)
     {
+        // Don't interrupt a process that is running.
+        if (enabled && args.NewInteraction == true)
+        {
+            throw new NoInterruptEx("Could not start new dialogue. " +
+                "Dialogue panel is already in active process.");
+        }
+
+        savedArgs = args;
+
         switch (node)
         {
             case DialogueNode cast:
@@ -155,6 +173,43 @@ public class DialogueManager : Singleton<DialogueManager>
             case SwitchScene cast:
                 StartCoroutine(AskToLeave(cast));
                 break;
+            case Attacked cast:
+                savedArgs.PlayerAttackable.OnAttack(cast.Damage);
+                GetNextNode();
+                break;
+            case UnlockNode cast:
+                args.Unlockable.OnUnlock();
+                GetNextNode();
+                break;
+            case EndNode cast:
+                NodePort port = currDialogueNode.GetOutputPort("Output").Connection;
+                if (port != null)
+                {
+                    // Set the connected node as the new active node
+                    currDialogueNode = port.node;
+                }
+                StartCoroutine(EndDialogue());
+                break;
+        }
+    }
+
+    // Need to combine with SelectChoice()
+    private void GetNextNode()
+    {
+        NodePort port = currDialogueNode.GetOutputPort("Output").Connection;
+        if (port != null)
+        {
+            // Set the connected node as the new active node
+            currDialogueNode = port.node;
+
+            savedArgs.NewInteraction = false;
+            RunNode(currDialogueNode, savedArgs);
+        }
+        else
+        {
+            // If no nodes are connected
+            currDialogueNode = null;
+            StartCoroutine(EndDialogue());
         }
     }
 
@@ -285,22 +340,9 @@ public class DialogueManager : Singleton<DialogueManager>
         KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, 
         CharacterStats player = null, CharacterStats interactable = null)
     {
-        /* Don't interrupt a dialogue process that is running. */
-        if (enabled)
-        {
-            throw new NoInterruptEx("Could not start new dialogue. " +
-                "Dialogue panel is already in active process.");
-        }
-
-        savedArgs.Player = player;
-        savedArgs.Interactable = interactable;
         activePanel = GetPanelSet(dialogue.Panel);
 
-        savedArgs.SelectKey = selectKey;
-        savedArgs.PrevKey = prevKey;
-        savedArgs.NextKey = nextKey;
-
-        /* Start calling Update() each frame. */
+        // Start calling Update() each frame.
         enabled = true;
     }
 
@@ -498,46 +540,62 @@ public class DialogueManager : Singleton<DialogueManager>
     // Display arrows indicating to player if there are more sentences in the dialogue
     public void UpdateArrows()
     {
-        // If there are more sentences, or choices available, display arrows
-        if (sentenceQ.Count != 0 || (currDialogueNode != null && ((DialogueNode)currDialogueNode).Choices.Length > 0))
+        DialogueNode cast = (DialogueNode)currDialogueNode;
+
+        // If there are no more sentences and no valid choices, don't display arrows
+        if ( sentenceQ.Count == 0)
         {
-            activePanel.arrowUI.text = ">>";
+            // Need to reconsider NoChoiceText idea...
+            if ( cast.Choices.Length == 0 || cast.Choices[0]?.ChoiceText == cast.NoChoiceText)
+            {
+                activePanel.arrowUI.text = "";
+            }
         }
+            
         else
         {
-            activePanel.arrowUI.text = "";
+            activePanel.arrowUI.text = ">>";
         }
     }
 
     // Display dialogue choices
     public void DisplayChoiceUI()
     {
+        DialogueNode cast = (DialogueNode)currDialogueNode;
+
         // If there are no choices, show nothing and end the dialogue
-        if (currDialogueNode == null || ((DialogueNode)currDialogueNode).Choices.Length == 0)
+        if ( cast.Choices.Length == 0 )
         {
             StartCoroutine(EndDialogue());
             return;
         }
 
-        ClearSpeechText();
-
-        activePanel.speakerNameUI.gameObject.SetActive(false);
-        activePanel.sentenceUI.gameObject.SetActive(false);
-        activePanel.arrowUI.gameObject.SetActive(false);
-
-        activePanel.SelectionBox.gameObject.SetActive(true);
-        choiceIndex = 0; // Start at the first choice
-        activePanel.SelectionBox.anchoredPosition = activePanel.ChoiceTextPos[choiceIndex];
-
-        int i = 0;
-        numChoices = 0;
-        foreach (DialogueNode.ChoiceSet choice in ((DialogueNode)currDialogueNode).Choices)
+        // If there is only one choice, and it's the fake choice (use to connect to next node),
+        // just select that choice
+        else if (cast.Choices[0].ChoiceText == cast.NoChoiceText)
         {
-            activePanel.ChoiceText[i].text = choice.ChoiceText;
-            activePanel.ChoiceText[i].gameObject.SetActive(true);
+            ClearSpeechText();
+            numChoices = 1;
+            StartCoroutine(SelectChoice());
+        }
 
-            numChoices++;
-            i++;
+        else
+        {
+            ClearSpeechText();
+            choiceIndex = 0; // Start at the first choice
+            numChoices = 0;
+            foreach (DialogueNode.ChoiceSet choice in cast.Choices)
+            {
+                activePanel.ChoiceText[numChoices].text = choice.ChoiceText;
+                activePanel.ChoiceText[numChoices].gameObject.SetActive(true);
+
+                numChoices++;
+            }
+
+            activePanel.SelectionBox.gameObject.SetActive(true);
+            activePanel.SelectionBox.anchoredPosition = activePanel.ChoiceTextPos[choiceIndex];
+
+            DisplaySpeechUI(false);
         }
     }
 
@@ -560,19 +618,39 @@ public class DialogueManager : Singleton<DialogueManager>
         activePanel.SelectionBox.anchoredPosition = activePanel.ChoiceTextPos[choiceIndex];
     }
 
-    public void SelectChoice()
+    public IEnumerator SelectChoice()
     {
         // If there are no choices, "select" simply moves to the next sentence
         if (numChoices == 0)
         {
             UpdateSentence();
-            return;
+            yield break;
         }
 
-        bool endAfter = ((DialogueNode)currDialogueNode).Choices[choiceIndex].EndAfter;
+        DialogueNode cast = (DialogueNode)currDialogueNode;
+
+        if (cast.Choices[0].ChoiceText != cast.NoChoiceText) // If not fake choice
+        {
+            // Animate selection highlighter
+
+            activePanel.panelAnimator.SetTrigger("OnSelect");
+
+            // Wait until it's the highlighted state
+            AnimatorStateInfo clipInfo = activePanel.panelAnimator.GetCurrentAnimatorStateInfo(highlightAnimLayer);
+            while (!clipInfo.IsName("Selection.OnSelect")){
+                clipInfo = activePanel.panelAnimator.GetCurrentAnimatorStateInfo(highlightAnimLayer);
+                yield return null;
+            }
+
+            // Wait until highlight animation finishes
+            float myTime = activePanel.panelAnimator.GetCurrentAnimatorStateInfo(highlightAnimLayer).length;
+            yield return new WaitForSeconds(myTime);
+        }
+
+        bool endAfter = cast.Choices[choiceIndex].EndAfter;
 
         // Get the node port connected to the selected choice
-        NodePort port = currDialogueNode.GetOutputPort("Choices " + choiceIndex).Connection;
+        NodePort port = cast.GetOutputPort("Choices " + choiceIndex).Connection;
         if (port != null)
         {
             // Set the connected node as the new active node
@@ -600,15 +678,9 @@ public class DialogueManager : Singleton<DialogueManager>
             //StartDialogue(((DialogueNode)currDialogueNode),
             //    savedArgs.SelectKey, savedArgs.PrevKey, savedArgs.NextKey, newInteraction: false);
 
-            Args args = new Args
-            {
-                SelectKey = savedArgs.SelectKey,
-                PrevKey = savedArgs.PrevKey,
-                NextKey = savedArgs.NextKey,
-                NewInteraction = false
-            };
+            savedArgs.NewInteraction = false;
 
-            RunNode(currDialogueNode, args);
+            RunNode(currDialogueNode, savedArgs);
         }
     }
 

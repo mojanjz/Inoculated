@@ -82,6 +82,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: RETURN
     EndAfter: 1
+  NoChoiceText: null
 --- !u!114 &-1365272810768964832
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ using XNode;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public CharacterStats ThisObj; // Necessary if the dialogue uses this object's speaker name
+    [SerializeField] private CharacterStats thisStats; // Necessary if the dialogue uses this object's speaker name
+    [SerializeField] private Unlockable thisUnlockable;
     public DialogueRef DialogueRef;
 
     public class BoolEvent : UnityEvent<bool> { }
@@ -23,11 +24,11 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
-        ThisObj = GetComponent<CharacterStats>();
+        thisStats = GetComponent<CharacterStats>();
     }
 
     /* Method that starts a Dialogue in the dialogue panel. */
-    public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats player = null)
+    public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats playerStats = null, Attackable playerAttackable = null)
     {
 
         UnityAction<Node> handler = null;
@@ -43,7 +44,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             if (DialogueRef.UseDirect)
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player:player, interactable:ThisObj);
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player:playerStats, interactable:thisStats);
             }
             else
             {
@@ -53,8 +54,10 @@ public class DialogueTrigger : MonoBehaviour
                     SelectKey = selectKey,
                     PrevKey = prevKey,
                     NextKey = nextKey,
-                    Player = player,
-                    Interactable = ThisObj
+                    Player = playerStats,
+                    Interactable = thisStats,
+                    Unlockable = thisUnlockable,
+                    PlayerAttackable = playerAttackable
                 };
 
                 DialogueManager.Instance.RunNode(DialogueRef.NodeAsset, args);
