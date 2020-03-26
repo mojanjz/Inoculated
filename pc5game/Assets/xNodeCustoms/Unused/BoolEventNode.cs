@@ -4,24 +4,52 @@ using UnityEngine;
 using XNode;
 using UnityEngine.Events;
 
-public class EventNode : Node {
+// When the event is raised, should alter bool result. Call RaiseEvent() to raise.
+public class BoolEventNode : Node {
 
 	public string NodeName;
 	[Input(ShowBackingValue.Never)] public Anything Input;
-	public UnityEvent myEvent;
+	[Output(ShowBackingValue.Never, ConnectionType.Override)] public bool True;
+	[Output(ShowBackingValue.Never, ConnectionType.Override)] public bool False;
+	[SerializeField] private NullableBoolEvent MyEvent;
+	public NullableBoolRef result;
+	[System.Serializable] public class NullableBoolEvent : UnityEvent<NullableBoolRef> { }
+
+	// Pass by reference
+	public class NullableBoolRef
+	{
+		public bool? value = null;
+	}
 
 	/// <summary> This class is defined for the sole purpose of being serializable </summary>
 	[System.Serializable] public class Anything { }
 
+	private void Awake()
+	{
+		if (MyEvent == null)
+		{
+			MyEvent = new NullableBoolEvent();
+		}
+	}
+
+	public void RaiseEvent()
+	{
+		MyEvent?.Invoke(result);
+	}
+
 	// Return the correct value of a port when requested
 	public override object GetValue(NodePort port) {
 
-		// Compare only the variable name portion of the fieldName (ignore the index)
 		if (port.fieldName == "Input")
 		{
 			return GetInputValue<object>("Input");
-		} 
-		
+		}
+
+		else if (port.fieldName == "Output")
+		{
+			
+		}
+
 		return null;
 	}
 

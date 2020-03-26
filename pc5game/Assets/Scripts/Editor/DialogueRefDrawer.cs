@@ -18,10 +18,10 @@ public class DialogueRefDrawer : PropertyDrawer
     ///// <summary> Cached style to use to draw the popup button. </summary>
     //private GUIStyle popupStyle;
 
-    private bool useTreeAssetToggle = false;
-    private string treeToggleLabel = "Use dialogue node?";
+    private bool useDirectDialogue = false;
+    private string toggleLabel = "Type single dialogue?";
     private GUIContent directValueLabel = new GUIContent("Dialogue");
-    private GUIContent treeAssetLabel = new GUIContent("Dialogue Node");
+    private GUIContent treeAssetLabel = new GUIContent("Node");
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -41,7 +41,7 @@ public class DialogueRefDrawer : PropertyDrawer
         // Get properties
         SerializedProperty useDirect = property.FindPropertyRelative("UseDirect");
         SerializedProperty directValue = property.FindPropertyRelative("DirectValue");
-        SerializedProperty treeAsset = property.FindPropertyRelative("NodeAsset");
+        SerializedProperty nodeAsset = property.FindPropertyRelative("NodeAsset");
 
         //// Calculate rect for configuration button
         //Rect buttonRect = new Rect(position);
@@ -61,8 +61,8 @@ public class DialogueRefDrawer : PropertyDrawer
         /* Create toggle GUI. */
         Rect toggleRect = new Rect(position);
         toggleRect.height = EditorGUIUtility.singleLineHeight;
-        useDirect.boolValue = !EditorGUI.ToggleLeft(toggleRect, treeToggleLabel, !useDirect.boolValue);
-        useTreeAssetToggle = !useDirect.boolValue;
+        useDirect.boolValue = EditorGUI.ToggleLeft(toggleRect, toggleLabel, useDirect.boolValue);
+        useDirectDialogue = useDirect.boolValue;
 
         /* Height for dialogueRect appears to not matter when 
          * EditorGUI.PropertyField() is called with includeChildren = true. */
@@ -72,7 +72,7 @@ public class DialogueRefDrawer : PropertyDrawer
         /* Display the dialogue property indented under the main property label. */
         EditorGUI.indentLevel++;
         EditorGUI.PropertyField(dialogueRect,
-            useDirect.boolValue ? directValue : treeAsset,
+            useDirect.boolValue ? directValue : nodeAsset,
             useDirect.boolValue ? directValueLabel : treeAssetLabel,
             true);
 
@@ -93,7 +93,7 @@ public class DialogueRefDrawer : PropertyDrawer
          * being displayed. (The toggle state determines which property is
          * displayed.) */
         SerializedProperty displayedProperty;
-        if (!useTreeAssetToggle)
+        if (useDirectDialogue)
         {
              displayedProperty = property.FindPropertyRelative("DirectValue");
              height += EditorGUI.GetPropertyHeight(displayedProperty, label, true);

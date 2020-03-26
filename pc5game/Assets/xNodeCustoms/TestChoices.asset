@@ -39,7 +39,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
@@ -74,6 +74,7 @@ MonoBehaviour:
     EndAfter: 1
   - ChoiceText: no connections choice, no end after
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-8905047241467275825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 1
@@ -155,6 +156,7 @@ MonoBehaviour:
     EndAfter: 0
   - ChoiceText: ChoiceB
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &-1331701202548669258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,7 +198,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
@@ -223,6 +225,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: I guess
     EndAfter: 0
+  NoChoiceText: null
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,14 +236,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57d4815ba35b21544bc97e461c54cfd8, type: 3}
-  m_Name: Boulder
+  m_Name: TestChoices
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 2626970713574951745}
   - {fileID: -8905047241467275825}
   - {fileID: -9216100944285773542}
   - {fileID: -1331701202548669258}
-  - {fileID: 2808604765786985744}
   - {fileID: 1624681425535390530}
   startNode: {fileID: -8905047241467275825}
 --- !u!114 &1624681425535390530
@@ -281,7 +283,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
@@ -307,6 +309,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: This choice will restart the loop
     EndAfter: 1
+  NoChoiceText: null
 --- !u!114 &2626970713574951745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +349,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       connections: []
       _direction: 1
-      _connectionType: 0
+      _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
@@ -387,34 +390,4 @@ MonoBehaviour:
     EndAfter: 1
   - ChoiceText: NoEndAFter with connection
     EndAfter: 0
---- !u!114 &2808604765786985744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831fd495d03bd794badf29109a1b16b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 264, y: -152}
-  ports:
-    keys:
-    - Input
-    values:
-    - _fieldName: Input
-      _node: {fileID: 2808604765786985744}
-      _typeQualifiedName: EventNode+Anything, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  NodeName: 
-  myEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  NoChoiceText: null

@@ -5,14 +5,15 @@ using UnityEngine.Events;
 
 public class Examiner : MonoBehaviour
 {
-    public CharacterStats stats;
+    public CharacterStats Stats;
+    public Attackable Attackable;
     [SerializeField] private ObjectRaycaster raycaster;
     [SerializeField] private float maxCastDist = 1.0f; // Distance that the object must be within for examination
     [SerializeField] private LayerMask rayLayer = 1 << 8; // Layer that contains the examineable objects (touchable by raycast).
 
     public UnityEvent OnExamineStartEvent;
     public UnityEvent OnExamineEndEvent;
-    public bool IsActive { get; private set; } = false;
+    //public bool IsActive { get; private set; } = false;
 
     private Examinable examinable = null;
 
@@ -28,10 +29,10 @@ public class Examiner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stats = GetComponent<CharacterStats>();
-        if (stats == null)
+        Stats = GetComponent<CharacterStats>();
+        if (Stats == null)
         {
-            throw new MissingComponentEx(stats);
+            throw new MissingComponentEx(Stats);
         }
     }
 
@@ -44,13 +45,13 @@ public class Examiner : MonoBehaviour
     /* Method to examine an Examineable using ObjectRaycast. */
     public void Examine()
     {
-        /* If already in process of examining something, don't continue this call. */
-        if (IsActive)
-        {
-            return;
-        }
+        ///* If already in process of examining something, don't continue this call. */
+        //if (IsActive)
+        //{
+        //    return;
+        //}
 
-        IsActive = true;
+        //IsActive = true;
 
         /* Cast a ray. */
         RaycastHit2D hit = raycaster.ObjectRaycast(maxCastDist, rayLayer);
@@ -89,7 +90,7 @@ public class Examiner : MonoBehaviour
             examinable = null;
         }
 
-        IsActive = false;
+        //IsActive = false;
         OnExamineEndEvent.Invoke();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class GameHandler : MonoBehaviour
+public class HealthHandler : MonoBehaviour
 {
     [SerializeField] private HealthBar healthBar;
 

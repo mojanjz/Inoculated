@@ -15,8 +15,9 @@ public class SpeakerRef
     {
         Custom = 0, // If selected, allows user to type in a custom name
         ThisObject = 1,
-        Player = 2,
-        Brother = 3,
-        Sister = 4
+        ThisPlayer = 2,
+        OtherPlayer = 3,
+        Brother = 4,
+        Sister = 5
     }
 }

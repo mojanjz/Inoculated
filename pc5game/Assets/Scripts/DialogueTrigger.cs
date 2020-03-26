@@ -7,7 +7,8 @@ using XNode;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public CharacterStats ThisObj; // Necessary if the dialogue uses this object's speaker name
+    [SerializeField] private CharacterStats thisStats; // Necessary if the dialogue uses this object's speaker name
+    [SerializeField] private Unlockable thisUnlockable;
     public DialogueRef DialogueRef;
 
     public class BoolEvent : UnityEvent<bool> { }
@@ -23,15 +24,15 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
-        ThisObj = GetComponent<CharacterStats>();
+        thisStats = GetComponent<CharacterStats>();
     }
 
     /* Method that starts a Dialogue in the dialogue panel. */
-    public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats player = null)
+    public void Trigger(KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, CharacterStats playerStats = null, Attackable playerAttackable = null)
     {
 
-        UnityAction<DialogueNode> handler = null;
-        handler = (DialogueNode entryNode) =>
+        UnityAction<Node> handler = null;
+        handler = (Node entryNode) =>
         {
             OnDialogueEnd(true, entryNode);
             DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
@@ -43,11 +44,23 @@ public class DialogueTrigger : MonoBehaviour
         {
             if (DialogueRef.UseDirect)
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player:playerStats, interactable:thisStats);
             }
             else
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player: player, interactable: ThisObj);
+                //DialogueManager.Instance.StartDialogue((DialogueNode)DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player:player, interactable:ThisObj);
+                DialogueManager.Args args = new DialogueManager.Args
+                {
+                    SelectKey = selectKey,
+                    PrevKey = prevKey,
+                    NextKey = nextKey,
+                    Player = playerStats,
+                    Interactable = thisStats,
+                    Unlockable = thisUnlockable,
+                    PlayerAttackable = playerAttackable
+                };
+
+                DialogueManager.Instance.RunNode(DialogueRef.NodeAsset, args);
             }
         }
         catch (DialogueManager.NoInterruptEx Ex)
@@ -58,7 +71,7 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     // Method to be called when the triggered dialogue finishes. 
-    public void OnDialogueEnd(bool wasDisplayed, DialogueNode entryNode)
+    public void OnDialogueEnd(bool wasDisplayed, Node entryNode)
     {
         if (entryNode != null)
         {
