@@ -849,6 +849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   altObject: {fileID: 0}
   key: {fileID: 569184208}
+  animator: {fileID: 0}
 --- !u!1 &181095268 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8704134126953821631, guid: cddfda75ddb27924d8cedaca2446d5f6,
@@ -2549,7 +2550,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569184208}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -0.53, z: 0}
+  m_LocalPosition: {x: -0.03, y: -0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1737061640}
@@ -2591,8 +2592,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 532402257
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 374fe50a7159b6e48b303c176c4a124d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -12376,8 +12377,9 @@ GameObject:
   - component: {fileID: 633387159}
   - component: {fileID: 633387158}
   - component: {fileID: 633387166}
+  - component: {fileID: 633387167}
   m_Layer: 8
-  m_Name: Boulder
+  m_Name: PasscodeRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12466,6 +12468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   altObject: {fileID: 569184208}
   key: {fileID: 0}
+  animator: {fileID: 633387167}
 --- !u!66 &633387161
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -12675,6 +12678,25 @@ MonoBehaviour:
   speed: 0
   baseHit: 0
   damageMultiplier: 0
+--- !u!95 &633387167
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633387156}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7f388002c9045bd4c9c2b3cb84fc65e3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &637001848
 GameObject:
   m_ObjectHideFlags: 0
@@ -16657,6 +16679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   altObject: {fileID: 1736512241}
   key: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &1150214369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22515,7 +22538,7 @@ GameObject:
   - component: {fileID: 1737061642}
   - component: {fileID: 1737061641}
   m_Layer: 0
-  m_Name: BoulderKey
+  m_Name: PasscodePuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

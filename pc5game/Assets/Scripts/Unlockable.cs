@@ -7,6 +7,10 @@ public class Unlockable : MonoBehaviour
     [SerializeField] private GameObject altObject;
     public GameObject key;
 
+    [SerializeField] Animator animator;
+
+    //[SerializeField] private DialogueTrigger failedUnlock;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +30,14 @@ public class Unlockable : MonoBehaviour
     {
         if ( (key == this.key && key != null) || overrideKey)
         {
-            gameObject.SetActive(false);
+            if (animator != null)
+            {
+                animator.SetBool("Unlocked", true); // Play unlock animation
+            }
+            else
+            {
+                gameObject.SetActive(false); // Nothin fancy
+            }
 
             if (altObject != null)
             {
@@ -35,6 +46,8 @@ public class Unlockable : MonoBehaviour
 
             return true;
         }
+
+        //failedUnlock.Trigger();
 
         return false;
     }

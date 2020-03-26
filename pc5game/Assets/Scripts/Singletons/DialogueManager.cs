@@ -156,7 +156,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void RunNode(Node node, Args args)
     {
         // Don't interrupt a process that is running.
-        if (enabled && args.NewInteraction == true)
+        if ( (activePanel != null) && (args.NewInteraction == true))  // Maybe check currDialogueNode != null since some nodes don't have activePanel
         {
             throw new NoInterruptEx("Could not start new dialogue. " +
                 "Dialogue panel is already in active process.");
@@ -293,7 +293,7 @@ public class DialogueManager : Singleton<DialogueManager>
     public void StartDialogue(Dialogue dialogue, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey,
         CharacterStats player = null, CharacterStats interactable = null)
     {
-        InitializeActivePanel(dialogue, selectKey, prevKey, nextKey, player: player, interactable: interactable);
+        activePanel = GetPanelSet(dialogue.Panel);
         activePanel.speakerNameUI.text = GetSpeakerName(dialogue);
 
         foreach (string sentence in dialogue.Sentences)
@@ -316,7 +316,7 @@ public class DialogueManager : Singleton<DialogueManager>
          * again. */
         if (newInteraction)
         {
-            InitializeActivePanel(dialogue, selectKey, prevKey, nextKey, player: player, interactable: interactable);
+            activePanel = GetPanelSet(dialogue.Panel);
         }
 
         activePanel.speakerNameUI.text = GetSpeakerName(dialogue);
@@ -334,16 +334,6 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             UpdateSentence();
         }
-    }
-
-    private void InitializeActivePanel(Dialogue dialogue, 
-        KeyCode selectKey, KeyCode prevKey, KeyCode nextKey, 
-        CharacterStats player = null, CharacterStats interactable = null)
-    {
-        activePanel = GetPanelSet(dialogue.Panel);
-
-        // Start calling Update() each frame.
-        enabled = true;
     }
 
     private PanelSet GetPanelSet(Dialogue.PanelID panelID)
@@ -473,6 +463,9 @@ public class DialogueManager : Singleton<DialogueManager>
 
         /* Wait for the dialogue panel to open fully before continuing. */
         yield return new WaitForSeconds(seconds);
+
+        // Start calling Update() each frame.
+        enabled = true;
 
         UpdateSentence();
     }
@@ -631,6 +624,8 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (cast.Choices[0].ChoiceText != cast.NoChoiceText) // If not fake choice
         {
+            enabled = false;
+
             // Animate selection highlighter
 
             activePanel.panelAnimator.SetTrigger("OnSelect");
@@ -645,6 +640,8 @@ public class DialogueManager : Singleton<DialogueManager>
             // Wait until highlight animation finishes
             float myTime = activePanel.panelAnimator.GetCurrentAnimatorStateInfo(highlightAnimLayer).length;
             yield return new WaitForSeconds(myTime);
+
+            enabled = true;
         }
 
         bool endAfter = cast.Choices[choiceIndex].EndAfter;
@@ -694,6 +691,19 @@ public class DialogueManager : Singleton<DialogueManager>
         ClearSpeechText();
         ResetChoiceUI();
         activePanel.panelAnimator.SetBool("IsOpen", false);
+
+
+        // Setting the parameter doesn't immediately activate the transition, so we have to wait.
+        float seconds;
+        while ((seconds = activePanel.panelAnimator.GetAnimatorTransitionInfo(panelAnimLayer).duration) == 0)
+        {
+            yield return null; // Wait a frame, for each frame that the transition isn't active
+        }
+
+        // Wait for the dialogue panel to open fully before continuing.
+        yield return new WaitForSeconds(seconds);
+
+
         OnEndDialogueEvent.Invoke(currDialogueNode);
         ClearDialogueInfo();
     }
