@@ -5,7 +5,7 @@ using UnityEngine.UI;
 // script to be added to items that the player can pick up
 public class Pickup : MonoBehaviour
 {
-    public Inventory inventory;
+    public PlayerInventory inventory;
     public GameObject itemButton;
     [SerializeField] private Canvas canvas;
     public bool WasDropped = false;
@@ -13,8 +13,7 @@ public class Pickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itemButton.AddComponent<Button>();
-        // inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+        //itemButton.AddComponent<Button>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -29,7 +28,7 @@ public class Pickup : MonoBehaviour
        if (other.CompareTag("Player"))
         {
             // Get the inventory of the specific player
-            inventory = other.GetComponent<Inventory>();
+            inventory = other.GetComponent<CharacterStats>().Inventory;
             
             //check to see if inventory is full or not
             for (int i = 0; i < inventory.slots.Length; i++)
@@ -42,8 +41,8 @@ public class Pickup : MonoBehaviour
                     var obj = Instantiate(itemButton, canvas.transform);
                     obj.transform.SetParent(inventory.slots[i].transform);
                     obj.transform.position = vec;
-                    GameObject currentSlot = findSlot(i,other.gameObject);
-                    currentSlot.GetComponent<Slot>().groundObject = gameObject;
+                    GameObject currentSlot = findSlot(i, inventory);
+                    currentSlot.GetComponent<Slot>().SaveGroundItem(gameObject);
                     gameObject.SetActive(false);
                     break;
                 }
@@ -56,17 +55,9 @@ public class Pickup : MonoBehaviour
      * Input 2: player associated with the inventory
      * Function: finds the appropriate slot number
      */
-    GameObject findSlot(int i, GameObject player)
+    GameObject findSlot(int i, PlayerInventory inventory)
     {
-        string inventoryName;
-        if (string.Equals(player.name, "PlayerBro"))
-        {
-           inventoryName = "brother's inventory";
-        } else
-        {
-            inventoryName = "sister's inventory";
-        }
-        Transform trans = GameObject.Find(inventoryName).transform;
+        Transform trans = inventory.gameObject.transform;
         Transform childTrans = trans.Find("Slot (" + (i).ToString() + ")");
         return childTrans.gameObject;
     }

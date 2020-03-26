@@ -5,23 +5,17 @@ using System.Text.RegularExpressions;
 
 public class Slot : MonoBehaviour
 {
-    public GameObject groundObject;
+    private GameObject groundObject;
     public void DropItem()
     {
         foreach (Transform child in transform)
         {
-            resetSlot(transform.gameObject.name); //resets slot so it's reusable
             Pickup pickup = groundObject.GetComponent<Pickup>();
-            groundObject.transform.position = pickup.inventory.transform.position; // Set object on ground where the player is standing
+            groundObject.transform.position = pickup.inventory.Player.transform.position; // Set object on ground where the player is standing
             pickup.WasDropped = true;
             groundObject.SetActive(true);
-            if(child != null)
-            {
-                Destroy(child.gameObject);
-            }
 
-            groundObject = null;
-
+            resetSlot();
         }
     }
     public void useItem()
@@ -31,37 +25,51 @@ public class Slot : MonoBehaviour
             return;
         }
         Pickup pickup = groundObject.GetComponent<Pickup>();
-        GameObject player = pickup.inventory.gameObject;
+        GameObject player = pickup.inventory.Player;
         Debug.Log(pickup.inventory.gameObject);
         CharacterStats charStat = player.GetComponent<CharacterStats>();
 
+        bool isUsed = false;
         string itemType = groundObject.tag;
         switch (itemType){
             case "healthPotion":
                 Debug.Log("health potion case statement");
-                charStat.updateHealth(1);
+                charStat.updateHealth(10);
+                isUsed = true;
+                break;
+            case "key":
+                isUsed = player.GetComponent<Unlocker>().Unlock(groundObject);
                 break;
         }
-        Debug.Log("resetting the slot");
+
+        // Only result if used
+        if (isUsed)
+        {
+            resetSlot();
+        }
+    }
+
+    // resets slot so it's reusable
+    public void resetSlot()
+    {
         foreach (Transform child in transform)
         {
-            resetSlot(transform.gameObject.name); //resets slot so it's reusable
-            pickup.WasDropped = true;
+            string slotName = transform.gameObject.name; 
+            int indexValue = int.Parse(Regex.Match(slotName, @"\d+").Value);
+            Pickup pickup = groundObject.GetComponent<Pickup>();
+            pickup.inventory.isFull[indexValue] = false;
+
             if (child != null)
             {
                 Destroy(child.gameObject);
             }
 
             groundObject = null;
-
         }
-
     }
-    public void resetSlot(string slotName)
+
+    public void SaveGroundItem(GameObject item)
     {
-        int indexValue = int.Parse(Regex.Match(slotName, @"\d+").Value);
-        Pickup pickup = groundObject.GetComponent<Pickup>();
-        pickup.inventory.isFull[indexValue] = false;
+        groundObject = item;
     }
-
 }

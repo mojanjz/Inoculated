@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unlockable : MonoBehaviour
 {
     [SerializeField] private GameObject altObject;
+    public GameObject key;
 
     // Start is called before the first frame update
     void Start()
@@ -19,10 +20,22 @@ public class Unlockable : MonoBehaviour
     }
 
 
-    /* Method for "unlocking" the object by updating the state of the object. */
-    public void OnUnlock()
+    // Method for "unlocking" the object by updating the state of the object.
+    // Returns true if unlocked.
+    public bool OnUnlock(GameObject key, bool overrideKey = false)
     {
-        gameObject.SetActive(false);
-        altObject.SetActive(true);
+        if ( (key == this.key && key != null) || overrideKey)
+        {
+            gameObject.SetActive(false);
+
+            if (altObject != null)
+            {
+                altObject.SetActive(true);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

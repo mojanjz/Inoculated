@@ -33,8 +33,9 @@ public class Unlocker : MonoBehaviour
         
     }
 
-    public void Unlock()
+    public bool Unlock(GameObject key)
     {
+        bool result = false;
         RaycastHit2D hit = raycaster.ObjectRaycast(maxCastDist, rayLayer);
 
         /* If something was hit, check if it's unlockable. */
@@ -44,10 +45,12 @@ public class Unlocker : MonoBehaviour
 
             if (unlockable)
             {
-                unlockable.OnUnlock();
+                result = unlockable.OnUnlock(key);
             }
         }
 
         OnUnlockEndEvent.Invoke();
+
+        return result;
     }
 }

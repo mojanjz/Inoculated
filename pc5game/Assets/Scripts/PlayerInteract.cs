@@ -39,12 +39,6 @@ public class PlayerInteract : MonoBehaviour
     {
         OnInteractStart();
 
-        if (keyPressed == keyMap.Unlock)
-        {
-            Debug.Log("Trying to open...");
-            unlocker.Unlock();
-        }
-
         if (keyPressed == keyMap.Examine)
         {
             Debug.Log("Looking...");
@@ -89,12 +83,6 @@ public class PlayerInteract : MonoBehaviour
         {
             Debug.Log("interacted with " + keyMap.Examine);
             return keyMap.Examine;
-        }
-
-        if (Input.GetKeyDown(keyMap.Unlock))
-        {
-            Debug.Log("interacted with " + keyMap.Unlock);
-            return keyMap.Unlock;
         }
 
         if (Input.GetKeyDown(keyMap.Attack))

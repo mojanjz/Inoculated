@@ -178,7 +178,7 @@ public class DialogueManager : Singleton<DialogueManager>
                 GetNextNode();
                 break;
             case UnlockNode cast:
-                args.Unlockable.OnUnlock();
+                args.Unlockable.OnUnlock(null, overrideKey:true);
                 GetNextNode();
                 break;
             case EndNode cast:

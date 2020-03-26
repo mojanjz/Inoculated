@@ -7,6 +7,8 @@ public class CharacterStats : MonoBehaviour
     public string SpeakerName;
     public Dialogue.PanelID PanelID = Dialogue.PanelID.Null;
 
+    public PlayerInventory Inventory;
+
     public int maxHealth;
     public int currentHealth;
     public float speed;

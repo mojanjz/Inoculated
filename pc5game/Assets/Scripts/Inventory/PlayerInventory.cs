@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    public GameObject Player;
+
+    public bool[] isFull;
+    public GameObject[] slots;
+
     [SerializeField] GameObject highlighter;
     [SerializeField] GameObject inventory;
     [SerializeField] KeyMap keyMap;

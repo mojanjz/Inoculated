@@ -5,7 +5,6 @@ using UnityEngine;
 public class KeyMap : MonoBehaviour
 /* Class for defining which keyboard keys do what action in the game. */
 {
-    public KeyCode Unlock = KeyCode.E;
     public KeyCode Examine = KeyCode.F;
     public KeyCode Attack = KeyCode.Space;
     public KeyCode AttackSwitch = KeyCode.LeftShift;
