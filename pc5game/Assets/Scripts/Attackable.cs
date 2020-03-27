@@ -59,11 +59,12 @@ public class Attackable : MonoBehaviour
 
     public void Die()
     {
-        //Destroy(gameObject);
         //moves really far away
         state = "dead";
-        transform.position = new Vector2(999, 999);
+        //gameObject.active = false;
+        //transform.position = new Vector2(999, 999);
         Destroy(healthBar);
+        Destroy(gameObject); 
     }
 
     public int GetStunTime()
