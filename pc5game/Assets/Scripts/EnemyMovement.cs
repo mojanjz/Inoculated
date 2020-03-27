@@ -24,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {  
         targetAquisition();
         if (Vector2.Distance(transform.position, target.position) > stoppingDistance) 
         {
@@ -38,7 +38,7 @@ public class EnemyMovement : MonoBehaviour
         GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
         float distance0 = Vector2.Distance(transform.position, playerList[0].transform.position);
         float distance1 = Vector2.Distance(transform.position, playerList[1].transform.position);
-        if (distance0 <= distance1)
+        if (distance0 < distance1)
         {
             target = playerList[0].transform;
             nonTarget = playerList[1].transform;
@@ -58,7 +58,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (distanceToNonTarget < distanceToTarget)
         {
-            count = count + 1*Time.deltaTime;
+            count = count + 1 * Time.deltaTime;
         }
         else
         {
@@ -129,8 +129,8 @@ public class EnemyMovement : MonoBehaviour
         return target;
     }
 
-    public float getTargetDistance() 
-    {
-        return Vector2.Distance(transform.position, target.position); 
+    public float getTargetDistance()
+    { 
+        return Vector2.Distance(transform.position, target.position);
     }
 }

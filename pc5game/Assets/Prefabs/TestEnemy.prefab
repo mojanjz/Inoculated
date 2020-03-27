@@ -159,7 +159,7 @@ MonoBehaviour:
   SpeakerName: 
   PanelID: 0
   Inventory: {fileID: 0}
-  maxHealth: 20
+  maxHealth: 15
   currentHealth: 0
   speed: 0.3
   baseHit: 10
@@ -236,7 +236,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.94404316, y: 0.5767108}
+  m_Size: {x: 1, y: 0.75}
   m_EdgeRadius: 0
 --- !u!1 &4272825850729791860
 GameObject:
