@@ -5,13 +5,22 @@ using UnityEngine;
 public class EnemySpawnBehaviour : MonoBehaviour
 {
     public GameObject enemyPrefab;
-    public float respawnTime = 2.0f;
+    public float respawnTime = 4.0f;
     public Vector2[] spawnPoints;
+
+    public int InitialCount = 3;
+    public int Count = 0;
+    [SerializeField] int MaxCount = 6;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        while(Count < InitialCount)
+        {
+            SpawnEnemy();
+        }
+
         StartCoroutine(enemyWave());
     }
 
@@ -20,6 +29,9 @@ public class EnemySpawnBehaviour : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab) as GameObject;
         int positionSelector = Random.Range(0, spawnPoints.Length);
         enemy.transform.position = spawnPoints[positionSelector];
+
+        enemy.GetComponent<Attackable>().EnemySpawner = this;
+        Count++;
     }
 
     IEnumerator enemyWave()
@@ -27,7 +39,11 @@ public class EnemySpawnBehaviour : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(respawnTime);
-            SpawnEnemy();
+
+            if( Count < MaxCount )
+            {
+                SpawnEnemy();
+            }
         }
 
     }

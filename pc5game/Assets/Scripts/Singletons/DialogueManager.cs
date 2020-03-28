@@ -55,11 +55,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
     // Transient data
     private Args savedArgs = new Args();
-    //private KeyCode savedArgs.SelectKey = KeyCode.None;
-    //private KeyCode savedArgs.PrevKey = KeyCode.None;
-    //private KeyCode savedArgs.NextKey = KeyCode.None;
-    //private CharacterStats savedArgs.Player = null;
-    //private CharacterStats savedArgs.Interactable = null;
 
     // Dialogue
     private PanelSet activePanel = null; // Only one panel should be active at a time
@@ -71,9 +66,11 @@ public class DialogueManager : Singleton<DialogueManager>
     private string currSentence = null;
 
     // SwitchScene
-    public bool agreeToLeave = false;
-    public string nextScene = "";
+    private bool agreeToLeave = false;
+    private string nextScene = "";
     [SerializeField] private DialogueNode askToLeave;
+    [SerializeField] private DialogueNode tooManyEnemies;
+    [SerializeField] private EnemySpawnBehaviour enemySpawner;
 
     public class NodeEvent : UnityEvent<Node> { }
     public NodeEvent OnEndDialogueEvent;
@@ -221,7 +218,12 @@ public class DialogueManager : Singleton<DialogueManager>
         //    nextScene = currNode.SceneName;
         //}
 
-        NextSceneName component = savedArgs.Interactable?.GetComponent<NextSceneName>();
+        NextSceneName component = null;
+
+        if (savedArgs.Interactable != null)
+        {
+            component = savedArgs.Interactable.GetComponent<NextSceneName>();
+        }      
 
         if (component != null)
         {
@@ -231,10 +233,22 @@ public class DialogueManager : Singleton<DialogueManager>
         // If other player already agreed, go to next scene.
         if (agreeToLeave && currNode.AgreeToLeave)
         {
-            Debug.Log("switching scene...");
+            Debug.Log("Trying to switch scene...");
             agreeToLeave = false;
             askToLeave = ((DialogueTreeGraph)askToLeave.graph).StartNode;
-            SceneManager.LoadScene(nextScene);
+
+            currDialogueNode = ((DialogueTreeGraph)currNode.graph).StartNode;
+
+            if (enemySpawner.Count > enemySpawner.InitialCount)
+            {
+                savedArgs.NewInteraction = false;
+                RunNode(tooManyEnemies, savedArgs);
+            }
+            else
+            {
+                SceneManager.LoadScene(nextScene);
+            } 
+
             yield break;
         }
 
@@ -252,7 +266,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         // Reset for first player
         currDialogueNode = ((DialogueTreeGraph)currNode.graph).StartNode;
-        yield return StartCoroutine(EndDialogue());
+        yield return StartCoroutine(EndDialogue(false));
 
         PlayerInteract otherPlayer;
         KeyMap otherKey;
@@ -261,12 +275,14 @@ public class DialogueManager : Singleton<DialogueManager>
         if (savedArgs.Player == brotherStats)
         {
             // Check with sister
+            //tempArgs.Player = sisterStats;
             otherPlayer = sisterStats.gameObject.GetComponent<PlayerInteract>();
             otherKey = sisterStats.gameObject.GetComponent<KeyMap>();
         }
         else
         {
             // Check with brother
+            //tempArgs.Player = brotherStats;
             otherPlayer = brotherStats.gameObject.GetComponent<PlayerInteract>();
             otherKey = brotherStats.gameObject.GetComponent<KeyMap>();
         }
@@ -280,9 +296,16 @@ public class DialogueManager : Singleton<DialogueManager>
             DialogueManager.Instance.OnEndDialogueEvent.RemoveListener(handler);
         };
 
+        // Only change these args
+        savedArgs.SelectKey = otherKey.SelectKey;
+        savedArgs.PrevKey = otherKey.PrevKey;
+        savedArgs.NextKey = otherKey.NextKey;
+        savedArgs.NewInteraction = true;
+
         DialogueManager.Instance.OnEndDialogueEvent.AddListener(handler);
-        StartDialogue(askToLeave, otherKey.SelectKey, otherKey.PrevKey, otherKey.NextKey,
-                sisterStats);
+        RunNode(askToLeave, savedArgs);
+        //StartDialogue(askToLeave, otherKey.SelectKey, otherKey.PrevKey, otherKey.NextKey,
+        //        sisterStats);
     }
 
     /* Method for starting a dialogue.
@@ -681,7 +704,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    public IEnumerator EndDialogue()
+    public IEnumerator EndDialogue(bool clearArgs = true)
     {
         /* Probably a lazy solution, but I'm delaying until end of frame before 
          * setting dialogue panel free... to prevent reading double input lol. */
@@ -706,6 +729,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
         OnEndDialogueEvent.Invoke(currDialogueNode);
         ClearDialogueInfo();
+
+        if (clearArgs)
+        {
+            savedArgs = new Args();
+        }
+
+        activePanel = null;
     }
 
     public void ResetChoiceUI()
@@ -730,12 +760,6 @@ public class DialogueManager : Singleton<DialogueManager>
     public void ClearDialogueInfo()
     {
         currDialogueNode = null;
-        savedArgs.Player = null;
-        savedArgs.Interactable = null;
-        activePanel = null;
-        savedArgs.SelectKey = KeyCode.None;
-        savedArgs.PrevKey = KeyCode.None;
-        savedArgs.NextKey = KeyCode.None;
         sentenceQ.Clear();
         typingCoroutine = null;
         currSentence = null;

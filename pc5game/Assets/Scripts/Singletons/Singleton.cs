@@ -12,22 +12,37 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        /* Check if there is an old instance (for example, carried over from
-         * a previous scene due to DontDestroyOnLoad()). If so, destroy 
-         * this new instance so we can continue using the old one. */
-        if (m_Instance != null)
-        {
-            Destroy(gameObject);
-        }
 
-        /* Otherwise, set up this newly created instance. */
+        if (m_Instance != null && m_Instance != this as T)
+        {
+            Destroy(this.gameObject);
+        }
         else
         {
-            m_Instance = gameObject.GetComponent<T>();
-
-            ///* Make instance persistent. */
-            //DontDestroyOnLoad(m_Instance.gameObject);
+            m_Instance = this as T;
         }
+
+        //if (m_Instance == null)
+        //{
+        //    m_Instance = (T)FindObjectOfType(typeof(T));
+
+        //    /* Check if there is an old instance (for example, carried over from
+        //    * a previous scene due to DontDestroyOnLoad()). If so, destroy 
+        //    * this new instance so we can continue using the old one. */
+        //    if (m_Instance != null)
+        //    {
+        //        Destroy(gameObject);
+        //    }
+        //}
+        
+        ///* Otherwise, set up this newly created instance. */
+        //else if
+        //{
+        //    m_Instance = gameObject.GetComponent<T>();
+
+        //    ///* Make instance persistent. */
+        //    //DontDestroyOnLoad(m_Instance.gameObject);
+        //}
     }
     public static T Instance
     {

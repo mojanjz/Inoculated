@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
-    private bool agreeToLeave = false;
-    [SerializeField] DialogueTrigger leaveDialogue;
+    public AudioSource bgAudioSource;
+    public AudioClip bgAudioClip;
 
     // (Optional) Prevent non-singleton constructor use.
     protected GameManager() { }
@@ -17,14 +17,16 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(Instance.gameObject);
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        bgAudioSource.clip = bgAudioClip;
+        bgAudioSource.Play();
+    }
+
     // Update is called once per frame
     void Update()
     {
        
     }
-
-   public bool AskToLeave()
-   {
-        return true;
-   }
 }

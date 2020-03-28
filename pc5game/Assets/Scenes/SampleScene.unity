@@ -1602,12 +1602,12 @@ GameObject:
   - component: {fileID: 398356737}
   - component: {fileID: 398356740}
   m_Layer: 0
-  m_Name: MusicPlayer
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &398356737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1724,7 +1724,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398356736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.75369, y: 6.113077, z: -12.887609}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1739,11 +1739,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 398356736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19ebf2052502b4a419f8fd0d6b71a886, type: 3}
+  m_Script: {fileID: 11500000, guid: 91f0af6bc74a1904abc19b6b370b141a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgAudioSource: {fileID: 0}
-  bgAudioClip: {fileID: 8300000, guid: 8bb302d99adb46249bca043c2fabd4df, type: 3}
+  bgAudioSource: {fileID: 398356738}
+  bgAudioClip: {fileID: 8300000, guid: eb87e8f3042756c4bbb530383ebb2d8e, type: 3}
 --- !u!1 &435416388
 GameObject:
   m_ObjectHideFlags: 0
@@ -13059,7 +13059,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f0af6bc74a1904abc19b6b370b141a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leaveDialogue: {fileID: 0}
+  bgAudioSource: {fileID: 0}
+  bgAudioClip: {fileID: 0}
 --- !u!4 &713105961
 Transform:
   m_ObjectHideFlags: 0
@@ -13337,6 +13338,7 @@ MonoBehaviour:
   killable: 0
   stunTime: 0
   healthBar: {fileID: 0}
+  EnemySpawner: {fileID: 0}
 --- !u!212 &743871626
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14235,10 +14237,11 @@ MonoBehaviour:
   letterDelay: 0.05
   panelAnimLayer: 0
   highlightAnimLayer: 2
-  agreeToLeave: 0
-  nextScene: 
   askToLeave: {fileID: -8905047241467275825, guid: e88f7a6645f69ac48a14463d8920e513,
     type: 2}
+  tooManyEnemies: {fileID: -5805300310224486725, guid: e88f7a6645f69ac48a14463d8920e513,
+    type: 2}
+  enemySpawner: {fileID: 1997994899}
 --- !u!114 &908976590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15619,6 +15622,7 @@ MonoBehaviour:
   killable: 1
   stunTime: 0
   healthBar: {fileID: 1297701289}
+  EnemySpawner: {fileID: 0}
 --- !u!114 &1068731497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16291,6 +16295,7 @@ MonoBehaviour:
   killable: 1
   stunTime: 0
   healthBar: {fileID: 1061795424}
+  EnemySpawner: {fileID: 0}
 --- !u!114 &1143040243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23998,7 +24003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4272825850536672015, guid: ba1908b2e22c77d4591c30581020512b,
     type: 3}
-  respawnTime: 3
+  respawnTime: 5
   spawnPoints:
   - {x: 1, y: -6}
   - {x: 3, y: 5}
@@ -24006,6 +24011,9 @@ MonoBehaviour:
   - {x: 10.5, y: -6}
   - {x: 11, y: 3.5}
   - {x: 6.6, y: 6.6}
+  InitialCount: 3
+  Count: 0
+  MaxCount: 8
 --- !u!4 &1997994900
 Transform:
   m_ObjectHideFlags: 0

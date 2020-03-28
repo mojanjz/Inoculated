@@ -8,6 +8,7 @@ public class Attackable : MonoBehaviour
     [SerializeField] private bool killable;
     [SerializeField] private int stunTime;
     [SerializeField] HealthBar healthBar;
+    public EnemySpawnBehaviour EnemySpawner; // Need to keep track of number of enemies... reorganize later
 
     string state;
     float speed_reserve;
@@ -64,7 +65,8 @@ public class Attackable : MonoBehaviour
         //gameObject.active = false;
         //transform.position = new Vector2(999, 999);
         Destroy(healthBar);
-        Destroy(gameObject); 
+        Destroy(gameObject);
+        EnemySpawner.Count--;
     }
 
     public int GetStunTime()
