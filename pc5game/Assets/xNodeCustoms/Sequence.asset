@@ -90,7 +90,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: SNAKE
     EndAfter: 0
-  - ChoiceText: DEER
+  - ChoiceText: OWL
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: SNAKE
     EndAfter: 0
-  - ChoiceText: DEER
+  - ChoiceText: OWL
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: SNAKE
     EndAfter: 0
-  - ChoiceText: DEER
+  - ChoiceText: OWL
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: SNAKE
     EndAfter: 0
-  - ChoiceText: DEER
+  - ChoiceText: OWL
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
@@ -758,7 +758,7 @@ MonoBehaviour:
   Choices:
   - ChoiceText: SNAKE
     EndAfter: 0
-  - ChoiceText: DEER
+  - ChoiceText: OWL
     EndAfter: 0
   - ChoiceText: LION
     EndAfter: 0
@@ -893,4 +893,4 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  Damage: 20
+  Damage: 25

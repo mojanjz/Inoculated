@@ -6,6 +6,8 @@ using System;
 
 public class Examinable : MonoBehaviour
 {
+    [SerializeField] bool end = false; // ugh
+
     [SerializeField] private DialogueTrigger dialogueTrigger;
     private int dialogueIndex = 0;
 
@@ -42,6 +44,12 @@ public class Examinable : MonoBehaviour
      * PARAM: ex, the examiner conducting the examination */
     public void OnExamine(Examiner ex)
     {
+        if (end)
+        {
+            OnExamineEndEvent.Invoke(ex);
+            return;
+        }
+
         /* In the inspector, choose some event handler(s) to evoke for OnExamineStartEvent. */
         /* Don't forget to add the related finishing handler to OnExamineEndEvent too. */
 

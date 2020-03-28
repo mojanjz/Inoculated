@@ -1,6 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1759155044575072569
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d4815ba35b21544bc97e461c54cfd8, type: 3}
+  m_Name: RockHoleMove
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 3742662179590568494}
+  - {fileID: 3678215295998890796}
+  - {fileID: 2315728487440627358}
+  startNode: {fileID: 3742662179590568494}
+--- !u!114 &2315728487440627358
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13,30 +30,31 @@ MonoBehaviour:
   m_Name: Main
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -248, y: -168}
+  position: {x: -1064, y: -376}
   ports:
     keys:
     - Input
     - Choices
     - Choices 0
+    - Choices 1
     values:
     - _fieldName: Input
-      _node: {fileID: -1759155044575072569}
+      _node: {fileID: 2315728487440627358}
       _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Choices 0
-        node: {fileID: 4431821258591455216}
+      - fieldName: Choices 1
+        node: {fileID: 2315728487440627358}
         reroutePoints: []
       - fieldName: Choices 0
-        node: {fileID: -1759155044575072569}
+        node: {fileID: 3742662179590568494}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices
-      _node: {fileID: -1759155044575072569}
+      _node: {fileID: 2315728487440627358}
       _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections: []
@@ -45,12 +63,24 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
-      _node: {fileID: -1759155044575072569}
+      _node: {fileID: 2315728487440627358}
       _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: -1759155044575072569}
+        node: {fileID: 3678215295998890796}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: Choices 1
+      _node: {fileID: 2315728487440627358}
+      _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 2315728487440627358}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -60,18 +90,18 @@ MonoBehaviour:
   Dialogue:
     Panel: 1
     Speaker:
-      SpeakerChoice: 0
-      Custom: NOTE IN A BAG
+      SpeakerChoice: 2
+      Custom: 
     Sentences:
-    - In astrology, the Lion, or Leo, symbolizes the sun.
-    - Like the sun, the lion brings light to the darkness from the start of the day
-      as the sun rises.
+    - What should I do?
   Input: {fileID: 0}
   Choices:
-  - ChoiceText: null
+  - ChoiceText: Move it.
+    EndAfter: 0
+  - ChoiceText: Leave it be.
     EndAfter: 1
   NoChoiceText: null
---- !u!114 &11400000
+--- !u!114 &3678215295998890796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,14 +110,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d4815ba35b21544bc97e461c54cfd8, type: 3}
-  m_Name: BagPassage1
+  m_Script: {fileID: 11500000, guid: 1e7ee5fa75a754b4abd46c139a23b9b9, type: 3}
+  m_Name: Unlock
   m_EditorClassIdentifier: 
-  nodes:
-  - {fileID: 4431821258591455216}
-  - {fileID: -1759155044575072569}
-  startNode: {fileID: 4431821258591455216}
---- !u!114 &4431821258591455216
+  graph: {fileID: 11400000}
+  position: {x: -792, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 3678215295998890796}
+      _typeQualifiedName: UnlockNode+Anything, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: Choices 0
+        node: {fileID: 2315728487440627358}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 3678215295998890796}
+      _typeQualifiedName: UnlockNode+Anything, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &3742662179590568494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +154,7 @@ MonoBehaviour:
   m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -536, y: -360}
+  position: {x: -1336, y: -376}
   ports:
     keys:
     - Input
@@ -108,7 +162,7 @@ MonoBehaviour:
     - Choices 0
     values:
     - _fieldName: Input
-      _node: {fileID: 4431821258591455216}
+      _node: {fileID: 3742662179590568494}
       _typeQualifiedName: DialogueNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections: []
@@ -117,7 +171,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices
-      _node: {fileID: 4431821258591455216}
+      _node: {fileID: 3742662179590568494}
       _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections: []
@@ -126,12 +180,12 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Choices 0
-      _node: {fileID: 4431821258591455216}
+      _node: {fileID: 3742662179590568494}
       _typeQualifiedName: DialogueNode+ChoiceSet[], Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: -1759155044575072569}
+        node: {fileID: 2315728487440627358}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -144,9 +198,7 @@ MonoBehaviour:
       SpeakerChoice: 2
       Custom: 
     Sentences:
-    - Someone's lost bag.
-    - '?'
-    - There's a piece of paper inside!
+    - I see something under this rock...
   Input: {fileID: 0}
   Choices:
   - ChoiceText: null

@@ -61,7 +61,7 @@ MonoBehaviour:
     Panel: 1
     Speaker:
       SpeakerChoice: 0
-      Custom: Note in a Bag
+      Custom: NOTE IN A BAG
     Sentences:
     - The serpent brings temptation to other creatures at midday during its wake.
   Input: {fileID: 0}

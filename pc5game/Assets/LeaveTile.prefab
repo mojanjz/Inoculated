@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5015534875770963804}
   - component: {fileID: 5015534875770963807}
   - component: {fileID: 4331962944873616277}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LeaveTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,13 +49,13 @@ Tilemap:
   m_Tiles:
   - first: {x: 0, y: 0, z: 0}
     second:
+      serializedVersion: 2
       m_TileIndex: 3
       m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
-      m_TileFlags: 1
-      m_ColliderType: 1
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 0
@@ -98,6 +98,7 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 1
     m_Data: {r: 1, g: 1, b: 1, a: 1}
+  m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -3, z: 0}
@@ -135,6 +136,7 @@ TilemapRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -232,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeakerName: 
   PanelID: 0
+  Inventory: {fileID: 0}
   maxHealth: 0
   currentHealth: 0
   speed: 0
@@ -249,7 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01f9d2eb9f513e4887eb222db350941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisObj: {fileID: 5015534875770963806}
+  thisStats: {fileID: 0}
+  thisUnlockable: {fileID: 0}
   DialogueRef:
     UseDirect: 0
     DirectValue:
@@ -273,7 +277,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.49629983, y: 0.49882615}
+  m_Offset: {x: 0.006264448, y: 0.008790493}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -284,7 +288,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9935463, y: 1.0003879}
+  m_Size: {x: 0.9935465, y: 0.9859743}
   m_EdgeRadius: 0
 --- !u!114 &4331962944873616277
 MonoBehaviour:
@@ -298,3 +302,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82cc3125aa406a849b26ddd802565bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SceneName: 
+  trigger: {fileID: 5015534875770963804}

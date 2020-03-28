@@ -71,6 +71,7 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] private DialogueNode askToLeave;
     [SerializeField] private DialogueNode tooManyEnemies;
     [SerializeField] private EnemySpawnBehaviour enemySpawner;
+    [SerializeField] private DialogueNode errorOffLimitsArea;
 
     public class NodeEvent : UnityEvent<Node> { }
     public NodeEvent OnEndDialogueEvent;
@@ -246,7 +247,9 @@ public class DialogueManager : Singleton<DialogueManager>
             }
             else
             {
-                SceneManager.LoadScene(nextScene);
+                savedArgs.NewInteraction = false;
+                RunNode(errorOffLimitsArea, savedArgs);
+                //SceneManager.LoadScene(nextScene);
             } 
 
             yield break;
@@ -313,9 +316,18 @@ public class DialogueManager : Singleton<DialogueManager>
      * PARAM: selectKey, the key to use to update the dialogue (ie. show next sentence)
      * EXCEPTION: If another dialogue is already in process, NoInterruptEx will be thrown.
      * EXCEPTION: If the panel is not valid, UnknownPanelEx will be thrown.*/
-    public void StartDialogue(Dialogue dialogue, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey,
+    public void StartDialogue(Dialogue dialogue, Args args, KeyCode selectKey, KeyCode prevKey, KeyCode nextKey,
         CharacterStats player = null, CharacterStats interactable = null)
     {
+        // Don't interrupt a process that is running.
+        if (activePanel != null)  // Maybe check currDialogueNode != null since some nodes don't have activePanel
+        {
+            throw new NoInterruptEx("Could not start new dialogue. " +
+                "Dialogue panel is already in active process.");
+        }
+
+        savedArgs = args;
+
         activePanel = GetPanelSet(dialogue.Panel);
         activePanel.speakerNameUI.text = GetSpeakerName(dialogue);
 
@@ -561,8 +573,13 @@ public class DialogueManager : Singleton<DialogueManager>
         // If there are no more sentences and no valid choices, don't display arrows
         if ( sentenceQ.Count == 0)
         {
+            if(cast == null)
+            {
+                activePanel.arrowUI.text = "";
+            }
+
             // Need to reconsider NoChoiceText idea...
-            if ( cast.Choices.Length == 0 || cast.Choices[0]?.ChoiceText == cast.NoChoiceText)
+            else if ( cast.Choices.Length == 0 || cast.Choices[0]?.ChoiceText == cast.NoChoiceText)
             {
                 activePanel.arrowUI.text = "";
             }
@@ -580,7 +597,7 @@ public class DialogueManager : Singleton<DialogueManager>
         DialogueNode cast = (DialogueNode)currDialogueNode;
 
         // If there are no choices, show nothing and end the dialogue
-        if ( cast.Choices.Length == 0 )
+        if ( cast == null || cast.Choices.Length == 0 )
         {
             StartCoroutine(EndDialogue());
             return;

@@ -16,5 +16,5 @@ MonoBehaviour:
   Damage: 5
   Audio: {fileID: 8300000, guid: d12b59f3d4ded9842a3d6d445d945357, type: 3}
   Area: 0
-  Distance: 1
+  Distance: 0.7
   animController: {fileID: 22100000, guid: efa451b4744672a4da878052364eab9b, type: 2}

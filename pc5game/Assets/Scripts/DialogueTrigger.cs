@@ -42,24 +42,25 @@ public class DialogueTrigger : MonoBehaviour
 
         try
         {
+            DialogueManager.Args args = new DialogueManager.Args
+            {
+                SelectKey = selectKey,
+                PrevKey = prevKey,
+                NextKey = nextKey,
+                Player = playerStats,
+                Interactable = thisStats,
+                NewInteraction = true,
+                Unlockable = thisUnlockable,
+                PlayerAttackable = playerAttackable
+            };
+
             if (DialogueRef.UseDirect)
             {
-                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, selectKey, prevKey, nextKey, player:playerStats, interactable:thisStats);
+                DialogueManager.Instance.StartDialogue(DialogueRef.DirectValue, args, selectKey, prevKey, nextKey, player:playerStats, interactable:thisStats);
             }
             else
             {
                 //DialogueManager.Instance.StartDialogue((DialogueNode)DialogueRef.NodeAsset, selectKey, prevKey, nextKey, player:player, interactable:ThisObj);
-                DialogueManager.Args args = new DialogueManager.Args
-                {
-                    SelectKey = selectKey,
-                    PrevKey = prevKey,
-                    NextKey = nextKey,
-                    Player = playerStats,
-                    Interactable = thisStats,
-                    Unlockable = thisUnlockable,
-                    PlayerAttackable = playerAttackable
-                };
-
                 DialogueManager.Instance.RunNode(DialogueRef.NodeAsset, args);
             }
         }

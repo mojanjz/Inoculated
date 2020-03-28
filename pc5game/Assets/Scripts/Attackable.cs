@@ -66,7 +66,11 @@ public class Attackable : MonoBehaviour
         //transform.position = new Vector2(999, 999);
         Destroy(healthBar);
         Destroy(gameObject);
-        EnemySpawner.Count--;
+
+        if (EnemySpawner != null)
+        {
+            EnemySpawner.Count--;
+        } 
     }
 
     public int GetStunTime()
