@@ -24,6 +24,6 @@ public class GameOver : MonoBehaviour
 
     public void transitionScene()
     {
-        SceneManager.LoadScene("GameOver");
+        GameManager.Instance.FadeToScene(SceneList.GameOver);
     }
 }
