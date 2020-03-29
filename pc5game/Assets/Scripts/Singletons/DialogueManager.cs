@@ -67,7 +67,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     // SwitchScene
     private bool agreeToLeave = false;
-    private string nextScene = "";
+    private int nextScene;
     [SerializeField] private DialogueNode askToLeave;
     [SerializeField] private DialogueNode tooManyEnemies;
     [SerializeField] private EnemySpawnBehaviour enemySpawner;
@@ -228,7 +228,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (component != null)
         {
-            nextScene = component.SceneName;
+            nextScene = component.SceneIndex;
         }
 
         // If other player already agreed, go to next scene.
@@ -248,8 +248,8 @@ public class DialogueManager : Singleton<DialogueManager>
             else
             {
                 savedArgs.NewInteraction = false;
-                RunNode(errorOffLimitsArea, savedArgs);
-                //SceneManager.LoadScene(nextScene);
+                //RunNode(errorOffLimitsArea, savedArgs);
+                GameManager.Instance.FadeToScene(nextScene);
             } 
 
             yield break;

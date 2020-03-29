@@ -6,7 +6,7 @@ using XNode;
 
 public class NextSceneName : MonoBehaviour
 {
-    public string SceneName = "";
+    public int SceneIndex;
     [SerializeField] private DialogueTrigger trigger;
 
     private void OnTriggerEnter2D(Collider2D collision)
